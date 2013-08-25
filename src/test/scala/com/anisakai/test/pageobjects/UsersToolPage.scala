@@ -1,8 +1,11 @@
 package com.anisakai.test.pageobjects
 
 import org.scalatest.concurrent.Eventually
-import org.openqa.selenium.{By, WebElement}
+import org.openqa.selenium.{NoSuchElementException, By, WebElement}
 import scala.collection.JavaConversions._
+import com.github.javafaker.Faker
+import org.openqa.selenium.support.ui.Select
+import org.scalatest.exceptions.TestFailedException
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,8 +19,49 @@ class UsersToolPage extends GatewayPage with Eventually {
   var currentFirstName : String = null
   var oldFirstName : String = null
 
-  def search: TextField = textField("search")
+  def userEid : TextField = textField("eid")
+  def lastName : TextField = textField("last-name")
+  def search: TextField = eventually(textField("search"))
   def firstName: TextField = textField("first-name")
+  def email: TextField = textField("email")
+  def pw: PasswordField = pwdField("pw")
+  def pw0: PasswordField = pwdField("pw0")
+  def userType: Select = new Select(singleSel("type").underlying)
+
+  val faker: Faker = new Faker()
+
+  def createUser(eid : String, firstname : String, lastname : String, email : String, usertype : String, password : String) {
+    click on linkText("New User")
+    this.userEid.value = eid
+    this.firstName.value = firstname
+    this.lastName.value = lastname
+    this.email.value = email
+    this.pw.value = password
+    this.pw0.value = password
+    this.userType.selectByVisibleText("registered")
+    click on name("eventSubmit_doSave")
+
+    try {
+      if (className("alertMessage") != null &&
+        className("alertMessage").webElement(webDriver).getText().contains("user id is already in use")) {
+        click on name("eventSubmit_doCancel")
+      }
+    } catch {
+      case e: TestFailedException => {
+        // swallow, this will happen if a user was created successfully
+      }
+    }
+  }
+
+  def findOrCreateUser(eid : String) {
+    createUser(eid, faker.firstName(), faker.lastName(), eid + "@asdf.com", "registered", "password")
+  }
+
+  def randomUser() : String = {
+    val eid = faker.numerify("#########")
+    createUser(eid, faker.firstName(), faker.lastName(), eid + "@asdf.com", "registered", "password")
+    return eid
+  }
 
   def submitSearch() {
     click on linkText("Search")
@@ -63,7 +107,7 @@ class UsersToolPage extends GatewayPage with Eventually {
   }
 
   def foundUser(eid : String) : Boolean = {
-    currentEid = eid;
+    this.currentEid = eid;
     return partialLinkText(eid) != null
   }
 
@@ -74,6 +118,8 @@ class UsersToolPage extends GatewayPage with Eventually {
     this.currentFirstName = firstName
     click on name("eventSubmit_doSave")
   }
+
+
 
   def hasFirstNameChanged() : Boolean = {
     return cssSelector("h4:contains('" + currentFirstName + "')") != null
