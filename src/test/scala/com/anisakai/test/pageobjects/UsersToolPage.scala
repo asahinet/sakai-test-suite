@@ -21,7 +21,7 @@ class UsersToolPage extends GatewayPage with Eventually {
 
   def userEid : TextField = textField("eid")
   def lastName : TextField = textField("last-name")
-  def search: TextField = eventually(textField("search"))
+  def search: TextField = textField("search")
   def firstName: TextField = textField("first-name")
   def email: TextField = textField("email")
   def pw: PasswordField = pwdField("pw")
@@ -30,27 +30,27 @@ class UsersToolPage extends GatewayPage with Eventually {
 
   val faker: Faker = new Faker()
 
-  def createUser(eid : String, firstname : String, lastname : String, email : String, usertype : String, password : String) {
+  def createUser(eid : String, firstname : String, lastname : String, email : String, usertype : String, password : String)  {
     click on linkText("New User")
+
     this.userEid.value = eid
     this.firstName.value = firstname
     this.lastName.value = lastname
     this.email.value = email
     this.pw.value = password
     this.pw0.value = password
-    this.userType.selectByVisibleText("registered")
+    this.userType.selectByVisibleText(usertype)
     click on name("eventSubmit_doSave")
-
-    try {
-      if (className("alertMessage") != null &&
-        className("alertMessage").webElement(webDriver).getText().contains("user id is already in use")) {
-        click on name("eventSubmit_doCancel")
+      try {
+        if (className("alertMessage") != null &&
+          className("alertMessage").webElement(webDriver).getText().contains("user id is already in use")) {
+          click on name("eventSubmit_doCancel")
+        }
+      } catch {
+        case e: TestFailedException => {
+          // swallow, this will happen if a user was created successfully
+        }
       }
-    } catch {
-      case e: TestFailedException => {
-        // swallow, this will happen if a user was created successfully
-      }
-    }
   }
 
   def findOrCreateUser(eid : String) {
@@ -103,7 +103,7 @@ class UsersToolPage extends GatewayPage with Eventually {
   def gotoTool(toolName : String) {
  //   switch to defaultContent
     click on linkText(toolName)
-    switch to frame(0)
+    eventually (switch to frame(0))
   }
 
   def foundUser(eid : String) : Boolean = {

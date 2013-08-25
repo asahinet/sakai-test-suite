@@ -1,6 +1,7 @@
 package com.anisakai.test.pageobjects
 
 import org.openqa.selenium.{By, WebElement}
+import java.util.concurrent.TimeUnit
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,6 +19,7 @@ class GatewayPage extends Page {
   }
 
   def login(eid : String, password : String) {
+    webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     go to host
     enterEid(eid)
     enterPassword(password)
