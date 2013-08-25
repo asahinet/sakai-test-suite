@@ -3,6 +3,10 @@ Feature: Test the Admin Users Tool
     Given I am logged on as 'admin' with a password of 'admin'
     Given I am on the 'Administration Workspace' site using the 'Users' tool
 
+    Scenario:  User Create Random
+    Then create a user with random data
+    Then I should logout
+
     Scenario:  User Create Student User
     Then add a user with an eid of 'student01' a firstname of 'sally' a lastname of 'fields' an email of 'sally@zappa.com' that is of type 'registered' with a password of 'password'
     Then I should logout
@@ -14,10 +18,6 @@ Feature: Test the Admin Users Tool
 
     Scenario:  User Create Another Student User
     Then add a user with an eid of 'student02' a firstname of 'joe' a lastname of 'zappa' an email of 'joe@zappa.com' that is of type 'registered' with a password of 'password'
-    Then I should logout
-
-    Scenario:  User Create Random
-    Then create a user with random data
     Then I should logout
 
     Scenario:  User Edit

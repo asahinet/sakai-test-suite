@@ -26,7 +26,7 @@ class UsersToolPage extends GatewayPage with Eventually {
   def email: TextField = textField("email")
   def pw: PasswordField = pwdField("pw")
   def pw0: PasswordField = pwdField("pw0")
-  def userType: Select = new Select(singleSel("type").underlying)
+  def userType: Select = new Select(webDriver.findElement(By.name("type")))
 
   val faker: Faker = new Faker()
 
