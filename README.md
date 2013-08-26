@@ -131,6 +131,10 @@ The following system properties are available:
 
     pull path to your Sakai instance (including the /portal)
 
+- webdriver.chrome.driver
+
+    if you are using chrome the chrome driver must be made available, see https://code.google.com/p/chromedriver/downloads/list to download the
+    version for your system.  For more info, https://code.google.com/p/chromedriver/wiki/GettingStarted
 
 -Dtarget.browser=firefox -Dtarget.server=https://nightly.cle.rsmart.com/portal
 

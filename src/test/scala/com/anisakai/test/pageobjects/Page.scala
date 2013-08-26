@@ -23,6 +23,9 @@ abstract class Page extends WebBrowser {
     if (!StringUtils.isEmpty(systemProperties.getProperty("target.browser"))) {
       var targetBrowser = systemProperties.getProperty("target.browser")
       if (targetBrowser.equalsIgnoreCase("chrome")) {
+        if (StringUtils.isEmpty(systemProperties.getProperty("webdriver.chrome.driver"))){
+          systemProperties.setProperty("webdriver.chrome.driver", "chromedriver/chromedriver_mac")
+        }
         Chrome.webDriver
       } else if (targetBrowser.equalsIgnoreCase("ie") || targetBrowser.equalsIgnoreCase("internetexplorer")) {
         InternetExplorer.webDriver
