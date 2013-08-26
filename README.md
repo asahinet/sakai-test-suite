@@ -134,7 +134,9 @@ The following system properties are available:
 - webdriver.chrome.driver
 
     if you are using chrome the chrome driver must be made available, see https://code.google.com/p/chromedriver/downloads/list to download the
-    version for your system.  For more info, https://code.google.com/p/chromedriver/wiki/GettingStarted
+    version for your system.  For more info, https://code.google.com/p/chromedriver/wiki/GettingStarted.  If you are running
+    on a Mac platform, and your working directory is set to this project's root, you don't have to include this, it will be
+    found automatically.
 
 -Dtarget.browser=firefox -Dtarget.server=https://nightly.cle.rsmart.com/portal
 
