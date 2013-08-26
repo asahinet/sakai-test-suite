@@ -119,6 +119,22 @@ Running the Tests
 Invoke RunCukesTest in the normal way you run junit tests in your IDE.  In Intellij, this is just a matter
 of right clicking on the file name, and selecting run.
 
+### Configuration
+
+The following system properties are available:
+
+- target.browser
+
+    supports the following: firefox, chrome, ie, safari, or htmlunit (headless).  Defaults to firefox.
+
+- target.server
+
+    pull path to your Sakai instance (including the /portal)
+
+
+-Dtarget.browser=firefox -Dtarget.server=https://nightly.cle.rsmart.com/portal
+
+
 Tips and Tricks
 ---------------
 

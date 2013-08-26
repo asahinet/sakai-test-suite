@@ -19,25 +19,24 @@ class GatewayPage extends Page {
   }
 
   def login(eid : String, password : String) {
-    webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS)
     go to host
     enterEid(eid)
     enterPassword(password)
-    submit();
+    submit()
   }
 
-
   def enterEid(eid: String) {
-    this.eid.value = eid;
+    this.eid.value = eid
   }
 
   def enterPassword(password: String) {
 
-    this.password.value = password;
+    this.password.value = password
   }
 
   def isMyWorkspace() : Boolean = {
-    return webDriver.findElementByClassName("siteTitle").getText().startsWith("My Workspace");
+    return webDriver.findElement(By.className("siteTitle")).getText().startsWith("My Workspace")
   }
 
   def logout() {
