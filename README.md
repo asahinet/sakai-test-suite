@@ -149,7 +149,7 @@ The following system properties are available.  These should be sent to the as J
     differences in the ani distribution that this property will toggle, allowing the suite to be run against multiple
     distributions.
 
--- sakai.version
+- sakai.version
 
     The version of Sakai you are testing against.  This isn't issued yet, but one day it will be.
 
