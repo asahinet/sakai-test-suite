@@ -151,7 +151,7 @@ The following system properties are available.  These should be sent to the as J
 
 - sakai.version
 
-    The version of Sakai you are testing against.  This isn't issued yet, but one day it will be.
+    The version of Sakai you are testing against.  This isn't used yet, but one day it will be.
 
 
 Example invocation with some properties...
