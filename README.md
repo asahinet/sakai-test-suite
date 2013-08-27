@@ -121,7 +121,7 @@ of right clicking on the file name, and selecting run.
 
 ### Configuration
 
-The following system properties are available:
+The following system properties are available.  These should be sent to the as JVM properties to your execution context.
 
 - target.browser
 
@@ -143,6 +143,18 @@ The following system properties are available:
     The location of the phantomjs binary if you choose to use this browser driver.
     The macos version is included. See http://phantomjs.org/download.html
 
+- sakai.distro
+
+    The distribution of Sakai you are using.  Validate strings are "ani", "rsmart", "community".  There are a few UI
+    differences in the ani distribution that this property will toggle, allowing the suite to be run against multiple
+    distributions.
+
+-- sakai.version
+
+    The version of Sakai you are testing against.  This isn't issued yet, but one day it will be.
+
+
+Example invocation with some properties...
 
 -Dtarget.browser=firefox -Dtarget.server=https://nightly.cle.rsmart.com/portal
 

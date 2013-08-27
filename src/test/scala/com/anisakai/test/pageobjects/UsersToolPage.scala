@@ -6,6 +6,7 @@ import scala.collection.JavaConversions._
 import com.github.javafaker.Faker
 import org.openqa.selenium.support.ui.Select
 import org.scalatest.exceptions.TestFailedException
+import com.anisakai.test.Config
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,6 +28,7 @@ class UsersToolPage extends GatewayPage with Eventually {
   def pw: PasswordField = pwdField("pw")
   def pw0: PasswordField = pwdField("pw0")
   def userType: Select = new Select(webDriver.findElement(By.name("type")))
+  def userTypeCommunity : TextField = textField("type")
 
   val faker: Faker = new Faker()
 
@@ -39,18 +41,20 @@ class UsersToolPage extends GatewayPage with Eventually {
     this.email.value = email
     this.pw.value = password
     this.pw0.value = password
-    this.userType.selectByVisibleText(usertype)
+
+    if (Config.sakaiDistro.equals("ani")) {
+      this.userType.selectByVisibleText(usertype)
+    } else {
+      this.userTypeCommunity.value = usertype
+    }
+
     click on name("eventSubmit_doSave")
-      try {
-        if (className("alertMessage") != null &&
-          className("alertMessage").webElement(webDriver).getText().contains("user id is already in use")) {
-          click on name("eventSubmit_doCancel")
-        }
-      } catch {
-        case e: TestFailedException => {
-          // swallow, this will happen if a user was created successfully
-        }
-      }
+
+    // if we get an error that the user exists, click cancel, that is ok
+    if (className("alertMessage").findElement(webDriver).isDefined &&
+      className("alertMessage").webElement(webDriver).getText().contains("user id is already in use")){
+      click on name("eventSubmit_doCancel")
+    }
   }
 
   def findOrCreateUser(eid : String) {
@@ -102,7 +106,15 @@ class UsersToolPage extends GatewayPage with Eventually {
 
   def gotoTool(toolName : String) {
  //   switch to defaultContent
-    click on linkText(toolName)
+    if (toolName.equals("Site Setup") && !Config.sakaiDistro.equalsIgnoreCase("ani"))  {
+      if (linkText("Worksite Setup").findElement(webDriver).isDefined) {
+        click on linkText("Worksite Setup")
+      } else if (linkText("Site Info").findElement(webDriver).isDefined){
+        click on linkText("Site Info")
+      }
+    } else {
+      click on linkText(toolName)
+    }
     eventually (switch to frame(0))
   }
 

@@ -2,6 +2,7 @@ package com.anisakai.test.pageobjects
 
 import org.openqa.selenium.{By, WebElement}
 import java.util.concurrent.TimeUnit
+import com.anisakai.test.Config
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,7 +20,7 @@ class GatewayPage extends Page {
   }
 
   def login(eid : String, password : String) {
-    go to host
+    go to Config.targetServer
     enterEid(eid)
     enterPassword(password)
     submit()
