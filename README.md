@@ -1,8 +1,8 @@
 Sakai Test Suite
 ======================
 
-This project's aim it to create a regression suite that runs against the ANI version of Sakai.
-It performs actions via direct browser interactions.
+This project's aim it to create a regression suite that runs against a community or ANI (formerly rSmart)
+version of Sakai. It performs actions via direct browser interactions.
 
 The tests are feature or behavior driven (BDD) using cucumber.  These tests are then implemented in scala using the [cucumber-jvm](https://github.com/cucumber/cucumber-jvm)
 via cucumber-scala and cucumber-junit.  The ScalaTest library is used for the [Selenium DSL](http://www.scalatest.org/user_guide/using_selenium),
