@@ -125,7 +125,7 @@ The following system properties are available:
 
 - target.browser
 
-    supports the following: firefox, chrome, ie, safari, or htmlunit (headless).  Defaults to firefox.
+    supports the following: firefox, chrome, ie, safari, phantomjs, or htmlunit (headless).  Defaults to firefox.
 
 - target.server
 
@@ -133,10 +133,16 @@ The following system properties are available:
 
 - webdriver.chrome.driver
 
-    if you are using chrome the chrome driver must be made available, see https://code.google.com/p/chromedriver/downloads/list to download the
+    If you are using chrome the chrome driver must be made available, see https://code.google.com/p/chromedriver/downloads/list to download the
     version for your system.  For more info, https://code.google.com/p/chromedriver/wiki/GettingStarted.  If you are running
     on a Mac platform, and your working directory is set to this project's root, you don't have to include this, it will be
     found automatically.
+
+- webdriver.phantomjs.binary
+
+    The location of the phantomjs binary if you choose to use this browser driver.
+    The macos version is included. See http://phantomjs.org/download.html
+
 
 -Dtarget.browser=firefox -Dtarget.server=https://nightly.cle.rsmart.com/portal
 
