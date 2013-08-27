@@ -49,13 +49,13 @@ class SiteManageTool extends Page {
 
     click on checkbox("all")
 
-    click on name("Continue")
+    click on cssSelector("[value=Continue]")
 
     textField("emailId").value = faker.firstName() + "." + faker.lastName()
 
-    click on name("Continue")
+    click on cssSelector("[value=Continue]")
 
-    click on name("eventSubmit_doUpdate_site_access")
+    click on cssSelector("[value=Continue]")
 
     siteTitle = xpath("//table[@class='itemSummary']//tr[1]//td[1]").element.text
 
