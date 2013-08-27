@@ -51,7 +51,7 @@ class SiteManageTool extends Page {
 
     click on name("Continue")
 
-    textField("emailId").value = faker.firstName() + "." + faker.lastName()
+    textField("emailId").value = faker.firstName() + "." + faker.lastName() + "@yourmom.com"
 
     click on name("Continue")
 

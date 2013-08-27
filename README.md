@@ -185,8 +185,10 @@ Typically, you are going to be using your browser's Inspect feature to grab ids.
 there isn't one or its dynamic.  You can install Selenium IDE into firefox and then record what you are doing and look
 at the selection items it figures out, this is a good way to learn some new ideas until you get good at it.
 
-Do not instantiate more than one Page object during a test, if you do not intend a brand new firefox window to launch.
-This is the only thing setting this up, that took me awhile to figure out (probably cause it was 1am in the morning).
-If you want to re-use code from other Pages, simply mix them in, using 'with'.  Isn't Scala cool?
+This is a good reference for sorting out xpath and css syntax for indexing elements
+https://www.simple-talk.com/dotnet/.net-framework/xpath,-css,-dom-and-selenium-the-rosetta-stone/
 
-    AssignmentGradebookPage extends GatewayPage with AssignmentPage with GradebookPage
+Sakai lack of consistency regarding the use of buttons can be daunting to get it right.  I've found that using the
+label of the button in a cssSelector works most of the time
+
+    click on cssSelector("[value=Continue]")
