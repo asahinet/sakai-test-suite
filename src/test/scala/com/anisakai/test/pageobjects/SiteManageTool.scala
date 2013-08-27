@@ -8,6 +8,24 @@ package com.anisakai.test.pageobjects
  * To change this template use File | Settings | File Templates.
  */
 class SiteManageTool extends Page {
+  //var siteId : String
+  var siteTitle : String = null
+
+  def verifyUserHasRole(eid: String, role: String) {
+    // TODO table fun
+  }
+
+  def addUserWithRole(eid: String, role: String){
+    click on linkText("Add Participants" )
+    textArea("content::officialAccountParticipant").value = eid
+    click on "content::continue"
+    click on cssSelector("[value=" + role + "]")
+    click on cssSelector("[value=Continue]")
+    click on cssSelector("[value=Continue]")
+    click on cssSelector("[value=Finish]")
+
+  }
+
   def createRandomSite() {
     click on linkText("New")
     click on radioButton("course")
@@ -21,14 +39,13 @@ class SiteManageTool extends Page {
 
     textField("uniqname").value = "admin"
 
-    click on id("addButton")
+    click on cssSelector("[value=Continue]")
 
     textArea("short_description").value = faker.sentence(2)
 
     textField("siteContactName").value ="Your Mom"
 
-    // can't get this stupid button to work anyway I try, so invoking the javascript directly (hack!)
-    executeScript("resetOption('continue');")
+    click on cssSelector("[value=Continue]")
 
     click on checkbox("all")
 
@@ -40,7 +57,22 @@ class SiteManageTool extends Page {
 
     click on name("eventSubmit_doUpdate_site_access")
 
+    siteTitle = xpath("//table[@class='itemSummary']//tr[1]//td[1]").element.text
+
     click on "addSite"
+
+    eventually {
+      switch to frame(0)
+    }
+
+    textField("search").value = siteTitle;
+
+    click on cssSelector("[value=Search]")
+
+    click on checkbox("site1")
+
+    click on linkText("Edit")
+
   }
 
 }

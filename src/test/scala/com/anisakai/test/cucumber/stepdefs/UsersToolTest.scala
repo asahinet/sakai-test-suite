@@ -54,7 +54,17 @@ class UsersToolTest extends ScalaDsl with EN {
     usersToolPage.findOrCreateUser(eid)
   }
 
-  Then("""^add a user with an eid of '(.+)' a firstname of '(.+)' a lastname of '(.+)' an email of '(.+)' that is of type '(.+)' with a password of '(.+)'$"""){
+  Given("""^a user with an eid of '(.+)' a firstname of '(.+)' a lastname of '(.+)' an email of '(.+)' that is of type '(.+)' with a password of '(.+)' exists$"""){
+    (eid:String, firstname:String, lastname:String, email:String, usertype:String, password:String) =>
+        usersToolPage.createUser(eid, firstname, lastname, email, usertype, password)
+        usersToolPage.enterSearchText(eid)
+        usersToolPage.submitSearch()
+        assertTrue(usersToolPage.foundUser(eid))
+
+  }
+
+
+  Then("""^Add a user with an eid of '(.+)' a firstname of '(.+)' a lastname of '(.+)' an email of '(.+)' that is of type '(.+)' with a password of '(.+)'$"""){
     (eid:String, firstname:String, lastname:String, email:String, usertype:String, password:String) =>
         usersToolPage.createUser(eid, firstname, lastname, email, usertype, password)
         usersToolPage.enterSearchText(eid)

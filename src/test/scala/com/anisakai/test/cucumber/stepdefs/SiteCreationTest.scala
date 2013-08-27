@@ -14,7 +14,17 @@ import com.anisakai.test.pageobjects.SiteManageTool
 class SiteCreationTest extends ScalaDsl with EN {
   var siteManageTool = new SiteManageTool();
 
-  Then("""^create a site with random data$"""){ () =>
+  When("""^I create a site with random data$"""){ () =>
     siteManageTool.createRandomSite()
   }
+
+  When("""^add '(.+)' as a.? '(.+)'$"""){ (eid: String, role : String) =>
+    siteManageTool.addUserWithRole(eid, role)
+  }
+
+  Then("""^I should see '(.+)' with a role of '(.+)'$"""){ (eid: String, role : String) =>
+    siteManageTool.verifyUserHasRole(eid, role)
+
+  }
+
 }

@@ -42,12 +42,18 @@ class Portal extends Page with Eventually{
   }
 
   def gotoSite(siteName : String) {
-    //click on "More Sites"
-    executeScript("return dhtml_view_sites();")
+    switch to defaultContent
 
-    textField("txtSearch").value = siteName
+    // if we are already on the right site, skip this
+    if (!className("siteTitle").element.text.contains(siteName)) {
+      //click on "More Sites
+      click on cssSelector("a[title='More Sites']")
+      //executeScript("return dhtml_view_sites();")
 
-    click on partialLinkText(siteName)
+      textField("txtSearch").value = siteName
+
+      click on partialLinkText(siteName)
+    }
   }
 
   def gotoTool(toolName : String) {
