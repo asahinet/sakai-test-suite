@@ -13,7 +13,7 @@ class SiteManageTool extends Page {
     click on radioButton("course")
     click on id("submitBuildOwn")
 
-    textField("id-Subject:1").value = faker.letterify("aaaa")
+    textField("id-Subject:1").value = faker.letterify("????")
 
     textField("id-Course:1").value = faker.numerify("###")
 
@@ -23,7 +23,7 @@ class SiteManageTool extends Page {
 
     click on id("addButton")
 
-    textArea("short_description").value = faker.sentence(10)
+    textArea("short_description").value = faker.sentence(2)
 
     textField("siteContactName").value ="Your Mom"
 

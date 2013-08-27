@@ -1,4 +1,4 @@
-@setup @ignore
+@setup
 Feature: Test the Admin Users Tool
     Background:
     Given I am logged on as 'admin' with a password of 'admin'

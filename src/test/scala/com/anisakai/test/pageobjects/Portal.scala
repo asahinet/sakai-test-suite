@@ -42,11 +42,12 @@ class Portal extends Page with Eventually{
   }
 
   def gotoSite(siteName : String) {
+    //click on "More Sites"
+    executeScript("return dhtml_view_sites();")
+
+    textField("txtSearch").value = siteName
+
     click on partialLinkText(siteName)
-    //webDriver.findElementByXPath("//li[@class='nav_menu']/a[@title='" + siteName + "']").click();
-    //driver.findElement(By.cssSelector("a[title=\"Administration Workspace: Administration Workspace\"] > span")).click();
-    //click on cssSelector("a[title=\"Administration Workspace: Administration Workspace\"] > span")
-    //click on cssSelector("a:contains('" + siteName + "')")
   }
 
   def gotoTool(toolName : String) {
