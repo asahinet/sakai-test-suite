@@ -2,7 +2,7 @@ package com.anisakai.test.cucumber.stepdefs
 
 import cucumber.api.scala.{EN, ScalaDsl}
 import junit.framework.Assert._
-import com.anisakai.test.pageobjects.GatewayPage
+import com.anisakai.test.pageobjects.Portal
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,7 +12,7 @@ import com.anisakai.test.pageobjects.GatewayPage
  * To change this template use File | Settings | File Templates.
  */
 class LoginTest extends ScalaDsl with EN {
-  lazy val gatewayPage = new GatewayPage()
+  lazy val gatewayPage = new Portal()
 
 
   Given( """^I am on the '(.+)' gateway page$""") {

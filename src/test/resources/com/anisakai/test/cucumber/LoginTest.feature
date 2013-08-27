@@ -1,3 +1,4 @@
+@ignore
 Feature: Test CLE Login
 
     Scenario: CLE Local User Login

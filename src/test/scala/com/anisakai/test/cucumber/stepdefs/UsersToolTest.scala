@@ -1,7 +1,7 @@
 package com.anisakai.test.cucumber.stepdefs
 
 import cucumber.api.scala.{EN, ScalaDsl}
-import com.anisakai.test.pageobjects.{UsersToolPage, GatewayPage}
+import com.anisakai.test.pageobjects.{UsersTool, Portal}
 import junit.framework.Assert._
 import cucumber.runtime.PendingException
 
@@ -13,7 +13,7 @@ import cucumber.runtime.PendingException
  * To change this template use File | Settings | File Templates.
  */
 class UsersToolTest extends ScalaDsl with EN {
-  lazy val usersToolPage = new UsersToolPage()
+  lazy val usersToolPage = new UsersTool()
 
   Given("""^I am logged on as '(.+)' with a password of '(.+)'$"""){ (eid: String, password: String) =>
     usersToolPage.login(eid, password)
