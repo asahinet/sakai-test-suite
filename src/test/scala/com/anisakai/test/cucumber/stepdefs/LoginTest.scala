@@ -3,6 +3,7 @@ package com.anisakai.test.cucumber.stepdefs
 import cucumber.api.scala.{EN, ScalaDsl}
 import junit.framework.Assert._
 import com.anisakai.test.pageobjects.Portal
+import cucumber.runtime.PendingException
 
 /**
  * Created with IntelliJ IDEA.

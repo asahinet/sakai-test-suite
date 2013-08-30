@@ -7,7 +7,7 @@ import org.junit.{AfterClass, After}
 import com.anisakai.test.pageobjects.Page
 
 @RunWith(classOf[Cucumber])
-@Options(tags = Array("@site"), format = Array("pretty", "html:target/cucumber-report"))
+@Options(tags = Array("~ignore"), format = Array("pretty", "html:target/cucumber-report", "json:target/cucumber.json"))
 class RunCukesTest
 
 

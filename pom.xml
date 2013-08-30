@@ -82,6 +82,13 @@
             <version>${scala.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>net.masterthought</groupId>
+            <artifactId>cucumber-reporting</artifactId>
+            <version> 0.0.21</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
