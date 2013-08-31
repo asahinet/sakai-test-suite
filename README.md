@@ -192,3 +192,16 @@ Sakai lack of consistency regarding the use of buttons can be daunting to get it
 label of the button in a cssSelector works most of the time
 
     click on cssSelector("[value=Continue]")
+
+Running Firefox/Chrome Headless in AWS via Jenkins
+--------------------------------------------------
+
+Getting firefox to run in AWS is not so obvious, follow this guide:
+http://itsallabtamil.blogspot.com/2013/02/setting-up-chrome-firefox-ec2-selenium-java.html
+
+I setup Xfvb to run as a service and then set my display for jenkins following this:
+http://www.jpalomaki.fi/?p=403
+
+Once you get that setup, install the cucumber reporting plugin for jenkins:
+http://www.masterthought.net/section/cucumber-reporting
+
