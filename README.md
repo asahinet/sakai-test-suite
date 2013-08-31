@@ -78,12 +78,14 @@ For example, you would see something like this
 
 ### Create Page Objects
 
+We've tried just recording tests using the straight Selenium IDE in firefox and while its easy to start,
+it becomes hard to finish, as the maintenance of it quickly becomes unbearable.
+
 The idea of the page object it to encapsulate the actual WebDriver logic into one place.  In the beginning it seems
-like a waste of time and business work, but over time you will understand the advantage of this.  The Selenium code
-end up getting tied to xpath, or cssSelector, or other text on the page.  This things can change and break your tests.
+like a waste of time and busy work, but over time you will understand the advantage of this.  The Selenium code
+ends up getting tied to xpath, or cssSelector, or other text on the page.  Then things can change and break your tests.
 By isolating this stuff you shield you code base from impact of these changes.  Also, this aids with reuse as your test
-suite grows.  Luckily in Scala we have traits, which means we can finally do multiple inheritance.  It makes reuse of
-Page Object super easy.
+suite grows.
 
     class GatewayPage extends Page{
        def eid: TextField = textField("eid");
@@ -204,4 +206,16 @@ http://www.jpalomaki.fi/?p=403
 
 Once you get that setup, install the cucumber reporting plugin for jenkins:
 http://www.masterthought.net/section/cucumber-reporting
+
+Next Steps
+----------
+
+Even though browser automation has been easier since the last time I tackled it.  It still feels like a lot of manual
+grunt work, looking up html elements id via Inspect in the browser, and then hand coding all the logic.  I still
+would like to go back to the Selenium IDE and attempt a new Scala based template, or maybe some other format that
+could be plugged into this framework and generate some boilerplate code to get things started.  I realized the IDE
+doesn't get everything right, but a lot of things it does get right, it feels like a lot of grunt work could be eliminated
+by trying to pull some level of the recording into a more manageable format.  Task for another day...
+
+
 
