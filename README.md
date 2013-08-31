@@ -210,8 +210,8 @@ http://www.masterthought.net/section/cucumber-reporting
 Next Steps
 ----------
 
-Even though browser automation has been easier since the last time I tackled it.  It still feels like a lot of manual
-grunt work, looking up html elements id via Inspect in the browser, and then hand coding all the logic.  I still
+Even though browser automation is easier since the last time I tackled it.  It still feels like a lot of manual
+grunt work: looking up html element id via Inspect in the browser, and then hand coding all the logic.  I still
 would like to go back to the Selenium IDE and attempt a new Scala based template, or maybe some other format that
 could be plugged into this framework and generate some boilerplate code to get things started.  I realized the IDE
 doesn't get everything right, but a lot of things it does get right, it feels like a lot of grunt work could be eliminated
