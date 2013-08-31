@@ -164,7 +164,7 @@ When using Jenkins to send system properties to the test suite use the -DargLine
 
     mvn -DargLine="-Dtarget.browser=firefox" test
 
-
+![ScreenShot](https://raw.github.com/johntbush/sakai-test-suite/master/img/maven_jenkins.png)
 
 
 Tips and Tricks
