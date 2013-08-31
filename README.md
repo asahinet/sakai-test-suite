@@ -114,7 +114,7 @@ Running the Tests
 
 ### Use maven
 
- mvn install
+ mvn test
 
 ### Use your IDE
 
@@ -158,7 +158,13 @@ The following system properties are available.  These should be sent to the as J
 
 Example invocation with some properties...
 
--Dtarget.browser=firefox -Dtarget.server=https://nightly.cle.rsmart.com/portal
+    mvn -Dtarget.browser=firefox -Dtarget.server=https://nightly.cle.rsmart.com/portal
+
+When using Jenkins to send system properties to the test suite use the -DargLine option in the "Goals and options" field
+
+    mvn -DargLine="-Dtarget.browser=firefox" test
+
+
 
 
 Tips and Tricks
