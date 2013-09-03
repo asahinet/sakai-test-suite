@@ -12,7 +12,7 @@ import cucumber.runtime.PendingException
  * Time: 9:13 PM
  * To change this template use File | Settings | File Templates.
  */
-class LoginTest extends ScalaDsl with EN {
+class LoginTest extends ScalaDsl with EN with ScreenShotOnFailure {
   lazy val gatewayPage = new Portal()
 
 

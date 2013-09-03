@@ -12,7 +12,7 @@ import cucumber.runtime.PendingException
  * Time: 11:26 PM
  * To change this template use File | Settings | File Templates.
  */
-class UsersToolTest extends ScalaDsl with EN {
+class UsersToolTest extends ScalaDsl with EN with ScreenShotOnFailure{
   lazy val usersToolPage = new UsersTool()
 
   Given("""^I am logged on as '(.+)' with a password of '(.+)'$"""){ (eid: String, password: String) =>
