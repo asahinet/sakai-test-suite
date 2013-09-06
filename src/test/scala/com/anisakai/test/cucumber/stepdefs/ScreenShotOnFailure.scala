@@ -13,6 +13,7 @@ import com.anisakai.test.Config
  * To change this template use File | Settings | File Templates.
  */
 trait ScreenShotOnFailure {
+
   @After
   def tearDown(result: Scenario) {
     if (result.isFailed) {
