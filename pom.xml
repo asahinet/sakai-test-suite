@@ -59,6 +59,14 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+        	<groupId>info.cukes</groupId>
+        	<artifactId>cucumber-java</artifactId>
+        	<version>${cucumber.version}</version>
+            <scope>test</scope>
+
+        </dependency>
+
+        <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-junit</artifactId>
             <version>${cucumber.version}</version>
@@ -81,6 +89,18 @@
             <artifactId>scala-compiler</artifactId>
             <version>${scala.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.masterthought</groupId>
+            <artifactId>cucumber-reporting</artifactId>
+            <version> 0.0.21</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- this is needed to avoid a classpath error -->
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>1.4.01</version>
         </dependency>
     </dependencies>
 

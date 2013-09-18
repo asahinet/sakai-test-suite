@@ -12,4 +12,7 @@ class RunCukesTest
 
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> da905b5cc5c798cb9b6cd782b9f42c709af59a11

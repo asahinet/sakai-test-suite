@@ -3,6 +3,7 @@ package com.anisakai.test.cucumber.stepdefs
 import cucumber.api.scala.{EN, ScalaDsl}
 import junit.framework.Assert._
 import com.anisakai.test.pageobjects.Portal
+import cucumber.runtime.PendingException
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,7 +12,7 @@ import com.anisakai.test.pageobjects.Portal
  * Time: 9:13 PM
  * To change this template use File | Settings | File Templates.
  */
-class LoginTest extends ScalaDsl with EN {
+class LoginTest extends ScalaDsl with EN with ScreenShotOnFailure {
   lazy val gatewayPage = new Portal()
 
 

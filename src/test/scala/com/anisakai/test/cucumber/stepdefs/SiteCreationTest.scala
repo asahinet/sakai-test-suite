@@ -11,7 +11,7 @@ import com.anisakai.test.pageobjects.SiteManageTool
  * Time: 11:28 PM
  * To change this template use File | Settings | File Templates.
  */
-class SiteCreationTest extends ScalaDsl with EN {
+class SiteCreationTest extends ScalaDsl with EN with ScreenShotOnFailure {
   var siteManageTool = new SiteManageTool();
 
   When("""^I create a site with random data$"""){ () =>

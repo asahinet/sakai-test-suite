@@ -11,7 +11,7 @@ import java.util.Calendar
  * Time: 10:43 AM
  * To change this template use File | Settings | File Templates.
  */
-class Calendar extends Portal {
+class CalendarObj extends Portal {
   val month = Calendar.MONTH.toString()
   val day = Calendar.DAY_OF_WEEK.toString()
   val year = Calendar.YEAR.toString()

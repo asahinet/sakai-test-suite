@@ -16,8 +16,6 @@ import com.github.javafaker.Faker
 class Portal extends Page with Eventually{
   def eid: TextField = textField("eid");
   def password: PasswordField = pwdField("pw");
-  def text: TextField = textField("text");
-
 
   def login() {
     submit();
@@ -28,10 +26,6 @@ class Portal extends Page with Eventually{
     enterEid(eid)
     enterPassword(password)
     submit()
-  }
-
-  def enterText(text: String) {
-    this.text.value = text
   }
 
   def enterEid(eid: String) {
