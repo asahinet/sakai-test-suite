@@ -2,7 +2,7 @@ package com.anisakai.test.cucumber.stepdefs
 
 import cucumber.api.scala.{EN, ScalaDsl}
 import junit.framework.Assert._
-import com.anisakai.test.pageobjects.{Announcements, Google, Page, Portal}
+import com.anisakai.test.pageobjects.{Announcements, Page, Portal}
 
 /**
  * Created with IntelliJ IDEA.

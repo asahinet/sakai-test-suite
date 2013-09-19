@@ -11,15 +11,15 @@ import com.anisakai.test.pageobjects._
  * To change this template use File | Settings | File Templates.
  */
 class CalendarTest extends ScalaDsl with EN {
-  lazy val test = new Calendar
+  lazy val test = new CalendarObj
 
-  Given( """^I am on the '(.+)' entry page$""") { (url: String) =>
+  /*Given( """^I am on the '(.+)' page$""") { (url: String) =>
     test.navigateToPage(url)
+  } */
+  Given("""^I am logged in with '(.+)' as username and '(.+)' as password$"""){ (eid: String, password: String) =>
+    test.login(eid, password)
   }
-  When("""^When user login with '(.+)' as the username and '(.+)' as the password$"""){ (un: String, pw: String) =>
-    test.login(un,pw)
-  }
-  Then("""^I should see myworkspace$"""){ () =>
+  Then("""^I should be on my workspace$"""){ () =>
     assertTrue(test.isMyWorkspace())
   }
   When("""^I select Calendar in left nav bar$"""){ () =>
@@ -34,11 +34,8 @@ class CalendarTest extends ScalaDsl with EN {
   When("""^I create an event with random data$"""){ () =>
     test.createRandomEvent()
   }
-  When("""^I save the event$"""){ () =>
-
-  }
   Then("""^the event should be added to my calendar$"""){ () =>
-
+    assertTrue(test.isAdded())
   }
 
 
