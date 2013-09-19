@@ -73,7 +73,7 @@ class Config {
       }
 
       //TODO probably should make the timeout configurable
-      selectedDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS)
+      selectedDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS)
       selectedDriver
     }
 
