@@ -1,12 +1,13 @@
 package com.anisakai.test.cucumber
 
-import _root_.cucumber.api.junit.Cucumber
-import _root_.cucumber.api.junit.Cucumber.Options
 import org.junit.runner.RunWith
+import cucumber.api.junit.Cucumber
+import cucumber.api.junit.Cucumber.Options
+import org.junit.{AfterClass, After}
+import com.anisakai.test.pageobjects.Page
 
 @RunWith(classOf[Cucumber])
-@Options(tags = Array("~@ignore"), format = Array("pretty", "html:target/cucumber-report", "json:target/cucumber.json"))
+@Options(tags = Array("@tools"), format = Array("pretty", "html:target/cucumber-report"))
 class RunCukesTest
-
 
 
