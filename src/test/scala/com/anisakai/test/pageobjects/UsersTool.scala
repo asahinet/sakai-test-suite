@@ -12,6 +12,9 @@ import org.openqa.selenium.By
  * Time: 11:30 PM
  * To change this template use File | Settings | File Templates.
  */
+
+object UsersTool extends UsersTool
+
 class UsersTool extends Portal {
   var currentEid : String = null
   var currentFirstName : String = null

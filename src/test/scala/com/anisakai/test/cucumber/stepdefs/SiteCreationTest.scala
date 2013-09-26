@@ -12,18 +12,18 @@ import com.anisakai.test.pageobjects.SiteManageTool
  * To change this template use File | Settings | File Templates.
  */
 class SiteCreationTest extends ScalaDsl with EN with ScreenShotOnFailure {
-  var siteManageTool = new SiteManageTool();
 
   When("""^I create a site with random data$"""){ () =>
-    siteManageTool.createRandomSite()
+    var siteTitle = SiteManageTool.createRandomSite("course")
+    SiteManageTool.findSiteAndEdit(siteTitle)
   }
 
   When("""^add '(.+)' as a.? '(.+)'$"""){ (eid: String, role : String) =>
-    siteManageTool.addUserWithRole(eid, role)
+    SiteManageTool.addUserWithRole(eid, role)
   }
 
   Then("""^I should see '(.+)' with a role of '(.+)'$"""){ (eid: String, role : String) =>
-    siteManageTool.verifyUserHasRole(eid, role)
+    SiteManageTool.verifyUserHasRole(eid, role)
 
   }
 

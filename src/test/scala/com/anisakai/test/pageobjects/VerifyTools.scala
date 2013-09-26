@@ -13,6 +13,8 @@ import java.util.concurrent.TimeUnit
  * Time: 1:35 PM
  * To change this template use File | Settings | File Templates.
  */
+object VerifyTools extends VerifyTools
+
 class VerifyTools extends Portal {
   def checkTools() : Boolean = {
     var fails = ListBuffer[String]()

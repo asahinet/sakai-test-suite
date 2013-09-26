@@ -13,34 +13,32 @@ import cucumber.runtime.PendingException
  * To change this template use File | Settings | File Templates.
  */
 class LoginTest extends ScalaDsl with EN with ScreenShotOnFailure {
-  lazy val gatewayPage = new Portal()
-
 
   Given( """^I am on the '(.+)' gateway page$""") {
     (url: String) =>
-      gatewayPage.navigateToPage(url)
+      Portal.navigateToPage(url)
   }
 
   When( """^I enter '(.+)' for user""") {
     (eid: String) =>
-      gatewayPage.enterEid(eid)
+      Portal.enterEid(eid)
   }
 
   When( """^I enter '(.+)' for password""") {
     (password: String) =>
-      gatewayPage.enterPassword(password)
+      Portal.enterPassword(password)
   }
 
   When( """^I click the Login button""") {
-    gatewayPage.login();
+    Portal.login();
   }
 
 
   Then( """^I should see my workspace""") {
-      assertTrue(gatewayPage.isMyWorkspace())
+      assertTrue(Portal.isMyWorkspace())
   }
 
   After() {
-    //gatewayPage.webDriver.quit();
+    //Portal.webDriver.quit();
   }
 }

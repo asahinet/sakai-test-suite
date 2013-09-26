@@ -13,77 +13,76 @@ import cucumber.runtime.PendingException
  * To change this template use File | Settings | File Templates.
  */
 class UsersToolTest extends ScalaDsl with EN with ScreenShotOnFailure{
-  lazy val usersToolPage = new UsersTool()
 
   Given("""^I am logged on as '(.+)' with a password of '(.+)'$"""){ (eid: String, password: String) =>
-    usersToolPage.login(eid, password)
+    UsersTool.login(eid, password)
   }
   Given("""^I am on the '(.+)' site using the '(.+)' tool$"""){ (siteName : String, toolName : String) =>
-      usersToolPage.gotoSite(siteName)
-      usersToolPage.gotoTool(toolName)
+      UsersTool.gotoSite(siteName)
+      UsersTool.gotoTool(toolName)
   }
   When("""^I enter '(.+)' in the search textfield$"""){ (searchText: String) =>
-    usersToolPage.enterSearchText(searchText)
+    UsersTool.enterSearchText(searchText)
   }
   When("""^I click the Search button$"""){ () =>
-    usersToolPage.submitSearch()
+    UsersTool.submitSearch()
   }
   Then("""^I should see the '(.+)' user$"""){ (eid:String) =>
-    assertTrue(usersToolPage.foundUser(eid))
+    assertTrue(UsersTool.foundUser(eid))
   }
 
   Given("""^I search for a user with an eid of '(.+)'$"""){ (searchText:String) =>
-    usersToolPage.enterSearchText(searchText)
-    usersToolPage.submitSearch()
-    assertTrue(usersToolPage.foundUser(searchText))
+    UsersTool.enterSearchText(searchText)
+    UsersTool.submitSearch()
+    assertTrue(UsersTool.foundUser(searchText))
   }
 
   When("""^I edit their first name to '(.+)'$"""){ (firstName : String) =>
-    usersToolPage.editFirstName(firstName)
+    UsersTool.editFirstName(firstName)
   }
 
   Then("""^I should see the first name change$"""){ () =>
-    usersToolPage.hasFirstNameChanged
+    UsersTool.hasFirstNameChanged
   }
 
   Then("""^I should logout$"""){ () =>
-    usersToolPage.logout
+    UsersTool.logout
   }
 
   Given("""^A user with an eid of '(.+)' does not exist$"""){ (eid:String) =>
-    usersToolPage.findOrCreateUser(eid)
+    UsersTool.findOrCreateUser(eid)
   }
 
   Given("""^a user with an eid of '(.+)' a firstname of '(.+)' a lastname of '(.+)' an email of '(.+)' that is of type '(.+)' with a password of '(.+)' exists$"""){
     (eid:String, firstname:String, lastname:String, email:String, usertype:String, password:String) =>
-        usersToolPage.createUser(eid, firstname, lastname, email, usertype, password)
-        usersToolPage.enterSearchText(eid)
-        usersToolPage.submitSearch()
-        assertTrue(usersToolPage.foundUser(eid))
+        UsersTool.createUser(eid, firstname, lastname, email, usertype, password)
+        UsersTool.enterSearchText(eid)
+        UsersTool.submitSearch()
+        assertTrue(UsersTool.foundUser(eid))
 
   }
 
 
   Then("""^Add a user with an eid of '(.+)' a firstname of '(.+)' a lastname of '(.+)' an email of '(.+)' that is of type '(.+)' with a password of '(.+)'$"""){
     (eid:String, firstname:String, lastname:String, email:String, usertype:String, password:String) =>
-        usersToolPage.createUser(eid, firstname, lastname, email, usertype, password)
-        usersToolPage.enterSearchText(eid)
-        usersToolPage.submitSearch()
-        assertTrue(usersToolPage.foundUser(eid))
+        UsersTool.createUser(eid, firstname, lastname, email, usertype, password)
+        UsersTool.enterSearchText(eid)
+        UsersTool.submitSearch()
+        assertTrue(UsersTool.foundUser(eid))
 
   }
 
   Then("""^create a user with random data$"""){ () =>
     //// Express the Regexp above with the code you wish you had
-    var newEid = usersToolPage.randomUser()
-    usersToolPage.enterSearchText(newEid)
-    usersToolPage.submitSearch()
-    assertTrue(usersToolPage.foundUser(newEid))
+    var newEid = UsersTool.randomUser()
+    UsersTool.enterSearchText(newEid)
+    UsersTool.submitSearch()
+    assertTrue(UsersTool.foundUser(newEid))
 
   }
 
 
   After() {
-    //usersToolPage.webDriver.quit()
+    //UsersTool.webDriver.quit()
   }
 }

@@ -11,6 +11,8 @@ import com.github.javafaker.Faker
  * Time: 10:45 AM
  * To change this template use File | Settings | File Templates.
  */
+object Announcements extends Announcements
+
 class Announcements extends Portal {
 
   var status = 0

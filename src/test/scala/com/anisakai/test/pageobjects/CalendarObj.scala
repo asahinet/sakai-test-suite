@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.Select
  * Time: 10:43 AM
  * To change this template use File | Settings | File Templates.
  */
+object CalendarObj extends CalendarObj
 class CalendarObj extends Portal {
   val cal = Calendar.getInstance
   val day = cal.get(Calendar.DAY_OF_MONTH)

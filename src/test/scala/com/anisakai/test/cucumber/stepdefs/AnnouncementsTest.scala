@@ -13,28 +13,27 @@ import com.anisakai.test.pageobjects.{Announcements, Page, Portal}
  */
 
 class AnnouncementsTest extends ScalaDsl with EN {
-  lazy val test = new Announcements()
 
   Given( """^I am on the '(.+)' entry page$""") { (url: String) =>
-    test.navigateToPage(url)
+    Announcements.navigateToPage(url)
   }
   When("""^When I login with '(.+)' as the username and '(.+)' as the password$"""){ (un: String, pw: String) =>
-    test.login(un,pw)
+    Announcements.login(un,pw)
   }
   Then("""^I should see myworkspace$"""){ () =>
-    assertTrue(test.isMyWorkspace())
-    test.checkCurrent()
+    assertTrue(Announcements.isMyWorkspace())
+    Announcements.checkCurrent()
   }
   When("""^I click on the MOTD Options button$"""){ () =>
-    test.clickOptions()
+    Announcements.clickOptions()
   }
   When("""^I select the Show Announcement subject radio button$"""){ () =>
-    test.selectSubject()
+    Announcements.selectSubject()
   }
   When("""^I click the update button$"""){ () =>
-    test.updateMotd()
+    Announcements.updateMotd()
   }
   Then("""^the Message of the day text should contain '(.+)'$"""){ (motd: String) =>
-    assertTrue(test.isChanged())
+    assertTrue(Announcements.isChanged())
   }
 }

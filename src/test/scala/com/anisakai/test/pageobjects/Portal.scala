@@ -13,10 +13,11 @@ import com.github.javafaker.Faker
  * Time: 9:18 PM
  * To change this template use File | Settings | File Templates.
  */
+object Portal extends Portal
+
 class Portal extends Page with Eventually{
-  var siteTitle: String = null
-  def eid: TextField = textField("eid")
-  def password: PasswordField = pwdField("pw")
+//  def eid: TextField = textField("eid")
+//  def password: PasswordField = pwdField("pw")
 
   def login() {
     submit()
@@ -30,12 +31,12 @@ class Portal extends Page with Eventually{
   }
 
   def enterEid(eid: String) {
-    this.eid.value = eid
+    textField("eid").value = eid
   }
 
   def enterPassword(password: String) {
 
-    this.password.value = password
+    pwdField("pw").value = password
   }
 
   def isMyWorkspace() : Boolean = {
@@ -87,37 +88,9 @@ class Portal extends Page with Eventually{
   def createSite(siteType: String) {
     click on linkText("Site Setup")
     switch to frame(xpath("//*[@id='Main67e6672bx78f4x4b57x8a7ex3ba881e7afa5']"))
-    click on linkText("New")
-    click on radioButton(siteType.toLowerCase())
-    click on id("submitBuildOwn")
-    if (siteType == "Course") {
-      textField("id-Subject:1").value = siteType
-      textField("id-Course:1").value = "Tools"
-      textField("id-Section:1").value = "Test"
-      textField("uniqname").value = "admin"
-      click on cssSelector("[value=Continue]")
-      textArea("short_description").value = faker.sentence(2)
-      textField("siteContactName").value ="Your Mom"
-      click on cssSelector("[value=Continue]")
-    } else {
-      textField("title").value = siteType + " Tools " + "Test"
-      textArea("short_description").value = faker.sentence(2)
-      textField("siteContactName").value ="Your Mom"
-      click on cssSelector("[value=Continue]")
-    }
-    click on checkbox("all")
-    click on cssSelector("[value=Continue]")
-    textField("emailId").value = faker.firstName() + "." + faker.lastName()
-    click on cssSelector("[value=Continue]")
-    click on cssSelector("[value=Continue]")
-    siteTitle = xpath("//table[@class='itemSummary']//tr[1]//td[1]").element.text
-    click on "addSite"
-    eventually {
-      switch to frame(0)
-    }
-    textField("search").value = siteTitle;
-    click on cssSelector("[value=Search]")
-    click on linkText(siteTitle)
+
+    var siteTitle = SiteManageTool.createRandomSite(siteType)
+    gotoSite(siteTitle)
   }
 
   def gotoTool(toolName : String) {
