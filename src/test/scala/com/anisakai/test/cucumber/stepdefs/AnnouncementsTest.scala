@@ -18,10 +18,10 @@ class AnnouncementsTest extends ScalaDsl with EN {
     Announcements.navigateToPage(url)
   }
   When("""^When I login with '(.+)' as the username and '(.+)' as the password$"""){ (un: String, pw: String) =>
-    Announcements.login(un,pw)
+    Portal.login(un,pw)
   }
   Then("""^I should see myworkspace$"""){ () =>
-    assertTrue(Announcements.isMyWorkspace())
+    assertTrue(Portal.isMyWorkspace())
     Announcements.checkCurrent()
   }
   When("""^I click on the MOTD Options button$"""){ () =>

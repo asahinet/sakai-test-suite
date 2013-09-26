@@ -15,7 +15,7 @@ import org.openqa.selenium.By
 
 object UsersTool extends UsersTool
 
-class UsersTool extends Portal {
+class UsersTool extends Page {
   var currentEid : String = null
   var currentFirstName : String = null
   var oldFirstName : String = null

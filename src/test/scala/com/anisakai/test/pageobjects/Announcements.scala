@@ -13,7 +13,7 @@ import com.github.javafaker.Faker
  */
 object Announcements extends Announcements
 
-class Announcements extends Portal {
+class Announcements extends Page {
 
   var status = 0
 

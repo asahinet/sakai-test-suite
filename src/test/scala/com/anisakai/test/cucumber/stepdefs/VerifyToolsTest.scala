@@ -14,13 +14,13 @@ import org.openqa.selenium.{By, WebElement}
  */
 class VerifyToolsTest extends ScalaDsl with EN {
   Given("""^I am logged in as '(.+)' with a password of '(.+)'$"""){ (eid: String, password: String) =>
-    VerifyTools.login(eid, password)
+    Portal.login(eid, password)
   }
 
   //Scenario: Course Site
   Given("""^Course:I am on '(.+)' '(.+)' site$"""){ (siteName: String, siteType: String) =>
 
-    VerifyTools.gotoSite(siteName, siteType)
+    Portal.gotoSite(siteName, siteType)
   }
 
   When("""^I click the course tool link the tool should load correctly$"""){ () =>
@@ -29,7 +29,7 @@ class VerifyToolsTest extends ScalaDsl with EN {
 
   //Scenario: Project Site
   Given("""^Project:I am on '(.+)' '(.+)' site$"""){ (siteName: String, siteType: String) =>
-    VerifyTools.gotoSite(siteName, siteType)
+    Portal.gotoSite(siteName, siteType)
   }
 
   When("""^I click the project tool link the tool should load correctly$"""){ () =>
@@ -38,7 +38,7 @@ class VerifyToolsTest extends ScalaDsl with EN {
 
   //Scenario: Portfolio Site
   Given("""^Portfolio:I am on '(.+)' '(.+)' site$"""){ (siteName: String, siteType: String) =>
-    VerifyTools.gotoSite(siteName, siteType)
+    Portal.gotoSite(siteName, siteType)
   }
 
   When("""^I click the portfolio tool link the tool should load correctly$"""){ () =>

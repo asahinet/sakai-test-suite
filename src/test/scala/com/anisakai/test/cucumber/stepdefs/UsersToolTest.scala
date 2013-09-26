@@ -4,6 +4,7 @@ import cucumber.api.scala.{EN, ScalaDsl}
 import com.anisakai.test.pageobjects.{UsersTool, Portal}
 import junit.framework.Assert._
 import cucumber.runtime.PendingException
+import org.scalatest.selenium.WebBrowser.switch
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,15 +13,8 @@ import cucumber.runtime.PendingException
  * Time: 11:26 PM
  * To change this template use File | Settings | File Templates.
  */
-class UsersToolTest extends ScalaDsl with EN with ScreenShotOnFailure{
+class UsersToolTest extends ScalaDsl with EN with ScreenShotOnFailure {
 
-  Given("""^I am logged on as '(.+)' with a password of '(.+)'$"""){ (eid: String, password: String) =>
-    UsersTool.login(eid, password)
-  }
-  Given("""^I am on the '(.+)' site using the '(.+)' tool$"""){ (siteName : String, toolName : String) =>
-      UsersTool.gotoSite(siteName)
-      UsersTool.gotoTool(toolName)
-  }
   When("""^I enter '(.+)' in the search textfield$"""){ (searchText: String) =>
     UsersTool.enterSearchText(searchText)
   }
@@ -46,7 +40,7 @@ class UsersToolTest extends ScalaDsl with EN with ScreenShotOnFailure{
   }
 
   Then("""^I should logout$"""){ () =>
-    UsersTool.logout
+    Portal.logout
   }
 
   Given("""^A user with an eid of '(.+)' does not exist$"""){ (eid:String) =>
@@ -69,7 +63,6 @@ class UsersToolTest extends ScalaDsl with EN with ScreenShotOnFailure{
         UsersTool.enterSearchText(eid)
         UsersTool.submitSearch()
         assertTrue(UsersTool.foundUser(eid))
-
   }
 
   Then("""^create a user with random data$"""){ () =>

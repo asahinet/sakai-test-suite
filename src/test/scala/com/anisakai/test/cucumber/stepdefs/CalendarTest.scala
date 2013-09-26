@@ -1,9 +1,10 @@
-package com.anisakai.CalendarObj.cucumber.stepdefs
+package com.anisakai.test.cucumber.stepdefs
 
 import cucumber.api.scala.{EN, ScalaDsl}
 import junit.framework.Assert._
 
-import com.anisakai.test.pageobjects.CalendarObj
+import com.anisakai.test.pageobjects.{Portal, CalendarObj}
+import com.anisakai.test.cucumber.stepdefs.ScreenShotOnFailure
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,32 +13,17 @@ import com.anisakai.test.pageobjects.CalendarObj
  * Time: 10:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class CalendarTest extends ScalaDsl with EN {
+class CalendarTest extends ScalaDsl with EN with ScreenShotOnFailure{
+  var eventTitle : String = ""
 
-  /*Given( """^I am on the '(.+)' page$""") { (url: String) =>
-    CalendarObj.navigateToPage(url)
-  } */
-  Given("""^I am logged in with '(.+)' as username and '(.+)' as password$"""){ (eid: String, password: String) =>
-    CalendarObj.login(eid, password)
-  }
-  Then("""^I should be on my workspace$"""){ () =>
-    assertTrue(CalendarObj.isMyWorkspace())
-  }
-  When("""^I select Calendar in left nav bar$"""){ () =>
-    CalendarObj.goToCalendar()
-  }
-  Then("""^I should be on my calendar$"""){ () =>
-    assertTrue(CalendarObj.checkCalendar())
-  }
-  When("""^I click the add button$"""){ () =>
-    CalendarObj.addCalEvent()
-  }
   When("""^I create an event with random data$"""){ () =>
-    CalendarObj.createRandomEvent()
+    CalendarObj.addCalEvent()
+    eventTitle = CalendarObj.createRandomEvent()
   }
   Then("""^the event should be added to my calendar$"""){ () =>
-    assertTrue(CalendarObj.isAdded())
+    assertTrue(CalendarObj.isAdded(eventTitle))
   }
+
 
 
 }

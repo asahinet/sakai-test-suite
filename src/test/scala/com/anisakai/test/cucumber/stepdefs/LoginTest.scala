@@ -2,7 +2,7 @@ package com.anisakai.test.cucumber.stepdefs
 
 import cucumber.api.scala.{EN, ScalaDsl}
 import junit.framework.Assert._
-import com.anisakai.test.pageobjects.Portal
+import com.anisakai.test.pageobjects.{CalendarObj, Portal}
 import cucumber.runtime.PendingException
 
 /**
@@ -37,6 +37,15 @@ class LoginTest extends ScalaDsl with EN with ScreenShotOnFailure {
   Then( """^I should see my workspace""") {
       assertTrue(Portal.isMyWorkspace())
   }
+
+  Given("""^I am logged on as '(.+)' with a password of '(.+)'$"""){ (eid: String, password: String) =>
+    Portal.login(eid, password)
+  }
+  Given("""^I am on the '(.+)' site using the '(.+)' tool$"""){ (siteName : String, toolName : String) =>
+    Portal.gotoSite(siteName)
+    Portal.gotoTool(toolName)
+  }
+
 
   After() {
     //Portal.webDriver.quit();

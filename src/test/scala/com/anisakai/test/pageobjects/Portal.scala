@@ -86,8 +86,9 @@ class Portal extends Page with Eventually{
   }
 
   def createSite(siteType: String) {
-    click on linkText("Site Setup")
-    switch to frame(xpath("//*[@id='Main67e6672bx78f4x4b57x8a7ex3ba881e7afa5']"))
+    gotoTool("Site Setup")
+    //click on linkText("Site Setup")
+    //switch to frame(xpath("//*[@id='Main67e6672bx78f4x4b57x8a7ex3ba881e7afa5']"))
 
     var siteTitle = SiteManageTool.createRandomSite(siteType)
     gotoSite(siteTitle)

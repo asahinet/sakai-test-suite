@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
  */
 object VerifyTools extends VerifyTools
 
-class VerifyTools extends Portal {
+class VerifyTools extends Page {
   def checkTools() : Boolean = {
     var fails = ListBuffer[String]()
     for(i <- 0 until webDriver.findElements(By.className("toolMenuLink")).size) {
