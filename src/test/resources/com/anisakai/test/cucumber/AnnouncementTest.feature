@@ -9,4 +9,4 @@ Feature: Test MOTD
     When I select the Show Announcement subject radio button
     And I click the update button
     Then the Message of the day text should contain 'Sakai Administrator'
-
+    Then I should logout

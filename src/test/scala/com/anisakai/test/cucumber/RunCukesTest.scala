@@ -5,7 +5,7 @@ import cucumber.api.junit.Cucumber
 import cucumber.api.junit.Cucumber.Options
 
 @RunWith(classOf[Cucumber])
-@Options(tags = Array("@test1"), glue = Array("com.anisakai.test.cucumber.stepdefs"), format = Array("progress", "html:target/cucumber-report"))
+@Options(glue = Array("com.anisakai.test.cucumber.stepdefs"), format = Array("progress", "html:target/cucumber-report"))
 class RunCukesTest
 
 
