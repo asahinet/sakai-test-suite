@@ -32,7 +32,7 @@ class Announcements extends Page {
   }
 
   def checkCurrent() {
-    switch to frame("Mainaf974629x55bbx48bdx9a8fxccbcc0d03747")
+    switch to frame(0)
     if (webDriver.findElement(By.className("synopticList")).getText().contains("Sakai Administrator")) {
       status = 1
     } else {

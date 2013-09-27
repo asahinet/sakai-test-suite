@@ -14,17 +14,8 @@ import com.anisakai.test.pageobjects.{Announcements, Page, Portal}
 
 class AnnouncementsTest extends ScalaDsl with EN with ScreenShotOnFailure{
 
-  Given( """^I am on the '(.+)' entry page$""") { (url: String) =>
-    Announcements.navigateToPage(url)
-  }
-  When("""^When I login with '(.+)' as the username and '(.+)' as the password$"""){ (un: String, pw: String) =>
-    Portal.login(un,pw)
-  }
-  Then("""^I should see myworkspace$"""){ () =>
-    assertTrue(Portal.isMyWorkspace())
-    Announcements.checkCurrent()
-  }
   When("""^I click on the MOTD Options button$"""){ () =>
+    Announcements.checkCurrent()
     Announcements.clickOptions()
   }
   When("""^I select the Show Announcement subject radio button$"""){ () =>
