@@ -4,6 +4,7 @@ import org.scalatest.selenium.WebBrowser.click
 import org.openqa.selenium.By
 import java.util.Calendar
 import org.openqa.selenium.support.ui.Select
+import scala.util.Random
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,28 +15,6 @@ import org.openqa.selenium.support.ui.Select
  */
 object CalendarObj extends CalendarObj
 class CalendarObj extends Page {
-  val cal = Calendar.getInstance
-  val day = cal.get(Calendar.DAY_OF_MONTH)
-  val month = cal.get(Calendar.MONTH) + 1
-  val year = cal.get(Calendar.YEAR)
-  var hour = 0
-  var am_pm = "am"
-  if (cal.get(Calendar.AM_PM) == 0 && cal.get(Calendar.HOUR_OF_DAY) != 11) {
-    hour = cal.get(Calendar.HOUR_OF_DAY) + 1
-    am_pm = "am"
-  } else if (cal.get(Calendar.HOUR_OF_DAY) == 23) {
-    hour = cal.get(Calendar.HOUR_OF_DAY) - 11
-    am_pm = "am"
-  } else if (cal.get(Calendar.HOUR_OF_DAY) == 11) {
-    hour = cal.get(Calendar.HOUR_OF_DAY) + 1
-    am_pm = "pm"
-  } else {
-    hour = cal.get(Calendar.HOUR_OF_DAY) - 11
-    am_pm = "pm"
-  }
-  def goToCalendar() {
-    click on cssSelector("a[title='Use calendar to post information about activities and events of interest to your site participants.']")
-  }
 
   def checkCalendar() : Boolean = {
     return webDriver.findElement(By.tagName("h3")).getText().contains("Calendar")
@@ -47,6 +26,16 @@ class CalendarObj extends Page {
 
   def createRandomEvent() : String = {
     val eventTitle = faker.letterify("??????????")
+    val cal = Calendar.getInstance
+    cal.add(Calendar.DATE, 1);
+
+    val day = cal.get(Calendar.DAY_OF_MONTH)
+    val month = cal.get(Calendar.MONTH) + 1
+    val year = cal.get(Calendar.YEAR)
+
+    val rand = new Random();
+    val hour = rand.nextInt(12) + 1;
+    var am_pm = "am"
 
     textField("activitytitle").value = eventTitle
     singleSel("month").value = month.toString()
@@ -59,10 +48,9 @@ class CalendarObj extends Page {
     singleSel("eventType").value = "Exam"
     textArea("location").value = "Online"
     switch to frame(xpath("//iframe[contains(@title,'Rich text editor')]"))
-    webDriver.switchTo().activeElement().sendKeys(faker.letterify("Testing"))
-    webDriver.switchTo().defaultContent();
+    webDriver.switchTo().activeElement().sendKeys(faker.paragraph(4))
+    webDriver.switchTo().defaultContent()
     switch to frame(0)
-//    webDriver.switchTo().frame("Main2fb6d8ebx81a3x4a97x9191xe790451e52bb")
     click on name("eventSubmit_doAdd")
     return eventTitle
   }
