@@ -12,7 +12,7 @@ import org.openqa.selenium.{By, WebElement}
  * Time: 1:32 PM
  * To change this template use File | Settings | File Templates.
  */
-class VerifyToolsTest extends ScalaDsl with EN {
+class VerifyToolsTest extends ScalaDsl with EN with ScreenShotOnFailure{
   Given("""^I am logged in as '(.+)' with a password of '(.+)'$"""){ (eid: String, password: String) =>
     Portal.login(eid, password)
   }

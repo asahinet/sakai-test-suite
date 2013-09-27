@@ -12,7 +12,7 @@ import com.anisakai.test.pageobjects.{Announcements, Page, Portal}
  * To change this template use File | Settings | File Templates.
  */
 
-class AnnouncementsTest extends ScalaDsl with EN {
+class AnnouncementsTest extends ScalaDsl with EN with ScreenShotOnFailure{
 
   Given( """^I am on the '(.+)' entry page$""") { (url: String) =>
     Announcements.navigateToPage(url)

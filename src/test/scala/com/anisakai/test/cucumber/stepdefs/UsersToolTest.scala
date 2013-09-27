@@ -5,6 +5,7 @@ import com.anisakai.test.pageobjects.{UsersTool, Portal}
 import junit.framework.Assert._
 import cucumber.runtime.PendingException
 import org.scalatest.selenium.WebBrowser.switch
+import cucumber.api.DataTable
 
 /**
  * Created with IntelliJ IDEA.
@@ -47,6 +48,26 @@ class UsersToolTest extends ScalaDsl with EN with ScreenShotOnFailure {
     UsersTool.findOrCreateUser(eid)
   }
 
+  Given( """^the following users exist:$""") {
+    (arg0: DataTable) =>
+      val row = arg0.asMaps().iterator()
+      while (row.hasNext) {
+        val map = row.next()
+        val eid = map.get("eid")
+        val firstname = map.get("firstname")
+        val lastname = map.get("lastname")
+        val email = map.get("email")
+        val usertype = map.get("type")
+        val password = map.get("password")
+
+        UsersTool.createUser(eid, firstname, lastname, email, usertype, password)
+        UsersTool.enterSearchText(eid)
+        UsersTool.submitSearch()
+        assertTrue(UsersTool.foundUser(eid))
+
+      }
+  }
+
   Given("""^a user with an eid of '(.+)' a firstname of '(.+)' a lastname of '(.+)' an email of '(.+)' that is of type '(.+)' with a password of '(.+)' exists$"""){
     (eid:String, firstname:String, lastname:String, email:String, usertype:String, password:String) =>
         UsersTool.createUser(eid, firstname, lastname, email, usertype, password)
@@ -73,9 +94,5 @@ class UsersToolTest extends ScalaDsl with EN with ScreenShotOnFailure {
     assertTrue(UsersTool.foundUser(newEid))
 
   }
-
-
-  After() {
-    //UsersTool.webDriver.quit()
-  }
 }
+

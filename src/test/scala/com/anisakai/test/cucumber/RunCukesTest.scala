@@ -7,7 +7,7 @@ import org.junit.{AfterClass, After}
 import com.anisakai.test.pageobjects.Page
 
 @RunWith(classOf[Cucumber])
-@Options(tags = Array("@tools"), glue = Array("com.anisakai.test.cucumber.stepdefs"), format = Array("pretty", "html:target/cucumber-report"))
+@Options(tags = Array("@adminusertool"), glue = Array("com.anisakai.test.cucumber.stepdefs"), format = Array("progress", "html:target/cucumber-report"))
 class RunCukesTest
 
 

@@ -47,7 +47,4 @@ class LoginTest extends ScalaDsl with EN with ScreenShotOnFailure {
   }
 
 
-  After() {
-    //Portal.webDriver.quit();
-  }
 }

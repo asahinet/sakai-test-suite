@@ -4,7 +4,6 @@ import cucumber.api.scala.{EN, ScalaDsl}
 import junit.framework.Assert._
 
 import com.anisakai.test.pageobjects.{Portal, CalendarObj}
-import com.anisakai.test.cucumber.stepdefs.ScreenShotOnFailure
 
 /**
  * Created with IntelliJ IDEA.
