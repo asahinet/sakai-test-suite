@@ -1,4 +1,4 @@
-@setup  @site
+@setup  @sitecreate
 Feature: Test the Site Editor Tool
 
   Background:
@@ -16,3 +16,10 @@ Feature: Test the Site Editor Tool
     And I should see 'student01' with a role of 'Student'
     Then I should logout
 
+  Scenario:  Create Project Sites
+    Given the following 'project' sites exist:
+      | title                 | description  | contactname | contactemail   |
+      | Project Site Test 1   | for testing  | sally       | projecttest1   |
+      | Project Site Test 2   | for testing  | joe         | projecttest2   |
+      | Project Site Test 3   | for testing  | billy       | projecttest3   |
+    Then I should logout
