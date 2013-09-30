@@ -2,7 +2,7 @@ package com.anisakai.test.cucumber.stepdefs
 
 import cucumber.api.scala.{EN, ScalaDsl}
 import cucumber.runtime.PendingException
-import com.anisakai.test.pageobjects.{UsersTool, SiteManageTool}
+import com.anisakai.test.pageobjects.{Portal, UsersTool, SiteManageTool}
 import cucumber.api.DataTable
 import junit.framework.Assert._
 
@@ -15,22 +15,36 @@ import junit.framework.Assert._
  */
 class SiteCreationTest extends ScalaDsl with EN with ScreenShotOnFailure {
   Given( """^the following '(.+)' sites exist:$""") {
-      (siteType : String, data: DataTable) =>
-        val row = data.asMaps().iterator()
-        while (row.hasNext) {
-          val map = row.next()
-          val title = map.get("title")
-          val description = map.get("description")
-          val contactname = map.get("contactname")
-          val contactemail = map.get("contactemail")
+    (siteType: String, data: DataTable) =>
+      val row = data.asMaps().iterator()
+      while (row.hasNext) {
+        val map = row.next()
+        val siteId = map.get("id")
+        val title = map.get("title")
+        val description = map.get("description")
+        val contactname = map.get("contactname")
 
-          if (siteType.equalsIgnoreCase("project")) {
-            SiteManageTool.createProjectSite(title, description, description, contactname, contactemail)
-          } else {
-            assertFalse("type course not implemented yet", false);
-          }
+        Portal.gotoTool("Sites")
+
+        var newlyCreatedSite = SiteManageTool.createSiteWithSitesTool(siteType, title, siteId)
+        Portal.gotoTool("Site Setup", true)
+
+        SiteManageTool.findSiteAndEdit(title)
+        SiteManageTool.editSite(description, description, contactname)
+        if (newlyCreatedSite) {
+          SiteManageTool.addAllTools()
         }
-    }
+        SiteManageTool.manageAccess(true, false)
+      }
+  }
+
+  Given("""^I navigate to the '(.+)' tool$"""){ (tool:String) =>
+    Portal.gotoTool(tool)
+  }
+
+  When("""^I create '(.+)' site with a title of '(.+)' and an id of'(.+)'$"""){ (siteType: String, siteTitle : String, siteId : String) =>
+    SiteManageTool.createSiteWithSitesTool(siteType, siteTitle, siteId)
+  }
 
 
   When("""^I create a site with random data$"""){ () =>
@@ -44,6 +58,17 @@ class SiteCreationTest extends ScalaDsl with EN with ScreenShotOnFailure {
 
   Then("""^I should see '(.+)' with a role of '(.+)'$"""){ (eid: String, role : String) =>
     SiteManageTool.verifyUserHasRole(eid, role)
+
+  }
+
+  Then("""^I add all the tools$"""){ () =>
+    SiteManageTool.addAllTools()
+
+  }
+
+  When("""^I edit the '(.+)' site information$"""){ (siteTitle:String) =>
+    SiteManageTool.findSiteAndEdit(siteTitle)
+    SiteManageTool.editSite("description","description", "john smith")
 
   }
 

@@ -43,6 +43,8 @@ class Portal extends Page with Eventually{
     return webDriver.findElement(By.className("siteTitle")).getText().startsWith("My Workspace")
   }
 
+
+
   def gotoSite(siteName : String) {
     switch to defaultContent
 
@@ -87,15 +89,18 @@ class Portal extends Page with Eventually{
 
   def createSite(siteType: String) {
     gotoTool("Site Setup")
-    //click on linkText("Site Setup")
-    //switch to frame(xpath("//*[@id='Main67e6672bx78f4x4b57x8a7ex3ba881e7afa5']"))
-
     var siteTitle = SiteManageTool.createRandomSite(siteType)
     gotoSite(siteTitle)
   }
 
+
   def gotoTool(toolName : String) {
- //   switch to defaultContent
+    gotoTool(toolName, false)
+  }
+
+
+  def gotoTool(toolName : String, reset : Boolean) {
+    switch to defaultContent
     if (toolName.equals("Site Setup") && !Config.sakaiDistro.equalsIgnoreCase("ani"))  {
       if (linkText("Worksite Setup").findElement(webDriver).isDefined) {
         click on linkText("Worksite Setup")
@@ -105,7 +110,14 @@ class Portal extends Page with Eventually{
     } else {
       click on linkText(toolName)
     }
+
+    if (reset)  {
+      click on xpath("//a[contains(@title,'Reset')]")
+    }
+
     eventually (switch to frame(0))
+
+
   }
 
   def logout() {

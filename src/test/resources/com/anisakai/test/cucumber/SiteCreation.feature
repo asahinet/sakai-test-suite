@@ -3,23 +3,30 @@ Feature: Test the Site Editor Tool
 
   Background:
     Given I am logged on as 'admin' with a password of 'admin'
-    And I am on the 'Administration Workspace' site using the 'Users' tool
-    And a user with an eid of 'student01' a firstname of 'sally' a lastname of 'fields' an email of 'sally@zappa.com' that is of type 'registered' with a password of 'password' exists
-    And a user with an eid of 'instructor1' a firstname of 'billy' a lastname of 'smith' an email of 'bbob@zappa.com' that is of type 'maintain' with a password of 'password' exists
-    And I am on the 'Administration Workspace' site using the 'Site Setup' tool
+
+
+
+  Scenario:  Create Course Sites
+    Given the following 'course' sites exist:
+      | id            | title                | description  | contactname |
+      | course-test-1 | Course Site Test 1   | for testing  | sally       |
+      | course-test-2 | Course Site Test 2   | for testing  | joe         |
+      | course-test-3 | Course Site Test 3   | for testing  | billy       |
+    Then I should logout
+
+  Scenario:  Create Project Sites
+    Given the following 'project' sites exist:
+      | id             | title                 | description  | contactname |
+      | project-test-1 | Project Site Test 1   | for testing  | sally       |
+      | project-test-2 | Project Site Test 2   | for testing  | joe         |
+      | project-test-3 | Project Site Test 3   | for testing  | billy       |
+    Then I should logout
 
   Scenario:  Create A Site
+    Given I am on the 'Administration Workspace' site using the 'Site Setup' tool
     When I create a site with random data
     And add 'instructor1' as an 'Instructor'
     And add 'student01' as a 'Student'
     Then I should see 'instructor1' with a role of 'Instructor'
     And I should see 'student01' with a role of 'Student'
-    Then I should logout
-
-  Scenario:  Create Project Sites
-    Given the following 'project' sites exist:
-      | title                 | description  | contactname | contactemail   |
-      | Project Site Test 1   | for testing  | sally       | projecttest1   |
-      | Project Site Test 2   | for testing  | joe         | projecttest2   |
-      | Project Site Test 3   | for testing  | billy       | projecttest3   |
     Then I should logout

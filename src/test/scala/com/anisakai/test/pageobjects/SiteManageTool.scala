@@ -7,9 +7,39 @@ package com.anisakai.test.pageobjects
  * Time: 8:44 PM
  * To change this template use File | Settings | File Templates.
  */
-object SiteManageTool extends SiteManageTool
+object SiteManageTool extends SiteManageTool {
+}
 
 class SiteManageTool extends Page {
+  def manageAccess(publish: Boolean, globalAccess: Boolean) {
+    switch to defaultContent
+    switch to frame(0)
+    click on linkText("Manage Access")
+    click on radioButton("publish")
+
+    //TODO actually look at parameters sent in
+
+    click on cssSelector("[value=Update]")
+  }
+
+
+  def createSiteWithSitesTool(siteType:String, siteTitle:String, siteId:String): Boolean = {
+    click on linkText("New Site" )
+    textField("id").value = siteId
+    textField("title").value = siteTitle
+    textField("type").value = siteType
+    click on cssSelector("[value=Save]")
+
+       // if we get an error that the site exists, click cancel, that is ok
+    if (className("alertMessage").findElement(webDriver).isDefined &&
+      className("alertMessage").webElement(webDriver).getText().contains("The site id " + siteId + " is already in use")){
+      click on name("eventSubmit_doCancel")
+      return false
+    }
+
+
+    return true
+  }
 
   def verifyUserHasRole(eid: String, role: String) {
     // TODO table fun
@@ -33,8 +63,8 @@ class SiteManageTool extends Page {
   }
 
   def createProjectSite(title: String, shortDescription: String,
-                        longDescription: String, contactName: String, contactEmail: String): String = {
-    return createSite("project", shortDescription, longDescription, contactName, contactEmail,
+                        longDescription: String, contactName: String): String = {
+    return createSite("project", shortDescription, longDescription, contactName,
       populateProjectMetaData: (Map[String, String])   => Unit,
       Map(("title", title)))
   }
@@ -42,7 +72,7 @@ class SiteManageTool extends Page {
   def createCourseSite(subject : String, section : String, course : String,
                        shortDescription: String, longDescription: String,
                        contactName: String, contactEmail : String): String = {
-    return createSite("course", shortDescription, longDescription, contactName,  contactEmail,
+    return createSite("course", shortDescription, longDescription, contactName,
       populateCourseMetaData : (Map[String, String]) => Unit,
       Map(("subject", subject), ("section", section), ("course", course)))
   }
@@ -59,9 +89,20 @@ class SiteManageTool extends Page {
     textField("title").value = args("title")
   }
 
+  def editSite(shortDescription: String, longDescription: String, contactName: String) {
+
+    click on linkText("Edit Site Information")
+    textArea("short_description").value = shortDescription
+    textField("siteContactName").value = contactName
+    click on cssSelector("[value=Continue]")
+
+    click on cssSelector("[value=Finish]")
+ }
+
+
 
   def createSite(siteType: String, shortDescription: String, longDescription: String,
-                 contactName: String,contactEmail: String,
+                 contactName: String,
                  siteMetaData: (Map[String, String]) => Unit, siteMetaDataArgs: Map[String, String]): String = {
     click on linkText("New")
     click on radioButton(siteType.toLowerCase())
@@ -75,7 +116,7 @@ class SiteManageTool extends Page {
 
     click on checkbox("all")
     click on cssSelector("[value=Continue]")
-    textField("emailId").value = contactEmail
+    textField("emailId").value = faker.lastName() + faker.numerify("####")
     click on cssSelector("[value=Continue]")
     click on cssSelector("[value=Continue]")
 
@@ -95,8 +136,21 @@ class SiteManageTool extends Page {
         faker.sentence(2), faker.sentence(2), faker.name(), faker.firstName() + "." + faker.lastName())
     } else {
       return createProjectSite(siteType + " Test " + faker.numerify("###"), faker.sentence(2),
-        faker.sentence(2), faker.name, faker.firstName() + "." + faker.lastName())
+        faker.sentence(2), faker.name)
     }
+
+  }
+
+
+  def addAllTools() {
+    switch to defaultContent
+    switch to frame(0)
+    click on linkText("Edit Tools")
+    click on checkbox("all")
+    click on cssSelector("[value=Continue]")
+    textField("emailId").value = faker.lastName() + faker.numerify("####")
+    click on cssSelector("[value=Continue]")
+    click on cssSelector("[value=Finish]")
 
   }
 
