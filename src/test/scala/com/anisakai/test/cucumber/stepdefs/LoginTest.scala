@@ -12,11 +12,13 @@ import cucumber.runtime.PendingException
  * Time: 9:13 PM
  * To change this template use File | Settings | File Templates.
  */
-class LoginTest extends ScalaDsl with EN with ScreenShotOnFailure {
+class LoginTest extends ScalaDsl with EN with TearDown {
 
   Given( """^I am on the '(.+)' gateway page$""") {
     (url: String) =>
       Portal.navigateToPage(url)
+
+      Portal.logout()
   }
 
   When( """^I enter '(.+)' for user""") {

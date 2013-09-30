@@ -13,20 +13,15 @@ Feature: Test the Admin Users Tool
       | student02   | joe@zappa.com   | joe       | zappa    | registered | password |
       | instructor1 | bbob@zappa.com  | billy     | smith    | maintain   | password |
       | instructor2 | fred@zappa.com  | fred      | jones    | maintain   | password |
-    Then I should logout
-
 
   Scenario: User Search
     When I search for a user with an eid of 'student01'
     Then I should see the 'student01' user
-    Then I should logout
 
   Scenario:  User Edit
     Given I search for a user with an eid of 'student01'
     When I edit their first name to 'frank'
     Then I should see the first name change
-    Then I should logout
 
   Scenario:  User Create Random
     Then create a user with random data
-    Then I should logout

@@ -13,7 +13,7 @@ import junit.framework.Assert._
  * Time: 11:28 PM
  * To change this template use File | Settings | File Templates.
  */
-class SiteCreationTest extends ScalaDsl with EN with ScreenShotOnFailure {
+class SiteCreationTest extends ScalaDsl with EN with TearDown {
   Given( """^the following '(.+)' sites exist:$""") {
     (siteType: String, data: DataTable) =>
       val row = data.asMaps().iterator()

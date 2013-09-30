@@ -14,7 +14,7 @@ import cucumber.api.DataTable
  * Time: 11:26 PM
  * To change this template use File | Settings | File Templates.
  */
-class UsersToolTest extends ScalaDsl with EN with ScreenShotOnFailure {
+class UsersToolTest extends ScalaDsl with EN with TearDown {
 
   When("""^I enter '(.+)' in the search textfield$"""){ (searchText: String) =>
     UsersTool.enterSearchText(searchText)

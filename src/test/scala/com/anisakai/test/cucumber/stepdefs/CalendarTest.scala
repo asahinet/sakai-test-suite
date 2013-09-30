@@ -12,7 +12,7 @@ import com.anisakai.test.pageobjects.{Portal, CalendarObj}
  * Time: 10:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class CalendarTest extends ScalaDsl with EN with ScreenShotOnFailure{
+class CalendarTest extends ScalaDsl with EN with TearDown{
   var eventTitle : String = ""
 
   When("""^I create an event with random data$"""){ () =>

@@ -1,9 +1,10 @@
 package com.anisakai.test.cucumber.stepdefs
 
-import cucumber.api.java.After
+import cucumber.api.java.{Before, After}
 import cucumber.api.Scenario
 import org.openqa.selenium.{OutputType, TakesScreenshot, WebDriver}
 import com.anisakai.test.Config
+import com.anisakai.test.pageobjects.Portal
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,7 +13,7 @@ import com.anisakai.test.Config
  * Time: 3:46 PM
  * To change this template use File | Settings | File Templates.
  */
-trait ScreenShotOnFailure {
+trait TearDown {
 
   @After
   def tearDown(result: Scenario) {

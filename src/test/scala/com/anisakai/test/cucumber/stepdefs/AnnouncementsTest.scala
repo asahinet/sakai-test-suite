@@ -12,7 +12,7 @@ import com.anisakai.test.pageobjects.{Announcements, Page, Portal}
  * To change this template use File | Settings | File Templates.
  */
 
-class AnnouncementsTest extends ScalaDsl with EN with ScreenShotOnFailure{
+class AnnouncementsTest extends ScalaDsl with EN with TearDown{
 
   When("""^I click on the MOTD Options button$"""){ () =>
     Announcements.checkCurrent()
@@ -27,4 +27,5 @@ class AnnouncementsTest extends ScalaDsl with EN with ScreenShotOnFailure{
   Then("""^the Message of the day text should contain '(.+)'$"""){ (motd: String) =>
     assertTrue(Announcements.isChanged())
   }
+
 }

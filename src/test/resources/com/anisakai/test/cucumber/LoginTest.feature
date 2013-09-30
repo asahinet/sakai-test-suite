@@ -7,4 +7,4 @@ Feature: Test CLE Login
     And I enter 'admin' for password
     And I click the Login button
     Then I should see my workspace
-    Then I should logout
+

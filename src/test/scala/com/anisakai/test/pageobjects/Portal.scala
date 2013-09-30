@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit
 import com.anisakai.test.Config
 import org.scalatest.concurrent.Eventually
 import com.github.javafaker.Faker
+import org.openqa.selenium.NoSuchElementException
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,6 +26,9 @@ class Portal extends Page with Eventually{
 
   def login(eid : String, password : String) {
     go to Config.targetServer
+
+    logout()
+
     enterEid(eid)
     enterPassword(password)
     submit()
@@ -121,7 +125,16 @@ class Portal extends Page with Eventually{
   }
 
   def logout() {
-    switch to defaultContent
-    click on linkText("Logout")
+    try {
+      switch to defaultContent
+      val logoutLink = webDriver.findElement(By.linkText("Logout"));
+      if (logoutLink != null && logoutLink.isDisplayed) {
+        click on linkText("Logout")
+      }
+    } catch {
+      case e: org.openqa.selenium.NoSuchElementException => {
+        //e.printStackTrace()
+      }
+    }
   }
 }

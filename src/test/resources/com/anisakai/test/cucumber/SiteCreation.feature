@@ -1,5 +1,5 @@
 @setup  @sitecreate
-Feature: Test the Site Editor Tool
+Feature: Site Management
 
   Background:
     Given I am logged on as 'admin' with a password of 'admin'
@@ -12,7 +12,6 @@ Feature: Test the Site Editor Tool
       | course-test-1 | Course Site Test 1   | for testing  | sally       |
       | course-test-2 | Course Site Test 2   | for testing  | joe         |
       | course-test-3 | Course Site Test 3   | for testing  | billy       |
-    Then I should logout
 
   Scenario:  Create Project Sites
     Given the following 'project' sites exist:
@@ -20,7 +19,6 @@ Feature: Test the Site Editor Tool
       | project-test-1 | Project Site Test 1   | for testing  | sally       |
       | project-test-2 | Project Site Test 2   | for testing  | joe         |
       | project-test-3 | Project Site Test 3   | for testing  | billy       |
-    Then I should logout
 
   Scenario:  Create A Site
     Given I am on the 'Administration Workspace' site using the 'Site Setup' tool
@@ -29,4 +27,3 @@ Feature: Test the Site Editor Tool
     And add 'student01' as a 'Student'
     Then I should see 'instructor1' with a role of 'Instructor'
     And I should see 'student01' with a role of 'Student'
-    Then I should logout

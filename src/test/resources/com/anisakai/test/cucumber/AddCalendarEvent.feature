@@ -8,4 +8,3 @@ Feature: Test adding a calendar event
   Scenario: Add a calendar event
     When I create an event with random data
     Then the event should be added to my calendar
-    Then I should logout

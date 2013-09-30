@@ -108,6 +108,8 @@ class SiteManageTool extends Page {
     click on radioButton(siteType.toLowerCase())
     click on id("submitBuildOwn")
 
+
+
     siteMetaData(siteMetaDataArgs)
 
     textArea("short_description").value = shortDescription
