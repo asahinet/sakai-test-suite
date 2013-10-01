@@ -23,9 +23,9 @@ class AssignmentTest extends ScalaDsl with EN with TearDown{
     assertFalse(role + " is not a supported role yet", false);
   }
 
-  When("""^I create an assignment in 'Course' site$"""){ (siteType: String) =>
+  When("""^I create an assignment in '(.*)' site$"""){ (siteType: String) =>
     if (siteType.equalsIgnoreCase("course")) {
-      Portal.gotoSite(Config.defaultCourseSiteTitle);
+      Portal.gotoSiteDirectly(Config.defaultCourseSiteId);
       Portal.gotoTool("Assignments")
 
       //TODO create an assignement

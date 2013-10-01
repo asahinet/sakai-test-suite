@@ -5,8 +5,8 @@ Feature: Creating an assignment as an instructor
 
 ## Crud
 
-  Scenario: create an assignment as an 'instructor'
-    Given I'm logged in as an instructor
+  Scenario: create an assignment as an instructor
+    Given I'm logged in as an 'instructor'
     When I create an assignment in 'Course' site
     Then I see an assignment listed
     And I can view the assignment as 'instructor'
