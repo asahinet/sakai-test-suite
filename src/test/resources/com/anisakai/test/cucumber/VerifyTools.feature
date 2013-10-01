@@ -1,4 +1,4 @@
-@tools
+@tools @suite
 Feature: Verifying all tool links are working correctly
   Background:
     Given I am logged on as 'admin' with a password of 'admin'

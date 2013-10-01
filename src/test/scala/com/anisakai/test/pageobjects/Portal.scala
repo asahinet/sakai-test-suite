@@ -39,7 +39,6 @@ class Portal extends Page with Eventually{
   }
 
   def enterPassword(password: String) {
-
     pwdField("pw").value = password
   }
 
@@ -47,7 +46,9 @@ class Portal extends Page with Eventually{
     return webDriver.findElement(By.className("siteTitle")).getText().startsWith("My Workspace")
   }
 
-
+  def gotoSiteDirectly(siteId : String) {
+    go to Config.targetServer + "/site/" + siteId
+  }
 
   def gotoSite(siteName : String) {
     switch to defaultContent

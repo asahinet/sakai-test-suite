@@ -45,14 +45,30 @@ class SiteManageTool extends Page {
     // TODO table fun
   }
 
+  def membershipDoesNotExist(eid: String) : Boolean = {
+      // if we get an error that the site exists, click cancel, that is ok
+    if (className("information").findElement(webDriver).isDefined &&
+      className("information").webElement(webDriver).getText().contains("The following participants are already members of this site and cannot be re-added: '" + eid + "'")){
+      return false
+    }
+
+    return true
+
+  }
+
   def addUserWithRole(eid: String, role: String){
     click on linkText("Add Participants" )
     textArea("content::officialAccountParticipant").value = eid
-    click on "content::continue"
-    click on cssSelector("[value=" + role + "]")
     click on cssSelector("[value=Continue]")
-    click on cssSelector("[value=Continue]")
-    click on cssSelector("[value=Finish]")
+
+    if (membershipDoesNotExist(eid)) {
+      click on cssSelector("[value=" + role + "]")
+      click on cssSelector("[value=Continue]")
+      click on cssSelector("[value=Continue]")
+      click on cssSelector("[value=Finish]")
+    } else {
+      click on cssSelector("[value=Cancel]")
+    }
   }
 
   def findSiteAndEdit(siteTitle : String){

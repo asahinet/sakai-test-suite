@@ -24,6 +24,14 @@ class Config {
   val sakaiVersion : String = loadProperty("sakai.version", "2.9.1")
   val sakaiDistro : String = loadProperty("sakai.distro", "ani")
 
+  def defaultCourseSiteId = "course-test-1"
+  def defaultCourseSiteTitle = "Course Site Test 1 "
+  def defaultInstructorEid = "instructor1"
+  def defaultStudentEid = "student01"
+  def defaultInstructorPassword = "password"
+  def defaultStudentPassword = "password"
+
+
   def loadProperty (name : String, defaultValue : String) = {
     if (!StringUtils.isEmpty(systemProperties.getProperty(name))) {
       systemProperties.getProperty(name)

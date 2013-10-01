@@ -38,6 +38,28 @@ class SiteCreationTest extends ScalaDsl with EN with TearDown {
       }
   }
 
+  Given( """^the following memberships exist:$""") {
+    (data: DataTable) =>
+
+
+      val row = data.asMaps().iterator()
+
+      while (row.hasNext) {
+        val map = row.next()
+        val siteId = map.get("site-id")
+        val userEid = map.get("user-eid")
+        val role = map.get("role")
+
+        Portal.gotoSiteDirectly(siteId)
+        Portal.gotoTool("Site Editor", true)
+
+        SiteManageTool.addUserWithRole(userEid, role)
+
+        // doing this so we can can come back to Site Editor and reset
+        Portal.gotoTool("Home")
+      }
+  }
+
   Given("""^I navigate to the '(.+)' tool$"""){ (tool:String) =>
     Portal.gotoTool(tool)
   }

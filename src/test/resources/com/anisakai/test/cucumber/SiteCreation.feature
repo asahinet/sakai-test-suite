@@ -4,8 +4,6 @@ Feature: Site Management
   Background:
     Given I am logged on as 'admin' with a password of 'admin'
 
-
-
   Scenario:  Create Course Sites
     Given the following 'course' sites exist:
       | id            | title                | description  | contactname |
@@ -19,6 +17,23 @@ Feature: Site Management
       | project-test-1 | Project Site Test 1   | for testing  | sally       |
       | project-test-2 | Project Site Test 2   | for testing  | joe         |
       | project-test-3 | Project Site Test 3   | for testing  | billy       |
+
+  Scenario:  Create memberships in existing sites
+    Given the following memberships exist:
+    | site-id     | user-eid     | role        |
+    | course-test-1 | instructor1  | Instructor  |
+    | course-test-1 | student01    | Student     |
+    | course-test-1 | student02    | Student     |
+    | course-test-2 | instructor2  | Instructor  |
+    | course-test-2 | student01    | Student     |
+    | course-test-2 | student02    | Student     |
+    | course-test-3 | instructor1  | Instructor  |
+    | course-test-3 | instructor2  | Instructor  |
+    | course-test-3 | student01    | Student     |
+    | course-test-3 | student02    | Student     |
+
+
+
 
   Scenario:  Create A Site
     Given I am on the 'Administration Workspace' site using the 'Site Setup' tool

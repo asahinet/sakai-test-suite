@@ -2,6 +2,9 @@ package com.anisakai.test.cucumber.stepdefs
 
 import cucumber.api.scala.{EN, ScalaDsl}
 import cucumber.runtime.PendingException
+import junit.framework.Assert._
+import com.anisakai.test.pageobjects.Portal
+import com.anisakai.test.Config
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,14 +14,26 @@ import cucumber.runtime.PendingException
  * To change this template use File | Settings | File Templates.
  */
 class AssignmentTest extends ScalaDsl with EN with TearDown{
-  Given("""^I'm logged in as an instructor$"""){ () =>
-    //// Express the Regexp above with the code you wish you had
-    throw new PendingException()
+  Given("""^I'm logged in as an '(.*)'$"""){ (role : String) =>
+    if (role.equalsIgnoreCase("instructor")) {
+      Portal.login(Config.defaultInstructorEid, Config.defaultInstructorPassword)
+    } else if (role.equalsIgnoreCase("student")) {
+      Portal.login(Config.defaultStudentEid, Config.defaultStudentPassword)
+    }
+    assertFalse(role + " is not a supported role yet", false);
   }
 
-  When("""^I create an assignment in Course site$"""){ () =>
-    //// Express the Regexp above with the code you wish you had
-    throw new PendingException()
+  When("""^I create an assignment in 'Course' site$"""){ (siteType: String) =>
+    if (siteType.equalsIgnoreCase("course")) {
+      Portal.gotoSite(Config.defaultCourseSiteTitle);
+      Portal.gotoTool("Assignments")
+
+      //TODO create an assignement
+
+    }
+
+    assertFalse(siteType + " is not a supported site type for Assignments",false);
+
   }
 
   Then("""^I see an assignment listed$"""){ () =>
@@ -70,10 +85,6 @@ class AssignmentTest extends ScalaDsl with EN with TearDown{
     throw new PendingException()
   }
 
-  Given("""^I am logged in as an instructor$"""){ () =>
-    //// Express the Regexp above with the code you wish you had
-    throw new PendingException()
-  }
 
   When("""^I delete the assignment$"""){ () =>
     //// Express the Regexp above with the code you wish you had

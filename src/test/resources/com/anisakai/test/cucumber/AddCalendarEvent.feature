@@ -1,4 +1,4 @@
-@test2
+@suite @calendar
 
 Feature: Test adding a calendar event
   Background:
