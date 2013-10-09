@@ -46,6 +46,27 @@ class Portal extends Page with Eventually{
     return webDriver.findElement(By.className("siteTitle")).getText().startsWith("My Workspace")
   }
 
+  def isEnrolled(siteName: String) : Boolean = {
+    switch to defaultContent
+    // if we are already on the right site, skip this
+    if (!className("siteTitle").element.text.contains(siteName)) {
+      //If site is listed return true, if not click on "More Sites"
+      if (webDriver.findElements(By.partialLinkText(siteName)).size() != 0) {
+        return true
+      } else {
+        click on cssSelector("a[title='More Sites']")
+        textField("txtSearch").value = siteName
+        if (webDriver.findElements(By.partialLinkText(siteName)).size() != 0) {
+          return true
+        } else {
+          return false
+        }
+      }
+    } else {
+      return true
+    }
+  }
+
   def gotoSiteDirectly(siteId : String) {
     go to Config.targetServer + "/site/" + siteId
   }
@@ -121,8 +142,13 @@ class Portal extends Page with Eventually{
     }
 
     eventually (switch to frame(0))
+  }
 
-
+  def richTextEditor() {
+    switch to frame(xpath("//iframe[contains(@title,'Rich text editor')]"))
+    webDriver.switchTo().activeElement().sendKeys(faker.paragraph(4))
+    webDriver.switchTo().defaultContent()
+    switch to frame(0)
   }
 
   def logout() {

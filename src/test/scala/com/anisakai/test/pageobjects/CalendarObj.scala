@@ -47,10 +47,7 @@ class CalendarObj extends Page {
     ampm.selectByVisibleText(am_pm)
     singleSel("eventType").value = "Exam"
     textArea("location").value = "Online"
-    switch to frame(xpath("//iframe[contains(@title,'Rich text editor')]"))
-    webDriver.switchTo().activeElement().sendKeys(faker.paragraph(4))
-    webDriver.switchTo().defaultContent()
-    switch to frame(0)
+    Portal.richTextEditor()
     click on name("eventSubmit_doAdd")
     return eventTitle
   }
