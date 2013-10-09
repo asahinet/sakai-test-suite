@@ -25,7 +25,7 @@ class Config {
   val sakaiDistro : String = loadProperty("sakai.distro", "ani")
 
   def defaultCourseSiteId = "course-test-1"
-  def defaultCourseSiteTitle = "Course Site Test 1 "
+  def defaultCourseSiteTitle = "Course Site Test 1"
   def defaultInstructorEid = "instructor1"
   def defaultStudentEid = "student01"
   def defaultInstructorPassword = "password"

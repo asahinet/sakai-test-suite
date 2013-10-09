@@ -9,7 +9,7 @@ Feature: Creating an assignment as an instructor
     Given I'm logged in as an 'instructor'
     When I create an assignment in 'Course' site
     Then I see an assignment listed
-    And I can view the assignment as 'instructor'
+    And I can view the assignment as instructor
 
   Scenario: Open assignment as student
     Given I'm logged in as a 'student'
@@ -29,4 +29,4 @@ Feature: Creating an assignment as an instructor
     And I have created a course with an assignment
     When I delete the assignment
     Then it should no longer be in the table
-    And the student should no longer have access
+    And the 'student' should no longer have access
