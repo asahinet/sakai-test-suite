@@ -23,12 +23,16 @@ class SiteCreationTest extends ScalaDsl with EN with TearDown {
         val title = map.get("title")
         val description = map.get("description")
         val contactname = map.get("contactname")
-
-        Portal.gotoTool("Sites")
-
-        var newlyCreatedSite = SiteManageTool.createSiteWithSitesTool(siteType, title, siteId)
-        Portal.gotoTool("Site Setup", true)
-
+        var newlyCreatedSite: Boolean = true
+        if (siteType.equalsIgnoreCase("turn it in")) {
+          Portal.gotoSite("Administration Workspace")
+          Portal.gotoTool("Sites")
+          newlyCreatedSite = SiteManageTool.createSiteWithSitesTool(siteType, title, siteId)
+        } else {
+          Portal.gotoTool("Sites")
+          newlyCreatedSite = SiteManageTool.createSiteWithSitesTool(siteType, title, siteId)
+          Portal.gotoTool("Site Setup", true)
+        }
         SiteManageTool.findSiteAndEdit(title)
         SiteManageTool.editSite(description, description, contactname)
         if (newlyCreatedSite) {
