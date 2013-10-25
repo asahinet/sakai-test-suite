@@ -26,7 +26,11 @@ class AssignmentTool extends Page {
     switch to frame(0)
   }
 
-  def assignment() : String = {
+  def assignment() : String ={
+    return assignment(false, false)
+  }
+
+  def assignment(turnItIn: Boolean, correct: Boolean) : String = {
     val assignmentTitle = faker.letterify("?????? ???????")
     val day = cal.get(Calendar.DAY_OF_MONTH) - 1
     val dueday = cal.get(Calendar.DAY_OF_MONTH) + 1
@@ -58,6 +62,11 @@ class AssignmentTool extends Page {
     singleSel("new_assignment_closehour").value = hour.toString()
     singleSel("new_assignment_closemin").value = "0"
     singleSel("new_assignment_closeampm").value = am_pm
+    if (correct) {
+      singleSel("new_assignment_submission_type").value = "5"
+    } else {
+      singleSel("new_assignment_submission_type").value = "3"
+    }
 
     singleSel("new_assignment_grade_type").value = "3"
     if (textField("new_assignment_grade_points").isEnabled) {
@@ -66,7 +75,8 @@ class AssignmentTool extends Page {
     }
 
     checkbox("new_assignment_check_add_due_date").select()
-
+    if (turnItIn)
+      checkbox("new_assignment_use_review_service").select()
     Portal.richTextEditor()
     click on name("post")
 
