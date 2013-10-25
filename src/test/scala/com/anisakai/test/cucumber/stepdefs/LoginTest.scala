@@ -4,6 +4,7 @@ import cucumber.api.scala.{EN, ScalaDsl}
 import junit.framework.Assert._
 import com.anisakai.test.pageobjects.{CalendarObj, Portal}
 import cucumber.runtime.PendingException
+import com.anisakai.test.Config
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,6 +39,10 @@ class LoginTest extends ScalaDsl with EN with TearDown {
 
   Then( """^I should see my workspace""") {
       assertTrue(Portal.isMyWorkspace())
+  }
+
+  Given("""^I am logged on as an admin user$""") {
+    Portal.login(Config.defaultAdminEid, Config.defaultAdminPassword)
   }
 
   Given("""^I am logged on as '(.+)' with a password of '(.+)'$"""){ (eid: String, password: String) =>

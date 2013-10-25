@@ -2,7 +2,7 @@
 Feature: Test the Admin Users Tool
 
   Background:
-    Given I am logged on as 'admin' with a password of 'admin'
+    Given I am logged on as an admin user
     Given I am on the 'Administration Workspace' site using the 'Users' tool
 
 

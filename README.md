@@ -155,6 +155,15 @@ The following system properties are available.  These should be sent to the as J
 
     The version of Sakai you are testing against.  This isn't used yet, but one day it will be.
 
+- sakai.admin.eid
+
+    An eid for an admin user on the instance you are testing.  Defaults to "admin"
+
+- sakai.admin.pwd
+
+    The password for the admin user on the instance you are testing.  Defaults to "admin"
+
+
 
 Example invocation with some properties...
 
@@ -213,15 +222,7 @@ http://www.jpalomaki.fi/?p=403
 Once you get that setup, install the cucumber reporting plugin for jenkins:
 http://www.masterthought.net/section/cucumber-reporting
 
-Next Steps
-----------
 
-Even though browser automation is easier since the last time I tackled it.  It still feels like a lot of manual
-grunt work: looking up html element id via Inspect in the browser, and then hand coding all the logic.  I still
-would like to go back to the Selenium IDE and attempt a new Scala based template, or maybe some other format that
-could be plugged into this framework and generate some boilerplate code to get things started.  I realized the IDE
-doesn't get everything right, but a lot of things it does get right, it feels like a lot of grunt work could be eliminated
-by trying to pull some level of the recording into a more manageable format.  Task for another day...
 
 
 

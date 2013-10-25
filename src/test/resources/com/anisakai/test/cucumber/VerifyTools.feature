@@ -1,7 +1,7 @@
 @tools @suite
 Feature: Verifying all tool links are working correctly
   Background:
-    Given I am logged on as 'admin' with a password of 'admin'
+    Given I am logged on as an admin user
 
   Scenario: Validate all tools are functional on a course site
     Given Course:I am on 'Course Tools Test' 'Course' site

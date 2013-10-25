@@ -2,7 +2,7 @@
 Feature: Site Management
 
   Background:
-    Given I am logged on as 'admin' with a password of 'admin'
+    Given I am logged on as an admin user
 
   Scenario:  Create Course Sites
     Given the following 'course' sites exist:
