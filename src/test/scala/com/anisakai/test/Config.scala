@@ -23,6 +23,8 @@ class Config {
   val targetServer: String = loadProperty ("target.server","https://nightly.cle.rsmart.com/portal")
   val sakaiVersion : String = loadProperty("sakai.version", "2.9.1")
   val sakaiDistro : String = loadProperty("sakai.distro", "ani")
+  val defaultAdminEid : String = loadProperty("sakai.admin.eid", "admin")
+  val defaultAdminPassword : String = loadProperty("sakai.admin.pwd", "admin")
 
   def defaultCourseSiteId = "course-test-1"
   def defaultCourseSiteTitle = "Course Site Test 1"
@@ -30,7 +32,6 @@ class Config {
   def defaultStudentEid = "student01"
   def defaultInstructorPassword = "password"
   def defaultStudentPassword = "password"
-
 
   def loadProperty (name : String, defaultValue : String) = {
     if (!StringUtils.isEmpty(systemProperties.getProperty(name))) {
