@@ -3,6 +3,7 @@ package com.anisakai.test.cucumber.stepdefs
 import cucumber.api.scala.{EN, ScalaDsl}
 import com.anisakai.test.pageobjects.{TurnItIn, AssignmentTool, Portal}
 import junit.framework.Assert._
+import com.anisakai.test.Config
 
 
 /**
@@ -19,18 +20,18 @@ class TurnItInTest extends ScalaDsl with EN with TearDown {
   var password: String = ""
 
   def login(role: String) {
-    Portal.navigateToPage("https://providence-test.rsmart.com/")
+    Portal.navigateToPage(Config.targetServer)
     Portal.logout()
 
     if (role.equalsIgnoreCase("admin")) {
-      eid = "rsmart_support"
-      password = "r5m@rt!"
+      eid = Config.defaultAdminEid
+      password = Config.defaultAdminPassword
     } else if (role.equalsIgnoreCase("instructor")) {
-      eid = "instructorx"
-      password = "password"
+      eid = Config.defaultInstructorEid
+      password = Config.defaultInstructorPassword
     } else if (role.equalsIgnoreCase("student")) {
-      eid = "studentx"
-      password = "password"
+      eid = Config.defaultStudentEid
+      password = Config.defaultStudentPassword
     }
     Portal.enterEid(eid)
     Portal.enterPassword(password)
