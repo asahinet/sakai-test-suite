@@ -14,7 +14,7 @@ import org.scalatest.selenium.WebBrowser.{click, switch}
  * Time: 10:02 AM
  * To change this template use File | Settings | File Templates.
  */
-class web_content_test extends ScalaDsl with EN with TearDown {
+class WebContentTest extends ScalaDsl with EN with TearDown {
   var source: String = ""
   When("""^I add web content to the tool$""") { () =>
     source = WebContent.addWebContent()

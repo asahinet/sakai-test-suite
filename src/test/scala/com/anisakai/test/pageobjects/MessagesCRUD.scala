@@ -12,9 +12,9 @@ import com.anisakai.test.util.FileUtil
  * To change this template use File | Settings | File Templates.
  */
 
-object messages_CRUD extends messages_CRUD
+object MessagesCRUD extends MessagesCRUD
 
-class messages_CRUD extends Page {
+class MessagesCRUD extends Page {
 
   def addMessage(attachment: Boolean) : String = {
     val messageSub = faker.letterify("???????")

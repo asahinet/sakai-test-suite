@@ -7,7 +7,7 @@ import com.anisakai.test.Config
 import org.openqa.selenium.By
 import org.scalatest.selenium.WebBrowser.{click, switch}
 
-class gradebook_instructor_test extends ScalaDsl with EN with TearDown {
+class GradebookInstructorTest extends ScalaDsl with EN with TearDown {
 
   var itemName: String = ""
 
