@@ -1,12 +1,14 @@
+//Used to test the test scripts being written. Not part of test suite.
 package com.anisakai.test.cucumber
 
-/**
- * Created with IntelliJ IDEA.
- * User: gareth
- * Date: 10/31/13
- * Time: 11:03 AM
- * To change this template use File | Settings | File Templates.
- */
-class TestingTest {
+import org.junit.runner.RunWith
+import cucumber.api.junit.Cucumber
+import cucumber.api.junit.Cucumber.Options
 
-}
+@RunWith(classOf[Cucumber])
+@Options(tags = Array("@syllabus"), glue = Array("com.anisakai.test.cucumber.stepdefs"), format = Array("progress", "html:target/cucumber-report"))
+class TestingTest
+
+
+
+

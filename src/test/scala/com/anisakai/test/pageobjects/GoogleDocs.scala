@@ -8,8 +8,8 @@ package com.anisakai.test.pageobjects
  * To change this template use File | Settings | File Templates.
  */
 
-object ResourcesGoogleDocs extends ResourcesGoogleDocs
+object GoogleDocs extends GoogleDocs
 
-class ResourcesGoogleDocs extends Page {
+class GoogleDocs extends Page {
 
 }

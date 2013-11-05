@@ -15,7 +15,7 @@ Scenario: add a google document to resources with a from date in the future
   And I add a 'student' to the course
   When I add a 'link to google docs'
   And I set the from date in the future
-  Then the resource should not be visable to the 'student'
+  Then the resource should not be visible to the 'student'
 
 Scenario: add a google document to resources with an until date in the past
   Given I'm logged in as an 'instructor'
@@ -23,4 +23,4 @@ Scenario: add a google document to resources with an until date in the past
   And I add a 'student' to the course
   When I add a 'link to google docs'
   And I set the until date in the past
-  Then the resource should not be visable to the 'student'
+  Then the resource should not be visible to the 'student'

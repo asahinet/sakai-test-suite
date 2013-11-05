@@ -115,8 +115,6 @@ class SiteManageTool extends Page {
     click on cssSelector("[value=Finish]")
  }
 
-
-
   def createSite(siteType: String, shortDescription: String, longDescription: String,
                  contactName: String,
                  siteMetaData: (Map[String, String]) => Unit, siteMetaDataArgs: Map[String, String]): String = {
