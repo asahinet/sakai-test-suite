@@ -1,4 +1,4 @@
-package com.anisakai.test.cucumber.stepdefs
+package com.anisakai.test.pageobjects
 
 /**
  * Created with IntelliJ IDEA.
@@ -7,6 +7,9 @@ package com.anisakai.test.cucumber.stepdefs
  * Time: 11:35 AM
  * To change this template use File | Settings | File Templates.
  */
-class ResourcesGoogleDocs {
+
+object ResourcesGoogleDocs extends ResourcesGoogleDocs
+
+class ResourcesGoogleDocs extends Page {
 
 }
