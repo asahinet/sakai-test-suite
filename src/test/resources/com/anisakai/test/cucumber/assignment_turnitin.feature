@@ -1,8 +1,11 @@
-@assignment @turnitin
+@turnitin
 Feature: Creating an assignment with the Third Party Tool Turn It In enabled
 
   As an Instructor I want to be able to create an assignment with Turn It In enabled
   so that students can receive feedback from Turn it in on their submitted assignments
+  #Scenario: Set Up Instance
+   # Given There is a course created on the turn it in instance
+    #And
 
   Scenario: I create a Turn It In assignment incorrectly
     Given I'm logged in as an 'instructor' on a Turn It In instance

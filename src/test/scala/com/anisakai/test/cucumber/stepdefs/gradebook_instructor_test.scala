@@ -11,9 +11,9 @@ class gradebook_instructor_test extends ScalaDsl with EN with TearDown {
 
   var itemName: String = ""
 
-  And("""^I have created a course with gradebook tool$""") { () =>
+  And("""^I am on a course with '(.+)' tool$""") { (tool : String) =>
     Portal.gotoSiteDirectly(Config.defaultCourseSiteId)
-    Portal.gotoTool("Gradebook")
+    Portal.gotoTool(tool, true)
   }
 
   When("""^I add an entry to gradebook$""") { () =>
