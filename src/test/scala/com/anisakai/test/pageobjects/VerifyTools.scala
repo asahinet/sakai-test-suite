@@ -16,29 +16,45 @@ import java.util.concurrent.TimeUnit
 object VerifyTools extends VerifyTools
 
 class VerifyTools extends Page {
-  def checkTools() : Boolean = {
+  def checkTools(): Boolean = {
     var fails = ListBuffer[String]()
-    for(i <- 0 until webDriver.findElements(By.className("toolMenuLink")).size) {
-      switch to defaultContent
-      var toolName = webDriver.findElements(By.className("toolMenuLink")).get(i).getText()
-      click on webDriver.findElements(By.className("toolMenuLink")).get(i)
-      webDriver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS)
-      var isPresent = !webDriver.findElements(By.xpath("//iframe[contains(@title,$toolName)]")).isEmpty
-      if (!isPresent) {
-        if(webDriver.findElement(By.className("portletMainWrap")).getText().contains("Error"))
-          fails += toolName
-      } else {
-        switch to frame(webDriver.findElement(By.xpath("//iframe[contains(@title,$toolName)]")))
-        if(!webDriver.findElements(By.className("portletBody")).isEmpty() && webDriver.findElements(By.className("portletBody")).get(0).getText().contains("Error"))
-          fails += toolName
+    try {
+      for (i <- 0 until webDriver.findElements(By.className("toolMenuLink")).size) {
+        switch to defaultContent
+        var toolName = webDriver.findElements(By.className("toolMenuLink")).get(i).getText()
+        click on webDriver.findElements(By.className("toolMenuLink")).get(i)
+        webDriver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS)
+        var isPresent = !webDriver.findElements(By.xpath("//iframe[contains(@title,$toolName)]")).isEmpty
+        if (!isPresent) {
+          if (webDriver.findElement(By.className("portletMainWrap")).getText().contains("Error"))
+            fails += toolName
+        } else {
+          switch to frame(webDriver.findElement(By.xpath("//iframe[contains(@title,$toolName)]")))
+          if (!webDriver.findElements(By.className("portletBody")).isEmpty() && webDriver.findElements(By.className("portletBody")).get(0).getText().contains("Error"))
+            fails += toolName
+        }
+        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS)
       }
-      webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS)
+    } catch {
+      case e: Exception => {
+        e.printStackTrace()
+        return hasFailed(fails, true)
+      }
     }
-    if (fails.isEmpty) {
-      true
+
+    return hasFailed(fails)
+  }
+
+  def hasFailed(fails : ListBuffer[String]): Boolean = {
+    return hasFailed(fails, false)
+  }
+
+  def hasFailed(fails : ListBuffer[String], failure: Boolean): Boolean = {
+    if (fails.isEmpty || failure) {
+       println("Failed Tools:\n")
+       fails.foreach(e => println(e))
+       true
     } else {
-      println("Failed Tools:\n")
-      fails.foreach(e => println(e))
       false
     }
   }

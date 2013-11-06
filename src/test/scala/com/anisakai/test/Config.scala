@@ -50,7 +50,7 @@ class Config {
         var targetBrowser = systemProperties.getProperty("target.browser")
         if (targetBrowser.equalsIgnoreCase("chrome")) {
           if (StringUtils.isEmpty(systemProperties.getProperty("webdriver.chrome.driver"))) {
-            systemProperties.setProperty("webdriver.chrome.driver", "chromedriver/chromedriver_mac")
+            systemProperties.setProperty("webdriver.chrome.driver", "chromedriver/chromedriver-2.6_mac")
           }
           selectedDriver = Chrome.webDriver
         } else if (targetBrowser.equalsIgnoreCase("ie") || targetBrowser.equalsIgnoreCase("internetexplorer")) {
