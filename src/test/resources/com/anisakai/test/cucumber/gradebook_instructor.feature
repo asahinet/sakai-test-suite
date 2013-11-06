@@ -1,4 +1,4 @@
-@gradebook
+@gradebook @suite
 Feature: Adding entries to gradebook as an instructor
 
   As an instructor I want to verify that entries can be added, changed, and deleted from
