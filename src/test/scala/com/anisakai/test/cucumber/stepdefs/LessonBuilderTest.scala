@@ -1,18 +1,11 @@
 package com.anisakai.test.cucumber.stepdefs
 
 import cucumber.api.scala.{ScalaDsl, EN}
-import com.anisakai.test.pageobjects.LessonBuilder
+import com.anisakai.test.pageobjects.{AssignmentTool, Portal, LessonBuilder}
 import junit.framework.Assert._
 import cucumber.runtime.PendingException
 import scala.collection.mutable.ListBuffer
 
-/**
- * Created with IntelliJ IDEA.
- * User: gareth
- * Date: 11/5/13
- * Time: 10:25 AM
- * To change this template use File | Settings | File Templates.
- */
 class LessonBuilderTest extends ScalaDsl with EN with TearDown {
 
   var addition = new ListBuffer[String]
@@ -26,34 +19,27 @@ class LessonBuilderTest extends ScalaDsl with EN with TearDown {
     addition.clear()
   }
 
-  When("""^I add '(.+)' multimedia to the lessons tool$"""){ (mType: String) =>
-    addition += LessonBuilder.addMultimedia(mType)
+  When("""^I add '(.+)' '(.+)' to the lessons tool$"""){ (addType: String, contentType: String) =>
+    addition += LessonBuilder.add(contentType, addType)
   }
 
-  When("""^I add a '(.+)' resource to the lessons tool$"""){ (rType: String) =>
-    addition += LessonBuilder.addResource(rType)
-  }
-
-  When("""^I add two subpages to the lesson tool$"""){ () =>
-    addition += LessonBuilder.addSubpage()
+  When("""^I add '(.+)' subpages to the lesson tool$"""){ (count: Int) =>
+    for (i <- 0 to count) {addition += LessonBuilder.addSubpage()}
   }
 
   When("""^I create an assignment$"""){ () =>
-  //// Express the Regexp above with the code you wish you had
-    throw new PendingException()
+    Portal.gotoTool("Assignments", true)
+    AssignmentTool.gotoAdd()
+    addition += AssignmentTool.assignment()
   }
 
-  When("""^I add the assignment to the lesson tool$"""){ () =>
-    addition += LessonBuilder.linkAssignment()
+  When("""^I add the '(.+)' to the lesson tool$"""){ (linkType: String) =>
+    Portal.gotoTool("LessonsB", true)
+    LessonBuilder.link(linkType, addition(0))
   }
 
   When("""^I create a quiz$"""){ () =>
-  //// Express the Regexp above with the code you wish you had
-    throw new PendingException()
+    Portal.gotoTool("Tests & Quizzes", true)
+    addition += LessonBuilder.addQuiz()
   }
-
-  When("""^I add the quiz to the lesson tool$"""){ () =>
-    addition += LessonBuilder.linkQuiz()
-  }
-
 }
