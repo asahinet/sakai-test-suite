@@ -34,7 +34,7 @@ class LessonBuilderTest extends ScalaDsl with EN with TearDown {
   }
 
   When("""^I add the '(.+)' to the lesson tool$"""){ (linkType: String) =>
-    Portal.gotoTool("LessonsB", true)
+    Portal.gotoTool("Lesson Builder", true)
     LessonBuilder.link(linkType, addition(0))
   }
 
