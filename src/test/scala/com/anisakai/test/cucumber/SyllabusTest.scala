@@ -1,4 +1,3 @@
-//Used to test the test scripts being written. Not part of test suite.
 package com.anisakai.test.cucumber
 
 import org.junit.runner.RunWith

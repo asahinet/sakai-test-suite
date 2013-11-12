@@ -144,11 +144,13 @@ class Portal extends Page with Eventually{
     eventually (switch to frame(0))
   }
 
-  def richTextEditor() {
+  def richTextEditor(): String = {
+    val text = faker.paragraph(4)
     switch to frame(xpath("//iframe[contains(@title,'Rich text editor')]"))
-    webDriver.switchTo().activeElement().sendKeys(faker.paragraph(4))
+    webDriver.switchTo().activeElement().sendKeys(text)
     webDriver.switchTo().defaultContent()
     switch to frame(0)
+    return text
   }
 
   def logout() {

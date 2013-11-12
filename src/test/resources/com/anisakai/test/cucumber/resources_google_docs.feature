@@ -1,3 +1,4 @@
+@resources @suite
 Feature: Adding Google Docs to Resources
 
   As an Instructor I want to verify that I can add google docs to resources and view
