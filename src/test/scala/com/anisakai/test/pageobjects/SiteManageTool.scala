@@ -74,7 +74,7 @@ class SiteManageTool extends Page {
   def findSiteAndEdit(siteTitle : String){
     textField("search").value = siteTitle;
     click on cssSelector("[value=Search]")
-    click on checkbox("site1")
+    checkbox("site1").select()
     click on linkText("Edit")
   }
 

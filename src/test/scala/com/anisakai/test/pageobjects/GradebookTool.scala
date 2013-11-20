@@ -18,8 +18,13 @@ class GradebookTool extends Page {
 
   def isAdded(itemName : String) : Boolean = {
     switch to defaultContent
+    click on xpath("//a[contains(@title,'Reset')]")
     switch to frame(0)
-    return !webDriver.findElements(By.xpath("//*[contains(.,'"+itemName+"')]")).isEmpty
+    if (!webDriver.findElements(By.xpath("//*[contains(.,'"+itemName+"')]")).isEmpty) {
+      return true
+    } else {
+      return false
+    }
   }
 
   def editEntry(itemName : String) : String = {

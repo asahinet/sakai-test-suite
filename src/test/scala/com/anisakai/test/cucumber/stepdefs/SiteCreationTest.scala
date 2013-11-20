@@ -84,18 +84,15 @@ class SiteCreationTest extends ScalaDsl with EN with TearDown {
 
   Then("""^I should see '(.+)' with a role of '(.+)'$"""){ (eid: String, role : String) =>
     SiteManageTool.verifyUserHasRole(eid, role)
-
   }
 
   Then("""^I add all the tools$"""){ () =>
     SiteManageTool.addAllTools()
-
   }
 
   When("""^I edit the '(.+)' site information$"""){ (siteTitle:String) =>
     SiteManageTool.findSiteAndEdit(siteTitle)
     SiteManageTool.editSite("description","description", "john smith")
-
   }
 
 }

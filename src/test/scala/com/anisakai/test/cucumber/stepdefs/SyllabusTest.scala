@@ -27,7 +27,11 @@ class SyllabusTest extends ScalaDsl with EN with TearDown {
   }
 
   When("""^I remove all syllabus$""") { () =>
+    SyllabusTool.removeAllSyllabus()
+  }
 
+  Then("""^All syllabus should be removed$""") { () =>
+    assertTrue(SyllabusTool.noneExist())
   }
 
 }
