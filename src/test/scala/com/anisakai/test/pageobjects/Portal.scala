@@ -28,7 +28,9 @@ class Portal extends Page with Eventually{
     go to Config.targetServer
 
     logout()
-
+    if (Config.defaultPortal == "xsl") {
+      switch to frame(0)
+    }
     enterEid(eid)
     enterPassword(password)
     submit()
@@ -43,19 +45,24 @@ class Portal extends Page with Eventually{
   }
 
   def isMyWorkspace() : Boolean = {
-    return webDriver.findElement(By.className("siteTitle")).getText().startsWith("My Workspace")
+    return webDriver.findElement(By.id("siteTitle")).getText().startsWith("My Workspace")
+  }
+
+  def isAdminWorkspace() : Boolean = {
+    return webDriver.findElement(By.id("siteTitle")).getText().startsWith("Administration Workspace")
   }
 
   def isEnrolled(siteName: String) : Boolean = {
     switch to defaultContent
     // if we are already on the right site, skip this
-    if (!className("siteTitle").element.text.contains(siteName)) {
+    if (!xpath("//*[@class='siteTitle']").element.text.contains(siteName)) {
       //If site is listed return true, if not click on "More Sites"
       if (webDriver.findElements(By.partialLinkText(siteName)).size() != 0) {
         return true
       } else {
         click on cssSelector("a[title='More Sites']")
-        textField("txtSearch").value = siteName
+        if (Config.defaultPortal == "neo")
+          textField("txtSearch").value = siteName
         if (webDriver.findElements(By.partialLinkText(siteName)).size() != 0) {
           return true
         } else {
@@ -67,21 +74,30 @@ class Portal extends Page with Eventually{
     }
   }
 
+  def gotoAdminWorkspace () {
+    switch to defaultContent
+    click on linkText("Administration Workspace")
+  }
+
   def gotoSiteDirectly(siteId : String) {
-    go to Config.targetServer + "/site/" + siteId
+    if (Config.defaultPortal == "neo") {
+      go to Config.targetServer + "/site/" + siteId
+    } else {
+      go to Config.targetServer + "/xsl-portal/site/" + siteId
+    }
   }
 
   def gotoSite(siteName : String) {
     switch to defaultContent
-
     // if we are already on the right site, skip this
-    if (!className("siteTitle").element.text.contains(siteName)) {
+    if (!xpath("//*[@class='siteTitle']").element.text.contains(siteName)) {
       //If site is listed, click on site, if not click on "More Sites"
       if (webDriver.findElements(By.partialLinkText(siteName)).size() != 0) {
         click on partialLinkText(siteName)
       } else {
         click on cssSelector("a[title='More Sites']")
-        textField("txtSearch").value = siteName
+        if (Config.defaultPortal == "neo")
+          textField("txtSearch").value = siteName
         click on partialLinkText(siteName)
       }
     }
@@ -91,22 +107,32 @@ class Portal extends Page with Eventually{
     switch to defaultContent
 
     // if we are already on the right site, skip this
-    click on linkText("Home")
-    if (!className("siteTitle").element.text.contains(siteName)) {
+    if (Config.defaultPortal == "neo")
+      click on linkText("Home")
+    if (!xpath("//*[@class='siteTitle']").element.text.contains(siteName)) {
       //If site is listed, click on site, if not click on "More Sites"
       if (webDriver.findElements(By.partialLinkText(siteName)).size() != 0) {
         click on partialLinkText(siteName)
       } else {
         click on cssSelector("a[title='More Sites']")
-        textField("txtSearch").value = siteName
+        if (Config.defaultPortal == "neo")
+          textField("txtSearch").value = siteName
         //If site is found go to site, if not create the site
         if (webDriver.findElements(By.partialLinkText(siteName)).size() != 0) {
           click on partialLinkText(siteName)
         } else {
-          click on cssSelector("a[title='Close this drawer']")
-          if (!isMyWorkspace()) {
-            click on cssSelector("a[title='My Workspace']")
+          if (Config.defaultPortal == "neo") {
+            click on cssSelector("a[title='Close this drawer']")
+            if (!isMyWorkspace()) {
+              click on cssSelector("a[title='My Workspace']")
+            }
+          } else {
+            click on cssSelector("a[title='More Sites']")
+            if (!isAdminWorkspace()) {
+              click on cssSelector("a[title='Administration Workspace']")
+            }
           }
+
           createSite(siteType)
         }
       }

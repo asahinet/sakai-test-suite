@@ -1,6 +1,7 @@
 package com.anisakai.test.pageobjects
 
 import org.openqa.selenium.By
+import com.anisakai.test.Config
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,6 +16,8 @@ class WebContent extends Page {
 
   def addWebContent() : String = {
     switch to defaultContent
+    if (Config.defaultPortal == "xsl")
+      switch to frame(0)
     click on xpath("//a[@title='Edit']")
     switch to defaultContent
     textField("title-of-page").value = "Web Content"
