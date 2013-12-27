@@ -18,8 +18,11 @@ class Announcements extends Page {
   var status = 0
 
   def clickOptions() {
-
-    click on cssSelector("a[title='Message of the Day Options']")
+    if (Config.defaultPortal == "xsl") {
+      switch to defaultContent
+      switch to frame(5)
+    }
+    click on xpath("//*[@title='Message of the Day Options']")
 
   }
 
@@ -33,7 +36,7 @@ class Announcements extends Page {
 
   def checkCurrent() {
     switch to frame(0)
-    if (webDriver.findElement(By.className("synopticList")).getText().contains("Sakai Administrator")) {
+    if (webDriver.findElements(By.className("textPanelHeader")).isEmpty) {
       status = 1
     } else {
       status = 0

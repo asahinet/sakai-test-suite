@@ -27,6 +27,7 @@ class Config {
   val sakaiDistro : String = loadProperty("sakai.distro", "ani")
   val defaultAdminEid : String = loadProperty("sakai.admin.eid", "admin")
   val defaultAdminPassword : String = loadProperty("sakai.admin.pwd", "admin")
+  val defaultPortal : String = loadProperty("sakai.portal", "neo")
 
   def defaultCourseSiteId = "course-test-1"
   def defaultCourseSiteTitle = "Course Site Test 1"

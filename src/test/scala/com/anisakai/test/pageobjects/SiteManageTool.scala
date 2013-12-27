@@ -166,8 +166,6 @@ class SiteManageTool extends Page {
     click on cssSelector("[value=Continue]")
     textField("emailId").value = faker.lastName() + faker.numerify("####")
     click on cssSelector("[value=Continue]")
-    textField("title_sakai.lessonbuildertool").value = "Lesson Builder"
-    click on cssSelector("[value=Continue]")
     click on cssSelector("[value=Finish]")
   }
 

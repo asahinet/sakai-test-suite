@@ -4,13 +4,13 @@ Feature: Verifying all tool links are working correctly
     Given I am logged on as an admin user
 
   Scenario: Validate all tools are functional on a course site
-    Given Course:I am on 'Course Tools Test' 'Course' site
+    Given I am on 'Course Site Test 1' site
     When I click the course tool link the tool should load correctly
 
    Scenario: Validate all tools are functional on a project site
-     Given Project:I am on 'Project Tools Test' 'Project' site
+     Given I am on 'Project Site Test 1' site
      When I click the project tool link the tool should load correctly
 
-   Scenario: Validate all tools are functional on a portfolio site
-     Given Portfolio:I am on 'Portfolio Tools Test' 'Portfolio' site
-     When I click the portfolio tool link the tool should load correctly
+  ##Scenario: Validate all tools are functional on a portfolio site
+    #Given I am on 'Portfolio Site Test 1' site
+    #When I click the portfolio tool link the tool should load correctly

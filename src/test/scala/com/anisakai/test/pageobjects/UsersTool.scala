@@ -31,6 +31,7 @@ class UsersTool extends Page {
   def userTypeTextInput : TextField = textField("type")
 
   def createUser(eid : String, firstname : String, lastname : String, email : String, usertype : String, password : String)  {
+
     click on linkText("New User")
 
     this.userEid.value = eid
