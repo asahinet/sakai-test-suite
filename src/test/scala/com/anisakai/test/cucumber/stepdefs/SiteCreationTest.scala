@@ -5,6 +5,7 @@ import cucumber.runtime.PendingException
 import com.anisakai.test.pageobjects.{Portal, UsersTool, SiteManageTool}
 import cucumber.api.DataTable
 import junit.framework.Assert._
+import com.anisakai.test.Config
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,15 +25,10 @@ class SiteCreationTest extends ScalaDsl with EN with TearDown {
         val description = map.get("description")
         val contactname = map.get("contactname")
         var newlyCreatedSite: Boolean = true
-        if (siteType.equalsIgnoreCase("turn it in")) {
-          Portal.gotoSite("Administration Workspace")
-          Portal.gotoTool("Sites")
-          newlyCreatedSite = SiteManageTool.createSiteWithSitesTool(siteType, title, siteId)
-        } else {
-          Portal.gotoTool("Sites")
-          newlyCreatedSite = SiteManageTool.createSiteWithSitesTool(siteType, title, siteId)
-          Portal.gotoTool("Site Setup", true)
-        }
+        Portal.gotoAdminWorkspace()
+        Portal.gotoTool("Sites")
+        newlyCreatedSite = SiteManageTool.createSiteWithSitesTool(siteType, title, siteId)
+        Portal.gotoTool("Site Setup", true)
         SiteManageTool.findSiteAndEdit(title)
         SiteManageTool.editSite(description, description, contactname)
         if (newlyCreatedSite) {
@@ -84,18 +80,15 @@ class SiteCreationTest extends ScalaDsl with EN with TearDown {
 
   Then("""^I should see '(.+)' with a role of '(.+)'$"""){ (eid: String, role : String) =>
     SiteManageTool.verifyUserHasRole(eid, role)
-
   }
 
   Then("""^I add all the tools$"""){ () =>
     SiteManageTool.addAllTools()
-
   }
 
   When("""^I edit the '(.+)' site information$"""){ (siteTitle:String) =>
     SiteManageTool.findSiteAndEdit(siteTitle)
     SiteManageTool.editSite("description","description", "john smith")
-
   }
 
 }

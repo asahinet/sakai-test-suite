@@ -74,7 +74,7 @@ class SiteManageTool extends Page {
   def findSiteAndEdit(siteTitle : String){
     textField("search").value = siteTitle;
     click on cssSelector("[value=Search]")
-    click on checkbox("site1")
+    checkbox("site1").select()
     click on linkText("Edit")
   }
 
@@ -165,8 +165,6 @@ class SiteManageTool extends Page {
     click on checkbox("all")
     click on cssSelector("[value=Continue]")
     textField("emailId").value = faker.lastName() + faker.numerify("####")
-    click on cssSelector("[value=Continue]")
-    textField("title_sakai.lessonbuildertool").value = "Lesson Builder"
     click on cssSelector("[value=Continue]")
     click on cssSelector("[value=Finish]")
   }

@@ -4,6 +4,7 @@ import org.openqa.selenium.{WebElement, By}
 import scala.collection.mutable.ListBuffer
 import java.util.List
 import java.util.concurrent.TimeUnit
+import com.anisakai.test.Config
 
 
 /**
@@ -18,11 +19,17 @@ object VerifyTools extends VerifyTools
 class VerifyTools extends Page {
   def checkTools(): Boolean = {
     var fails = ListBuffer[String]()
+    var groupName: String = ""
+    if (Config.defaultPortal == "neo") {
+      groupName = "toolMenuLink"
+    } else {
+      groupName = "icon-sakai-"
+    }
     try {
-      for (i <- 0 until webDriver.findElements(By.className("toolMenuLink")).size) {
+      for (i <- 0 until webDriver.findElements(By.xpath("//*[contains(@class, '"+groupName+"')]")).size) {
         switch to defaultContent
-        var toolName = webDriver.findElements(By.className("toolMenuLink")).get(i).getText()
-        click on webDriver.findElements(By.className("toolMenuLink")).get(i)
+        var toolName = webDriver.findElements(By.xpath("//*[contains(@class, '"+groupName+"')]")).get(i).getText()
+        click on webDriver.findElements(By.xpath("//*[contains(@class, '"+groupName+"')]")).get(i)
         webDriver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS)
         var isPresent = !webDriver.findElements(By.xpath("//iframe[contains(@title,$toolName)]")).isEmpty
         if (!isPresent) {

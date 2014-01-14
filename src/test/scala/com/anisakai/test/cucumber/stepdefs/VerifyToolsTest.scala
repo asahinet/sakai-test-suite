@@ -18,9 +18,9 @@ class VerifyToolsTest extends ScalaDsl with EN with TearDown{
   }
 
   //Scenario: Course Site
-  Given("""^Course:I am on '(.+)' '(.+)' site$"""){ (siteName: String, siteType: String) =>
+  Given("""^I am on '(.+)' site$"""){ (siteName: String) =>
 
-    Portal.gotoSite(siteName, siteType)
+    Portal.gotoSite(siteName)
   }
 
   When("""^I click the course tool link the tool should load correctly$"""){ () =>
@@ -28,20 +28,15 @@ class VerifyToolsTest extends ScalaDsl with EN with TearDown{
   }
 
   //Scenario: Project Site
-  Given("""^Project:I am on '(.+)' '(.+)' site$"""){ (siteName: String, siteType: String) =>
-    Portal.gotoSite(siteName, siteType)
-  }
 
   When("""^I click the project tool link the tool should load correctly$"""){ () =>
     assertTrue(VerifyTools.checkTools())
   }
 
   //Scenario: Portfolio Site
-  Given("""^Portfolio:I am on '(.+)' '(.+)' site$"""){ (siteName: String, siteType: String) =>
-    Portal.gotoSite(siteName, siteType)
-  }
-
+  /*
   When("""^I click the portfolio tool link the tool should load correctly$"""){ () =>
     assertTrue(VerifyTools.checkTools())
   }
+  */
 }

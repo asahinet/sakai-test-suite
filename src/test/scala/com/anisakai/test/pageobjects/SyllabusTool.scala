@@ -25,12 +25,24 @@ class SyllabusTool extends Page {
     return syllabusName
   }
 
+  def noneExist(): Boolean = {
+    switch to defaultContent
+    click on xpath("//a[contains(@title,'Reset')]")
+    switch to frame(0)
+    return !webDriver.findElements(By.xpath("//*[contains(text(), 'No Syllabus currently exists.')]")).isEmpty
+
+  }
+
   def syllabusExists(syllabusName: String) : Boolean = {
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
     switch to frame(0)
-    if (webDriver.findElements(By.className("textPanelHeader")).get(0).getText.equalsIgnoreCase(syllabusName)) {
-      return true
+    if(!webDriver.findElements(By.className("textPanelHeader")).isEmpty) {
+      if (webDriver.findElements(By.className("textPanelHeader")).get(0).getText.equalsIgnoreCase(syllabusName)) {
+        return true
+      } else {
+        return false
+      }
     } else {
       return false
     }
@@ -52,10 +64,32 @@ class SyllabusTool extends Page {
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
     switch to frame(0)
+    click on linkText("Create/Edit")
     click on linkText(syllabusName)
     textField("_id3:title").value = newName
     click on name("_id3:_id55")
     return newName
+  }
+
+  def removeAllSyllabus() {
+    switch to defaultContent
+    click on xpath("//a[contains(@title,'Reset')]")
+    switch to frame(0)
+    if (!webDriver.findElements(By.xpath("//iframe[@src='https://nightly.cle.rsmart.com/portal/']")).isEmpty()) {
+      click on linkText("Create/Edit")
+      click on linkText("Redirect")
+      textField("redirectForm:urlValue").clear()
+      click on name("redirectForm:_id13")
+    }
+    switch to defaultContent
+    click on xpath("//a[contains(@title,'Reset')]")
+    switch to frame(0)
+    click on linkText("Create/Edit")
+    for (i <- 0 until webDriver.findElements(By.xpath("//*[contains(@title, 'Select to Remove:')]")).size) {
+      webDriver.findElements(By.xpath("//*[contains(@title, 'Select to Remove:')]")).get(i).click()
+    }
+    click on cssSelector("[title='Update']")
+    click on name("_id2:_id16")
   }
 
 

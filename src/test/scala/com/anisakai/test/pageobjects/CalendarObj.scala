@@ -1,6 +1,5 @@
 package com.anisakai.test.pageobjects
 
-import org.scalatest.selenium.WebBrowser.click
 import org.openqa.selenium.By
 import java.util.Calendar
 import org.openqa.selenium.support.ui.Select
@@ -21,7 +20,7 @@ class CalendarObj extends Page {
   }
 
   def addCalEvent() {
-    click on webDriver.findElement(By.className("firstToolBarItem"))
+    click on xpath("//a[contains(@title,'Add')]")
   }
 
   def createRandomEvent() : String = {
@@ -35,7 +34,7 @@ class CalendarObj extends Page {
 
     val rand = new Random();
     val hour = rand.nextInt(12) + 1;
-    var am_pm = "am"
+    var am_pm = "AM"
 
     textField("activitytitle").value = eventTitle
     singleSel("month").value = month.toString()

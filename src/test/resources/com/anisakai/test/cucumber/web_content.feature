@@ -7,11 +7,11 @@ Feature: Creating web content on a course
 
 Scenario: Adding web content to a course
   Given I'm logged in as an 'instructor'
-  And I have created a course with 'Web Content' tool
+  And I am on a course with 'Web Content' tool
   When I add web content to the tool
   Then The web page should be displayed
 
 Scenario: Viewing web content as a student
   When I'm logged in as a 'student'
-  And I have created a course with 'Web Content' tool
+  And I am on a course with 'Web Content' tool
   Then The web page should be displayed

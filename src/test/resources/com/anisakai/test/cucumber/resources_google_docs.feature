@@ -1,4 +1,4 @@
-@resources @suite
+@resources
 Feature: Adding Google Docs to Resources
 
   As an Instructor I want to verify that I can add google docs to resources and view
@@ -6,13 +6,13 @@ Feature: Adding Google Docs to Resources
 
 Scenario: add a google document to resources
   Given I'm logged in as an 'instructor'
-  And I have created a 'course'
+  And I am on a course with 'Resources' tool
   When I add a 'link to google docs' with default properties to resources
   Then I should see the google doc in resources
 
 Scenario: add a google document to resources with a from date in the future
   Given I'm logged in as an 'instructor'
-  And I create a course
+  And I am on a course with 'Resources' tool
   And I add a 'student' to the course
   When I add a 'link to google docs'
   And I set the from date in the future
@@ -20,7 +20,7 @@ Scenario: add a google document to resources with a from date in the future
 
 Scenario: add a google document to resources with an until date in the past
   Given I'm logged in as an 'instructor'
-  And I create a course
+  And I am on a course with 'Resources' tool
   And I add a 'student' to the course
   When I add a 'link to google docs'
   And I set the until date in the past
