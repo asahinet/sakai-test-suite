@@ -21,7 +21,7 @@ class MessagesCRUD extends Page {
     click on linkText("Compose Message")
     def select = new Select(webDriver.findElement(By.id("compose:list1")))
     select.deselectAll()
-    select.selectByVisibleText("All Participants")
+    select.selectByIndex(0)
     textField("compose:subject").value = messageSub
     Portal.richTextEditor()
     if (attachment) {

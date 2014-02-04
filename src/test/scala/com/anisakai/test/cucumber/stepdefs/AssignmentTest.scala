@@ -32,7 +32,7 @@ class AssignmentTest extends ScalaDsl with EN with TearDown{
 
   When("""^I create an assignment in '(.*)' site$"""){ (siteType: String) =>
     if (siteType.equalsIgnoreCase("course")) {
-      Portal.gotoSiteDirectly(Config.defaultCourseSiteId);
+      Portal.gotoSite(Config.defaultCourseSiteTitle)
       Portal.gotoTool("Assignments")
       AssignmentTool.gotoAdd()
       assignmentTitle = AssignmentTool.assignment()
@@ -52,7 +52,7 @@ class AssignmentTest extends ScalaDsl with EN with TearDown{
     assertTrue(Portal.isEnrolled(Config.defaultCourseSiteTitle))
   }
   When("""^I open the assignment listed$"""){ () =>
-    Portal.gotoSiteDirectly(Config.defaultCourseSiteId)
+    Portal.gotoSite(Config.defaultCourseSiteTitle)
     Portal.gotoTool("Assignments", true)
     AssignmentTool.openAssignment(assignmentTitle)
   }
@@ -62,7 +62,7 @@ class AssignmentTest extends ScalaDsl with EN with TearDown{
   }
 
   Given("""^I have created a course with an assignment$"""){ () =>
-    Portal.gotoSiteDirectly(Config.defaultCourseSiteId)
+    Portal.gotoSite(Config.defaultCourseSiteTitle)
     Portal.gotoTool("Assignments")
     assertTrue(CalendarObj.isAdded(assignmentTitle))
   }
@@ -89,7 +89,7 @@ class AssignmentTest extends ScalaDsl with EN with TearDown{
 
   Then("""^the '(.+)' should no longer have access$"""){ (role : String) =>
     login(role)
-    Portal.gotoSiteDirectly(Config.defaultCourseSiteId)
+    Portal.gotoSite(Config.defaultCourseSiteTitle)
     Portal.gotoTool("Assignments", true)
     assertTrue(AssignmentTool.removed(assignmentTitle))
   }

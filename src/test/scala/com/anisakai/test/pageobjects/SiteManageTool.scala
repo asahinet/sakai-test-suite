@@ -164,9 +164,12 @@ class SiteManageTool extends Page {
     click on linkText("Edit Tools")
     click on checkbox("all")
     click on cssSelector("[value=Continue]")
-    textField("emailId").value = faker.lastName() + faker.numerify("####")
     click on cssSelector("[value=Continue]")
     click on cssSelector("[value=Finish]")
+    eventually {
+      switch to defaultContent
+    }
+
   }
 
 }

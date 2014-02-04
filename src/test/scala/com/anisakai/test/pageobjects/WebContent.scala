@@ -21,7 +21,7 @@ class WebContent extends Page {
     click on xpath("//a[@title='Edit']")
     switch to defaultContent
     textField("title-of-page").value = "Web Content"
-    textField("source").value = "https://nightly.cle.rsmart.com/portal/"
+    textField("source").value = Config.targetServer
     click on name("sakai.update")
     return "https://nightly.cle.rsmart.com/portal/"
   }
