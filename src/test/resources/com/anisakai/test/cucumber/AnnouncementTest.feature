@@ -1,4 +1,4 @@
-@suite @announcement
+@announcement
 
 Feature: Test MOTD
 

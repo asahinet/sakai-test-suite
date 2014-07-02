@@ -33,10 +33,7 @@ class UsersTool extends Page {
   def userTypeTextInput : TextField = textField("type")
 
   def createUser(eid : String, firstname : String, lastname : String, email : String, usertype : String, password : String)  {
-    if (Config.defaultPortal == "xsl") {
-      switch to defaultContent
-      switch to frame(1)
-    }
+    Portal.xslFrameOne
     click on linkText("New User")
     this.userEid.value = eid
     this.firstName.value = firstname
@@ -75,6 +72,7 @@ class UsersTool extends Page {
   }
 
   def enterSearchText(search : String) {
+    Portal.xslFrameOne
     this.search.value = search
   }
 

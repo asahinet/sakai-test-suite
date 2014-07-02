@@ -17,7 +17,7 @@ class WebContent extends Page {
   def addWebContent() : String = {
     switch to defaultContent
     if (Config.defaultPortal == "xsl")
-      switch to frame(0)
+      Portal.getToFrameZero
     click on xpath("//a[@title='Edit']")
     switch to defaultContent
     textField("title-of-page").value = "Web Content"

@@ -20,6 +20,20 @@ class Portal extends Page with Eventually{
 //  def eid: TextField = textField("eid")
 //  def password: PasswordField = pwdField("pw")
 
+  def getToFrameZero {
+    switch to defaultContent
+    switch to frame(0)
+  }
+
+  def xslFrameOne {
+    if (Config.defaultPortal == "xsl") {
+      switch to defaultContent
+      switch to frame(1)
+    } else {
+      Portal.getToFrameZero
+    }
+  }
+
   def login() {
     submit()
   }
@@ -92,10 +106,17 @@ class Portal extends Page with Eventually{
   }
 
   def gotoSiteDirectly(siteId : String) {
+    var server = Config.targetServer
+    if (server.contains("/xlogin")){
+      server = server.dropRight(7)
+    }
+    if (server.contains("/xsl-portal")) {
+      server = server.dropRight(11)
+    }
     if (Config.defaultPortal == "neo") {
-      go to Config.targetServer + "/site/" + siteId
+      go to server + "/site/" + siteId
     } else {
-      go to Config.targetServer + "/xsl-portal/site/" + siteId
+      go to server + "/xsl-portal/site/" + siteId
     }
   }
 
@@ -105,7 +126,7 @@ class Portal extends Page with Eventually{
     if (Config.defaultPortal == "xsl") {
       siteTitle = webDriver.findElement(By.id("siteTitle"))
     } else {
-      siteTitle = webDriver.findElement(By.className("siteTitle"))
+      siteTitle = webDriver.findElement(By.className("title"))
     }
     // if we are already on the right site, skip this
     if (!siteTitle.getText.contains(siteName)) {
@@ -188,18 +209,20 @@ class Portal extends Page with Eventually{
     }
 
     if (reset)  {
+      switch to defaultContent
       click on xpath("//a[contains(@title,'Reset')]")
+      eventually (switch to frame(0))
     }
 
-    eventually (switch to frame(0))
+
   }
 
   def richTextEditor(): String = {
     val text = faker.paragraph(4)
     switch to frame(xpath("//iframe[contains(@title,'Rich text editor')]"))
-    webDriver.switchTo().activeElement().sendKeys(text)
-    webDriver.switchTo().defaultContent()
-    switch to frame(0)
+    webDriver.switchTo.activeElement.sendKeys(text)
+    webDriver.switchTo.defaultContent
+    getToFrameZero
     return text
   }
 

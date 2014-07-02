@@ -22,6 +22,7 @@ class Announcements extends Page {
       switch to defaultContent
       switch to frame(5)
     }
+    switch to frame(0)
     click on xpath("//*[@title='Message of the Day Options']")
 
   }
@@ -35,7 +36,7 @@ class Announcements extends Page {
   }
 
   def checkCurrent() {
-    switch to frame(0)
+    Portal.getToFrameZero
     if (webDriver.findElements(By.className("textPanelHeader")).isEmpty) {
       status = 1
     } else {
@@ -48,8 +49,8 @@ class Announcements extends Page {
   }
 
   def isChanged() : Boolean = {
-    if (status == 0) {
-      return webDriver.findElement(By.className("textPanelFooter")).isDisplayed()
+    if (status == 1) {
+      return webDriver.findElement(By.className("textPanelHeader")).isDisplayed()
     } else {
       return webDriver.findElement(By.className("textPanel")).isDisplayed()
     }

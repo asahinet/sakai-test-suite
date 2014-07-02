@@ -41,11 +41,11 @@ class AssignmentTest extends ScalaDsl with EN with TearDown{
   }
 
   Then("""^I see an assignment listed$"""){ () =>
-    assertTrue(CalendarObj.isAdded(assignmentTitle))
+    assertTrue(AssignmentTool.isAdded(assignmentTitle))
   }
 
   And("""^I can view the assignment as instructor$"""){ () =>
-    assertTrue(AssignmentTool.isAdded(assignmentTitle))
+    assertTrue(AssignmentTool.isViewable(assignmentTitle))
   }
 
   Given("""^that student has been added to my course$"""){ () =>
@@ -58,13 +58,12 @@ class AssignmentTest extends ScalaDsl with EN with TearDown{
   }
 
   Then("""^I should be able to submit the assignment$"""){ () =>
-    assertTrue(AssignmentTool.submitAssignment())
+    assertTrue(AssignmentTool.studentSubmitAssignment())
   }
 
-  Given("""^I have created a course with an assignment$"""){ () =>
+  And("""^I have created a course with an assignment$"""){ () =>
     Portal.gotoSite(Config.defaultCourseSiteTitle)
     Portal.gotoTool("Assignments")
-    assertTrue(CalendarObj.isAdded(assignmentTitle))
   }
 
   When("""^I edit the existing assignment$"""){ () =>

@@ -1,5 +1,8 @@
 package com.anisakai.test.pageobjects
 
+import org.openqa.selenium.By
+import com.anisakai.test.Config
+
 /**
  * Created with IntelliJ IDEA.
  * User: jbush
@@ -12,8 +15,7 @@ object SiteManageTool extends SiteManageTool {
 
 class SiteManageTool extends Page {
   def manageAccess(publish: Boolean, globalAccess: Boolean) {
-    switch to defaultContent
-    switch to frame(0)
+    Portal.xslFrameOne
     click on linkText("Manage Access")
     click on radioButton("publish")
 
@@ -24,6 +26,7 @@ class SiteManageTool extends Page {
 
 
   def createSiteWithSitesTool(siteType:String, siteTitle:String, siteId:String): Boolean = {
+    Portal.xslFrameOne
     click on linkText("New Site" )
     textField("id").value = siteId
     textField("title").value = siteTitle
@@ -57,6 +60,10 @@ class SiteManageTool extends Page {
   }
 
   def addUserWithRole(eid: String, role: String){
+    if (Config.defaultPortal == "xsl") {
+      switch to defaultContent
+      switch to frame(1)
+    }
     click on linkText("Add Participants" )
     textArea("content::officialAccountParticipant").value = eid
     click on cssSelector("[value=Continue]")
@@ -71,11 +78,19 @@ class SiteManageTool extends Page {
     }
   }
 
-  def findSiteAndEdit(siteTitle : String){
+  def findSiteAndEdit(siteTitle : String): Boolean = {
+    var found = false
+    Portal.xslFrameOne
     textField("search").value = siteTitle;
     click on cssSelector("[value=Search]")
-    checkbox("site1").select()
-    click on linkText("Edit")
+    if (className("instruction").webElement(webDriver).getText.contains("No sites were found")){
+      found = false
+    } else {
+      checkbox("site1").select()
+      click on linkText("Edit")
+      found = true
+    }
+    return found
   }
 
   def createProjectSite(title: String, shortDescription: String,
@@ -118,6 +133,7 @@ class SiteManageTool extends Page {
   def createSite(siteType: String, shortDescription: String, longDescription: String,
                  contactName: String,
                  siteMetaData: (Map[String, String]) => Unit, siteMetaDataArgs: Map[String, String]): String = {
+    Portal.getToFrameZero
     click on linkText("New")
     click on radioButton(siteType.toLowerCase())
     click on id("submitBuildOwn")
@@ -132,7 +148,12 @@ class SiteManageTool extends Page {
 
     click on checkbox("all")
     click on cssSelector("[value=Continue]")
-    textField("emailId").value = faker.lastName() + faker.numerify("####")
+    if (className("emailId").findElement(webDriver).isDefined) {
+      textField("emailId").value = faker.lastName() + faker.numerify("####")
+    }
+    if (className("source_sakai.iframe").findElement(webDriver).isDefined) {
+      textField("source_sakai.iframe").value = Config.targetServer
+    }
     click on cssSelector("[value=Continue]")
     click on cssSelector("[value=Continue]")
 
@@ -140,7 +161,7 @@ class SiteManageTool extends Page {
 
     click on "addSite"
     eventually {
-      switch to frame(0)
+      Portal.getToFrameZero
     }
 
     return siteTitle
@@ -159,13 +180,22 @@ class SiteManageTool extends Page {
 
 
   def addAllTools() {
-    switch to defaultContent
-    switch to frame(0)
+    Portal.xslFrameOne
     click on linkText("Edit Tools")
     click on checkbox("all")
     click on cssSelector("[value=Continue]")
+    if (!webDriver.findElements(By.id("emailId")).isEmpty) {
+      textField("emailId").value = faker.lastName() + faker.numerify("####")
+    }
+    if (!webDriver.findElements(By.id("source_sakai.iframe")).isEmpty) {
+      textField("source_sakai.iframe").value = Config.targetServer
+    }
     click on cssSelector("[value=Continue]")
-    click on cssSelector("[value=Finish]")
+    if (Config.defaultPortal == "xsl") {
+      click on name("review")
+    } else {
+      click on cssSelector("[value=Finish]")
+    }
     eventually {
       switch to defaultContent
     }

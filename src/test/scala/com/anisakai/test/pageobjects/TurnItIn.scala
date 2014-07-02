@@ -35,8 +35,7 @@ class TurnItIn extends Page {
 
   def turnItInExists (assignmentTitle: String) : Boolean = {
     click on xpath("//a[.='Edit "+assignmentTitle+"']")
-    switch to defaultContent
-    switch to frame(0)
+    Portal.getToFrameZero
 
     if (checkbox("new_assignment_use_review_service").isSelected) {
       return true
@@ -48,10 +47,8 @@ class TurnItIn extends Page {
   def uploadFile() {
     webDriver.findElement(By.className("upload")).sendKeys(FileUtil.createRandomTextFile(3))
     click on name("post")
-    eventually(switch to defaultContent)
-    switch to frame(0)
+    eventually(Portal.getToFrameZero)
     click on name("eventSubmit_doConfirm_assignment_submission")
-    switch to defaultContent
-    switch to frame(0)
+    Portal.getToFrameZero
   }
 }
