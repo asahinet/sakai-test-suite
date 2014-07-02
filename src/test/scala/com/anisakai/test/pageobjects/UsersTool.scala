@@ -20,6 +20,8 @@ class UsersTool extends Page {
   var currentFirstName : String = null
   var oldFirstName : String = null
 
+  switch to defaultContent
+
   def userEid : TextField = textField("eid")
   def lastName : TextField = textField("last-name")
   def search: TextField = textField("search")
@@ -31,9 +33,8 @@ class UsersTool extends Page {
   def userTypeTextInput : TextField = textField("type")
 
   def createUser(eid : String, firstname : String, lastname : String, email : String, usertype : String, password : String)  {
-
+    Portal.xslFrameOne
     click on linkText("New User")
-
     this.userEid.value = eid
     this.firstName.value = firstname
     this.lastName.value = lastname
@@ -71,6 +72,7 @@ class UsersTool extends Page {
   }
 
   def enterSearchText(search : String) {
+    Portal.xslFrameOne
     this.search.value = search
   }
 
@@ -94,8 +96,6 @@ class UsersTool extends Page {
 
   }
 
-
-
   def foundUser(eid : String) : Boolean = {
     this.currentEid = eid;
     return partialLinkText(eid) != null
@@ -108,8 +108,6 @@ class UsersTool extends Page {
     this.currentFirstName = firstName
     click on name("eventSubmit_doSave")
   }
-
-
 
   def hasFirstNameChanged() : Boolean = {
     return cssSelector("h4:contains('" + currentFirstName + "')") != null

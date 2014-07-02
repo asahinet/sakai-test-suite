@@ -20,20 +20,21 @@ class CalendarObj extends Page {
   }
 
   def addCalEvent() {
+    Portal.getToFrameZero
     click on xpath("//a[contains(@title,'Add')]")
   }
 
   def createRandomEvent() : String = {
     val eventTitle = faker.letterify("??????????")
     val cal = Calendar.getInstance
-    cal.add(Calendar.DATE, 1);
+    cal.add(Calendar.DATE, 1)
 
     val day = cal.get(Calendar.DAY_OF_MONTH)
     val month = cal.get(Calendar.MONTH) + 1
     val year = cal.get(Calendar.YEAR)
 
-    val rand = new Random();
-    val hour = rand.nextInt(12) + 1;
+    val rand = new Random()
+    val hour = rand.nextInt(12) + 1
     var am_pm = "AM"
 
     textField("activitytitle").value = eventTitle

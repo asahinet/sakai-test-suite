@@ -58,9 +58,10 @@ class VerifyTools extends Page {
 
   def hasFailed(fails : ListBuffer[String], failure: Boolean): Boolean = {
     if (fails.isEmpty || failure) {
-       println("Failed Tools:\n")
-       fails.foreach(e => println(e))
-       true
+      println("Failed Tools:")
+      fails.foreach(e => println(e))
+      if (fails.isEmpty) { println("None\n") }
+      true
     } else {
       false
     }

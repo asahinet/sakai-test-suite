@@ -29,12 +29,12 @@ class SiteCreationTest extends ScalaDsl with EN with TearDown {
         Portal.gotoTool("Sites")
         newlyCreatedSite = SiteManageTool.createSiteWithSitesTool(siteType, title, siteId)
         Portal.gotoTool("Site Setup", true)
-        SiteManageTool.findSiteAndEdit(title)
-        SiteManageTool.editSite(description, description, contactname)
-        if (newlyCreatedSite) {
-          SiteManageTool.addAllTools()
+        if (SiteManageTool.findSiteAndEdit(title)) {
+          SiteManageTool.editSite(description, description, contactname)
+            SiteManageTool.addAllTools()
+
+          SiteManageTool.manageAccess(true, false)
         }
-        SiteManageTool.manageAccess(true, false)
       }
   }
 

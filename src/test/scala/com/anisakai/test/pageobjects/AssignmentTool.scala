@@ -1,5 +1,6 @@
 package com.anisakai.test.pageobjects
 
+import com.anisakai.test.Config
 import org.openqa.selenium.By
 import java.util.Calendar
 import scala.util.Random
@@ -19,11 +20,9 @@ class AssignmentTool extends Page {
   cal.add(Calendar.DATE, 1)
 
   def gotoAdd() {
-    if (webDriver.findElement(By.xpath("//*[@class = 'current']")).getText != "Assignment List")
-      click on linkText("Assignment List")
+    Portal.xslFrameOne
     click on linkText("Add")
-    switch to defaultContent
-    switch to frame(0)
+    Portal.getToFrameZero
   }
 
   def assignment() : String ={
@@ -31,32 +30,38 @@ class AssignmentTool extends Page {
   }
 
   def assignment(turnItIn: Boolean, correct: Boolean) : String = {
+    Portal.xslFrameOne
     val assignmentTitle = faker.letterify("?????? ???????")
-    val day = cal.get(Calendar.DAY_OF_MONTH) - 1
+    var day = cal.get(Calendar.DAY_OF_MONTH) - 2
     val dueday = cal.get(Calendar.DAY_OF_MONTH) + 1
-    val month = cal.get(Calendar.MONTH) + 1
+    var openmonth = cal.get(Calendar.MONTH) + 1
+    val duemonth = cal.get(Calendar.MONTH) + 1
+    if (day < 1) {
+      day = 30
+      openmonth = cal.get(Calendar.MONTH)
+    }
     val year = cal.get(Calendar.YEAR)
 
-    val rand = new Random();
-    val hour = rand.nextInt(12) + 1;
+    val rand = new Random()
+    val hour = rand.nextInt(12) + 1
     var am_pm = "AM"
     textField("new_assignment_title").value = assignmentTitle
     //Set open date
-    singleSel("new_assignment_openmonth").value = month.toString()
+    singleSel("new_assignment_openmonth").value = openmonth.toString()
     singleSel("new_assignment_openday").value = day.toString()
     singleSel("new_assignment_openyear").value = year.toString()
     singleSel("new_assignment_openhour").value = hour.toString()
     singleSel("new_assignment_openmin").value = "0"
     singleSel("new_assignment_openampm").value = am_pm
     //Set due date
-    singleSel("new_assignment_duemonth").value = month.toString()
+    singleSel("new_assignment_duemonth").value = duemonth.toString()
     singleSel("new_assignment_dueday").value = dueday.toString()
     singleSel("new_assignment_dueyear").value = year.toString()
     singleSel("new_assignment_duehour").value = hour.toString()
     singleSel("new_assignment_duemin").value = "0"
     singleSel("new_assignment_dueampm").value = am_pm
     //Set close date
-    singleSel("new_assignment_closemonth").value = month.toString()
+    singleSel("new_assignment_closemonth").value = duemonth.toString()
     singleSel("new_assignment_closeday").value = dueday.toString()
     singleSel("new_assignment_closeyear").value = year.toString()
     singleSel("new_assignment_closehour").value = hour.toString()
@@ -78,6 +83,7 @@ class AssignmentTool extends Page {
     if (turnItIn)
       checkbox("new_assignment_use_review_service").select()
     Portal.richTextEditor()
+    Portal.xslFrameOne
     click on name("post")
 
     eventually (switch to defaultContent)
@@ -86,29 +92,38 @@ class AssignmentTool extends Page {
     return assignmentTitle
   }
 
-  def isAdded(assignmentTitle : String) : Boolean = {
+  def isViewable(assignmentTitle : String) : Boolean = {
     click on linkText(assignmentTitle)
-    switch to defaultContent
-    switch to frame(0)
+    Portal.xslFrameOne
     return webDriver.findElement(By.className("discTria")).getText().contains(assignmentTitle)
   }
 
+  def isAdded(eventTitle : String) : Boolean = {
+    Portal.xslFrameOne
+    return linkText(eventTitle).element.isDisplayed
+  }
+
   def openAssignment(assignmentTitle: String) {
+    switch to defaultContent
+    click on xpath("//a[@title='Reset']")
+    eventually (Portal.xslFrameOne)
     click on linkText(assignmentTitle)
     eventually (switch to defaultContent)
     switch to frame(0)
   }
 
-  def submitAssignment() : Boolean = {
+  def studentSubmitAssignment() : Boolean = {
+    Portal.xslFrameOne
     Portal.richTextEditor()
+    Portal.xslFrameOne
     click on name("post")
     return xpath("//*[@class='success']").element.isDisplayed
   }
 
   def gotoEdit(assignmentTitle : String) : Array[String] = {
+    Portal.xslFrameOne
     click on xpath("//a[.='Edit "+assignmentTitle+"']")
-    switch to defaultContent
-    switch to frame(0)
+    Portal.xslFrameOne
 
     var current = new Array[String](2)
     current(0) = textField("new_assignment_title").value
@@ -116,6 +131,9 @@ class AssignmentTool extends Page {
 
     return current
   }
+
+
+
 
   def edit(current : Array[String]) : String = {
     val newTitle = faker.letterify("?????? ???????")
@@ -128,8 +146,7 @@ class AssignmentTool extends Page {
 
   def verifyEdit(assignmentTitle : String, current : Array[String]) : Boolean = {
     click on xpath("//a[.='Edit "+assignmentTitle+"']")
-    switch to defaultContent
-    switch to frame(0)
+    Portal.xslFrameOne
     if (textField("new_assignment_title").value != current(0) && singleSel("new_assignment_dueday").value != current(1) && singleSel("new_assignment_closeday").value != current(1)) {
       return true
     } else {
@@ -138,6 +155,7 @@ class AssignmentTool extends Page {
   }
 
   def deleteAssignment(assignmentTitle : String) {
+    Portal.xslFrameOne
     checkbox(xpath("//label[@class='skip' and contains(text(),'"+ assignmentTitle +"')]/preceding-sibling::input[@type='checkbox']")).select()
     click on name("eventSubmit_doDelete_confirm_assignment")
     click on name("eventSubmit_doDelete_assignment")

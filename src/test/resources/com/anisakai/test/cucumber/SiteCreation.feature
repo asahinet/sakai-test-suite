@@ -18,6 +18,13 @@ Feature: Site Management
       | project-test-2 | Project Site Test 2   | for testing  | joe         |
       | project-test-3 | Project Site Test 3   | for testing  | billy       |
 
+  Scenario:  Create Portfolio Sites
+    Given the following 'portfolio' sites exist:
+      | id             | title                 | description  | contactname |
+      | portfolio-test-1 | Portfolio Site Test 1   | for testing  | sally       |
+      | portfolio-test-2 | Portfolio Site Test 2   | for testing  | joe         |
+      | portfolio-test-3 | Portfolio Site Test 3   | for testing  | billy       |
+
   Scenario:  Create memberships in existing sites
     Given the following memberships exist:
     | site-id     | user-eid     | role        |
@@ -35,10 +42,10 @@ Feature: Site Management
 
 
 
-  Scenario:  Create A Site
-    Given I am on the 'Administration Workspace' site using the 'Site Setup' tool
-    When I create a site with random data
-    And add 'instructor1' as an 'Instructor'
-    And add 'student01' as a 'Student'
-    Then I should see 'instructor1' with a role of 'Instructor'
-    And I should see 'student01' with a role of 'Student'
+  #Scenario:  Create A Site
+   # Given I am on the 'Administration Workspace' site using the 'Site Setup' tool
+   # When I create a site with random data
+   # And add 'instructor1' as an 'Instructor'
+   # And add 'student01' as a 'Student'
+   # Then I should see 'instructor1' with a role of 'Instructor'
+   # And I should see 'student01' with a role of 'Student'

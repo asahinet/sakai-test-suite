@@ -32,7 +32,7 @@ class AssignmentTest extends ScalaDsl with EN with TearDown{
 
   When("""^I create an assignment in '(.*)' site$"""){ (siteType: String) =>
     if (siteType.equalsIgnoreCase("course")) {
-      Portal.gotoSiteDirectly(Config.defaultCourseSiteId);
+      Portal.gotoSite(Config.defaultCourseSiteTitle)
       Portal.gotoTool("Assignments")
       AssignmentTool.gotoAdd()
       assignmentTitle = AssignmentTool.assignment()
@@ -41,30 +41,29 @@ class AssignmentTest extends ScalaDsl with EN with TearDown{
   }
 
   Then("""^I see an assignment listed$"""){ () =>
-    assertTrue(CalendarObj.isAdded(assignmentTitle))
+    assertTrue(AssignmentTool.isAdded(assignmentTitle))
   }
 
   And("""^I can view the assignment as instructor$"""){ () =>
-    assertTrue(AssignmentTool.isAdded(assignmentTitle))
+    assertTrue(AssignmentTool.isViewable(assignmentTitle))
   }
 
   Given("""^that student has been added to my course$"""){ () =>
     assertTrue(Portal.isEnrolled(Config.defaultCourseSiteTitle))
   }
   When("""^I open the assignment listed$"""){ () =>
-    Portal.gotoSiteDirectly(Config.defaultCourseSiteId)
+    Portal.gotoSite(Config.defaultCourseSiteTitle)
     Portal.gotoTool("Assignments", true)
     AssignmentTool.openAssignment(assignmentTitle)
   }
 
   Then("""^I should be able to submit the assignment$"""){ () =>
-    assertTrue(AssignmentTool.submitAssignment())
+    assertTrue(AssignmentTool.studentSubmitAssignment())
   }
 
-  Given("""^I have created a course with an assignment$"""){ () =>
-    Portal.gotoSiteDirectly(Config.defaultCourseSiteId)
+  And("""^I have created a course with an assignment$"""){ () =>
+    Portal.gotoSite(Config.defaultCourseSiteTitle)
     Portal.gotoTool("Assignments")
-    assertTrue(CalendarObj.isAdded(assignmentTitle))
   }
 
   When("""^I edit the existing assignment$"""){ () =>
@@ -89,7 +88,7 @@ class AssignmentTest extends ScalaDsl with EN with TearDown{
 
   Then("""^the '(.+)' should no longer have access$"""){ (role : String) =>
     login(role)
-    Portal.gotoSiteDirectly(Config.defaultCourseSiteId)
+    Portal.gotoSite(Config.defaultCourseSiteTitle)
     Portal.gotoTool("Assignments", true)
     assertTrue(AssignmentTool.removed(assignmentTitle))
   }
