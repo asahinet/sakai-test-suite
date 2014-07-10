@@ -2,6 +2,7 @@ package com.anisakai.test.pageobjects
 
 import com.anisakai.test.Config
 import org.openqa.selenium.By
+import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 
 object SyllabusTool extends SyllabusTool
 class SyllabusTool extends Page {
@@ -11,19 +12,28 @@ class SyllabusTool extends Page {
   }
 
   def addSyllabus(redirect: Boolean) : String = {
+    def wait = new WebDriverWait(webDriver, 10)
+
     val syllabusName: String = faker.letterify("??????")
     Portal.xslFrameOne
     if (redirect) {
-      click on linkText("Redirect")
+      click on partialLinkText("Redirect")
       textField("redirectForm:urlValue").value = Config.targetServer
       click on name("redirectForm:_id13")
     } else {
-      click on linkText("Add Item")
+      click on partialLinkText("Add Item")
       textField("newTitle").value = syllabusName
-      click on linkText("Add")
-      click on linkText("Click to add body text")
-      Portal.richTextEditor()
-      click on linkText("ok")
+      click on xpath("//button[.='Add']")
+      if (!xpath("//*[.='"+syllabusName+"']/../../..//*[.='Click to add body text']").webElement.isDisplayed) {
+        click on xpath("//*[contains(text(), '"+syllabusName+"')]/../../*[contains(@title, 'Click to expand')]")
+      }
+      click on xpath("//*[.='"+syllabusName+"']/../../..//div[.='Click to add body text']")
+      eventually {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[contains(@title,'Rich text editor')]")))
+        Portal.richTextEditor()
+      }
+      Portal.xslFrameOne
+      click on xpath("//*[.='ok']")
     }
     return syllabusName
   }
@@ -31,7 +41,7 @@ class SyllabusTool extends Page {
   def noneExist(): Boolean = {
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
-    Portal.getToFrameZero
+    Portal.xslFrameOne
     return !webDriver.findElements(By.xpath("//*[contains(text(), 'No Syllabus currently exists.')]")).isEmpty
 
   }
@@ -41,23 +51,14 @@ class SyllabusTool extends Page {
     click on xpath("//a[contains(@title,'Reset')]")
     Portal.xslFrameOne
 
-    if (linkText(syllabusName).findElement(webDriver).isDefined) { true } else { false }
+    if (xpath("//*[.='"+syllabusName+"']").findElement(webDriver).isDefined) { true } else { false }
 
-    /*if(!webDriver.findElements(By.className("textPanelHeader")).isEmpty) {
-      if (webDriver.findElements(By.className("textPanelHeader")).get(0).getText.equalsIgnoreCase(syllabusName)) {
-        return true
-      } else {
-        return false
-      }
-    } else {
-      return false
-    }*/
   }
 
   def redirectExists(syllabusName: String) : Boolean = {
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
-    Portal.getToFrameZero
+    Portal.xslFrameOne
       if (!webDriver.findElements(By.xpath("//iframe[@src='"+Config.targetServer+"']")).isEmpty()) { true } else { false }
   }
 
@@ -66,10 +67,10 @@ class SyllabusTool extends Page {
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
     Portal.xslFrameOne
-    click on linkText("Create/Edit")
-    click on linkText(syllabusName)
-    textField("_id3:title").value = newName
-    click on name("_id3:_id55")
+    click on xpath("//*[.='"+syllabusName+"']")
+    xpath("//input[@class='input-medium']").webElement.clear
+    xpath("//input[@class='input-medium']").webElement.sendKeys(newName)
+    click on xpath("//*[.='ok']")
     return newName
   }
 
@@ -78,19 +79,17 @@ class SyllabusTool extends Page {
     click on xpath("//a[contains(@title,'Reset')]")
     Portal.xslFrameOne
     if (!webDriver.findElements(By.xpath("//iframe[@src='"+Config.targetServer+"']")).isEmpty()) {
-      click on linkText("Redirect")
-      textField("redirectForm:urlValue").clear()
+      click on partialLinkText("Redirect")
+      textField("redirectForm:urlValue").clear
       click on name("redirectForm:_id13")
     }
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
     Portal.xslFrameOne
-    click on linkText("Bulk Edit")
-    for (i <- 0 until webDriver.findElements(By.xpath("//*[contains(@title, 'Select to Remove:')]")).size) {
-      webDriver.findElements(By.xpath("//*[contains(@title, 'Select to Remove:')]")).get(i).click()
-    }
+    click on xpath("//a[contains(text(),'Bulk Edit')]")
+    webDriver.findElement(By.xpath("//th[contains(text(), 'Remove')]/input")).click
     click on cssSelector("[title='Update']")
-    click on name("_id2:_id16")
+    click on xpath("//input[contains(@value,'Update')]")
   }
 
 

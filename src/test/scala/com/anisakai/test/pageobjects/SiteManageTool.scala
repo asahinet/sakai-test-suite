@@ -81,7 +81,7 @@ class SiteManageTool extends Page {
   def findSiteAndEdit(siteTitle : String): Boolean = {
     var found = false
     Portal.xslFrameOne
-    textField("search").value = siteTitle;
+    textField("search").value = siteTitle
     click on cssSelector("[value=Search]")
     if (className("instruction").webElement(webDriver).getText.contains("No sites were found")){
       found = false
