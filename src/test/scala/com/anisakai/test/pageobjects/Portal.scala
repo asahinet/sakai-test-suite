@@ -26,11 +26,15 @@ class Portal extends Page with Eventually{
   }
 
   def xslFrameOne {
-    if (Config.defaultPortal == "xsl") {
-      switch to defaultContent
-      switch to frame(1)
+    if (Config.defaultPortal == "xsl")  {
+      if (Config.client == "learnersedge") {
+        getToFrameZero
+      } else {
+        switch to defaultContent
+        switch to frame(1)
+      }
     } else {
-      Portal.getToFrameZero
+      getToFrameZero
     }
   }
 

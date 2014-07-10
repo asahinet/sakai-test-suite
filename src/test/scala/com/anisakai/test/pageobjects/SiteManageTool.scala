@@ -31,7 +31,7 @@ class SiteManageTool extends Page {
     textField("id").value = siteId
     textField("title").value = siteTitle
     textField("type").value = siteType
-    click on cssSelector("[value=Save]")
+    click on name("eventSubmit_doSave")
 
        // if we get an error that the site exists, click cancel, that is ok
     if (className("alertMessage").findElement(webDriver).isDefined &&
@@ -60,10 +60,7 @@ class SiteManageTool extends Page {
   }
 
   def addUserWithRole(eid: String, role: String){
-    if (Config.defaultPortal == "xsl") {
-      switch to defaultContent
-      switch to frame(1)
-    }
+    Portal.xslFrameOne
     click on linkText("Add Participants" )
     textArea("content::officialAccountParticipant").value = eid
     click on cssSelector("[value=Continue]")

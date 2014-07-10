@@ -28,6 +28,7 @@ class Config {
   val defaultAdminEid : String = loadProperty("sakai.admin.eid", "admin")
   val defaultAdminPassword : String = loadProperty("sakai.admin.pwd", "admin")
   val defaultPortal : String = loadProperty("sakai.portal", "neo")
+  val client : String = loadProperty("sakai.client", "nightly")
 
   def defaultCourseSiteId = "course-test-1"
   def defaultCourseSiteTitle = "Course Site Test 1"
@@ -60,6 +61,8 @@ class Config {
           selectedDriver = Safari.webDriver
         } else if (targetBrowser.equalsIgnoreCase("htmlunit")) {
           selectedDriver = HtmlUnit.webDriver
+        } else if (targetBrowser.equalsIgnoreCase("firefox")) {
+          selectedDriver = Firefox.webDriver
         } else if (targetBrowser.equalsIgnoreCase("phantomjs")) {
 
           if (StringUtils.isEmpty(systemProperties.getProperty("webdriver.phantomjs.binary"))) {
