@@ -26,11 +26,15 @@ class Portal extends Page with Eventually{
   }
 
   def xslFrameOne {
-    if (Config.defaultPortal == "xsl") {
-      switch to defaultContent
-      switch to frame(1)
+    if (Config.defaultPortal == "xsl")  {
+      if (Config.client == "learnersedge") {
+        getToFrameZero
+      } else {
+        switch to defaultContent
+        switch to frame(1)
+      }
     } else {
-      Portal.getToFrameZero
+      getToFrameZero
     }
   }
 
@@ -83,13 +87,13 @@ class Portal extends Page with Eventually{
     // if we are already on the right site, skip this
     if (!siteTitle.getText.contains(siteName)) {
       //If site is listed return true, if not click on "More Sites"
-      if (webDriver.findElements(By.partialLinkText(siteName)).size() != 0) {
+      if (partialLinkText(siteName).findElement(webDriver).isDefined) {
         return true
       } else {
         click on cssSelector("a[title='More Sites']")
         if (Config.defaultPortal == "neo")
           textField("txtSearch").value = siteName
-        if (webDriver.findElements(By.partialLinkText(siteName)).size() != 0) {
+        if (partialLinkText(siteName).findElement(webDriver).isDefined) {
           return true
         } else {
           return false
@@ -131,7 +135,7 @@ class Portal extends Page with Eventually{
     // if we are already on the right site, skip this
     if (!siteTitle.getText.contains(siteName)) {
       //If site is listed, click on site, if not click on "More Sites"
-      if (webDriver.findElements(By.partialLinkText(siteName)).size() != 0) {
+      if (partialLinkText(siteName).findElement(webDriver).isDefined) {
         click on partialLinkText(siteName)
       } else {
         click on cssSelector("a[title='More Sites']")
@@ -151,14 +155,14 @@ class Portal extends Page with Eventually{
 
     if (!webDriver.findElement(By.id("siteTitle")).getText.contains(siteName)) {
           //If site is listed, click on site, if not click on "More Sites"
-      if (webDriver.findElements(By.partialLinkText(siteName)).size() != 0) {
+      if (partialLinkText(siteName).findElement(webDriver).isDefined) {
         click on partialLinkText(siteName)
       } else {
         click on cssSelector("a[title='More Sites']")
         if (Config.defaultPortal == "neo")
           textField("txtSearch").value = siteName
         //If site is found go to site, if not create the site
-        if (webDriver.findElements(By.partialLinkText(siteName)).size() != 0) {
+        if (partialLinkText(siteName).findElement(webDriver).isDefined) {
           click on partialLinkText(siteName)
         } else {
           if (Config.defaultPortal == "neo") {

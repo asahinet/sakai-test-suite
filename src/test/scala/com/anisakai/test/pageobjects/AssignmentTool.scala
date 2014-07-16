@@ -162,7 +162,7 @@ class AssignmentTool extends Page {
   }
 
   def removed(assignmentTitle : String) : Boolean = {
-    if (webDriver.findElements(By.linkText(assignmentTitle)).isEmpty())
+    if (!linkText(assignmentTitle).findElement(webDriver).isDefined)
       return true
     else
       return false

@@ -18,7 +18,7 @@ object TurnItIn extends TurnItIn
 class TurnItIn extends Page {
 
   def warningMessage() : Boolean = {
-    if (webDriver.findElements(By.className("alertMessage")).isEmpty) {
+    if (!className("alertMessage").findElement(webDriver).isDefined) {
       return false
     } else {
       return true

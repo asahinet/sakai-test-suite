@@ -44,7 +44,7 @@ class MessagesCRUD extends Page {
   def isAdded(messageSub: String) : Boolean = {
     click on linkText("Sent")
     Portal.xslFrameOne
-    if (webDriver.findElements(By.xpath("//a[@title='"+messageSub+"']")).isEmpty()) {
+    if (!xpath("//a[@title='"+messageSub+"']").findElement(webDriver).isDefined) {
       false
     } else {
       true

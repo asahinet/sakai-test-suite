@@ -28,6 +28,6 @@ class WebContent extends Page {
 
   def isDisplayed(webPage: String) : Boolean = {
     switch to defaultContent
-    return !webDriver.findElements(By.xpath("//iframe[@src='"+webPage+"']")).isEmpty
+    return xpath("//iframe[@src='"+webPage+"']").findElement(webDriver).isDefined
   }
 }

@@ -31,7 +31,7 @@ class SiteManageTool extends Page {
     textField("id").value = siteId
     textField("title").value = siteTitle
     textField("type").value = siteType
-    click on cssSelector("[value=Save]")
+    click on name("eventSubmit_doSave")
 
        // if we get an error that the site exists, click cancel, that is ok
     if (className("alertMessage").findElement(webDriver).isDefined &&
@@ -60,10 +60,7 @@ class SiteManageTool extends Page {
   }
 
   def addUserWithRole(eid: String, role: String){
-    if (Config.defaultPortal == "xsl") {
-      switch to defaultContent
-      switch to frame(1)
-    }
+    Portal.xslFrameOne
     click on linkText("Add Participants" )
     textArea("content::officialAccountParticipant").value = eid
     click on cssSelector("[value=Continue]")
@@ -184,10 +181,10 @@ class SiteManageTool extends Page {
     click on linkText("Edit Tools")
     click on checkbox("all")
     click on cssSelector("[value=Continue]")
-    if (!webDriver.findElements(By.id("emailId")).isEmpty) {
+    if (id("emailId").findElement(webDriver).isDefined) {
       textField("emailId").value = faker.lastName() + faker.numerify("####")
     }
-    if (!webDriver.findElements(By.id("source_sakai.iframe")).isEmpty) {
+    if (id("source_sakai.iframe").findElement(webDriver).isDefined) {
       textField("source_sakai.iframe").value = Config.targetServer
     }
     click on cssSelector("[value=Continue]")

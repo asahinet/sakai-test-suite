@@ -42,7 +42,7 @@ class SyllabusTool extends Page {
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
     Portal.xslFrameOne
-    return !webDriver.findElements(By.xpath("//*[contains(text(), 'No Syllabus currently exists.')]")).isEmpty
+    return xpath("//*[contains(text(), 'No Syllabus currently exists.')]").findElement(webDriver).isDefined
 
   }
 
@@ -59,7 +59,7 @@ class SyllabusTool extends Page {
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
     Portal.xslFrameOne
-      if (!webDriver.findElements(By.xpath("//iframe[@src='"+Config.targetServer+"']")).isEmpty()) { true } else { false }
+      if (xpath("//iframe[@src='"+Config.targetServer+"']").findElement(webDriver).isDefined) { true } else { false }
   }
 
   def editSyllabus(syllabusName: String) : String = {
@@ -78,7 +78,7 @@ class SyllabusTool extends Page {
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
     Portal.xslFrameOne
-    if (!webDriver.findElements(By.xpath("//iframe[@src='"+Config.targetServer+"']")).isEmpty()) {
+    if (xpath("//iframe[@src='"+Config.targetServer+"']").findElement(webDriver).isDefined) {
       click on partialLinkText("Redirect")
       textField("redirectForm:urlValue").clear
       click on name("redirectForm:_id13")

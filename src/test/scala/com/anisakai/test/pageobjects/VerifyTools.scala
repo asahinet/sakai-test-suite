@@ -30,16 +30,19 @@ class VerifyTools extends Page {
         switch to defaultContent
         var toolName = webDriver.findElements(By.xpath("//*[contains(@class, '"+groupName+"')]")).get(i).getText()
         click on webDriver.findElements(By.xpath("//*[contains(@class, '"+groupName+"')]")).get(i)
-        webDriver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS)
-        var isPresent = !webDriver.findElements(By.xpath("//iframe[contains(@title,$toolName)]")).isEmpty
-        if (!isPresent) {
-          if (webDriver.findElement(By.className("portletMainWrap")).getText().contains("Error"))
+        webDriver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS)
+
+        // If there is an iframe present we want to check inside of that iframe
+        var iFrame = xpath("//iframe[contains(@title,'"+toolName+"')]").findElement(webDriver).isDefined
+        if (!iFrame) {
+          if (xpath("//h3[contains(text(), 'Error')]").findElement(webDriver).isDefined)
             fails += toolName
         } else {
-          switch to frame(webDriver.findElement(By.xpath("//iframe[contains(@title,$toolName)]")))
-          if (!webDriver.findElements(By.className("portletBody")).isEmpty() && webDriver.findElements(By.className("portletBody")).get(0).getText().contains("Error"))
+          switch to frame(webDriver.findElement(By.xpath("//iframe[contains(@title,'"+toolName+"')]")))
+          if (xpath("//h3[contains(text(), 'Error')]").findElement(webDriver).isDefined)
             fails += toolName
         }
+
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS)
       }
     } catch {
@@ -58,11 +61,11 @@ class VerifyTools extends Page {
 
   def hasFailed(fails : ListBuffer[String], failure: Boolean): Boolean = {
     if (fails.isEmpty || failure) {
+      true
+    } else {
       println("Failed Tools:")
       fails.foreach(e => println(e))
       if (fails.isEmpty) { println("None\n") }
-      true
-    } else {
       false
     }
   }
