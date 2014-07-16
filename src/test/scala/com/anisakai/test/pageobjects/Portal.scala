@@ -49,7 +49,7 @@ class Portal extends Page with Eventually{
 
     enterEid(eid)
     enterPassword(password)
-    submit()
+    submit
   }
 
   def enterEid(eid: String) {

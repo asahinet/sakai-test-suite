@@ -1,4 +1,4 @@
-@turnitin
+@turnitin @assignment @suite
 Feature: Creating an assignment with the Third Party Tool Turn It In enabled
 
   As an Instructor I want to be able to create an assignment with Turn It In enabled
