@@ -37,7 +37,7 @@ class Announcements extends Page {
 
   def checkCurrent() {
     Portal.getToFrameZero
-    if (webDriver.findElements(By.className("textPanelHeader")).isEmpty) {
+    if (!className("textPanelHeader").findElement(webDriver).isDefined) {
       status = 1
     } else {
       status = 0

@@ -72,7 +72,7 @@ class LessonBuilder extends Page {
   def viewAddition(addition: ListBuffer[String]): Boolean = {
     var isFound: Boolean = true
     addition.toList.takeWhile(isFound => true).foreach(text =>
-      if(webDriver.findElements(By.xpath("//*[contains(text(),'"+text+"')]")).isEmpty) {
+      if(!xpath("//*[contains(text(),'"+text+"')]").findElement(webDriver).isDefined) {
         isFound = false
       } else {
         isFound = true

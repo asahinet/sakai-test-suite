@@ -21,7 +21,7 @@ class GradebookTool extends Page {
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
     Portal.xslFrameOne
-    if (!webDriver.findElements(By.xpath("//*[contains(.,'"+itemName+"')]")).isEmpty) {
+    if (xpath("//*[contains(.,'"+itemName+"')]").findElement(webDriver).isDefined) {
       return true
     } else {
       return false

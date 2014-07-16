@@ -181,10 +181,10 @@ class SiteManageTool extends Page {
     click on linkText("Edit Tools")
     click on checkbox("all")
     click on cssSelector("[value=Continue]")
-    if (!webDriver.findElements(By.id("emailId")).isEmpty) {
+    if (id("emailId").findElement(webDriver).isDefined) {
       textField("emailId").value = faker.lastName() + faker.numerify("####")
     }
-    if (!webDriver.findElements(By.id("source_sakai.iframe")).isEmpty) {
+    if (id("source_sakai.iframe").findElement(webDriver).isDefined) {
       textField("source_sakai.iframe").value = Config.targetServer
     }
     click on cssSelector("[value=Continue]")
