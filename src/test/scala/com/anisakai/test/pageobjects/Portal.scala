@@ -215,14 +215,12 @@ class Portal extends Page with Eventually{
     if (reset)  {
       switch to defaultContent
       click on xpath("//a[contains(@title,'Reset')]")
-      eventually (switch to frame(0))
     }
-
 
   }
 
   def richTextEditor(): String = {
-    val text = faker.paragraph(4)
+    val text = faker.paragraph(2)
     switch to frame(xpath("//iframe[contains(@title,'Rich text editor')]"))
     webDriver.switchTo.activeElement.sendKeys(text)
     webDriver.switchTo.defaultContent

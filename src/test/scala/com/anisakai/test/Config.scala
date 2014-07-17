@@ -29,7 +29,7 @@ class Config {
   val defaultAdminPassword : String = loadProperty("sakai.admin.pwd", "admin")
   val defaultPortal : String = loadProperty("sakai.portal", "neo")
   val client : String = loadProperty("sakai.client", "nightly")
-  val timeout: String = loadProperty("driver.timeout", "3")
+  val timeout: String = loadProperty("driver.timeout", "5")
 
   def defaultCourseSiteId = "course-test-1"
   def defaultCourseSiteTitle = "Course Site Test 1"
