@@ -177,22 +177,50 @@ class SiteManageTool extends Page {
 
 
   def addAllTools() {
+    var dupes = Array(false, false, false, false)
+    var visible = true
     Portal.xslFrameOne
     click on linkText("Edit Tools")
+
+//    Check for duplicate tools
+    if (xpath("//label[contains(text(), 'External Tool')]/../../td/input").element.isSelected) dupes(0) = true
+
+    if (!xpath("//label[contains(text(), 'Lessons Builder')]/../../td/input").findElement(webDriver).isDefined)
+      visible = false
+    else if (xpath("//label[contains(text(), 'Lessons Builder')]/../../td/input").element.isSelected)
+      dupes(1) = true
+
+    if (xpath("//label[contains(text(), 'News')]/../../td/input").element.isSelected) dupes(2) = true
+    if (xpath("//label[contains(text(), 'Web Content')]/../../td/input").element.isSelected) dupes(3) = true
+
     click on checkbox("all")
+
+//    Remove any duplicate tools
+    if (dupes(0)) webDriver.findElements(By.xpath("//label[contains(text(), 'External Tool')]/../../td/input")).get(1).click()
+    if (dupes(1) && visible) webDriver.findElements(By.xpath("//label[contains(text(), 'Lessons Builder')]/../../td/input")).get(1).click()
+    if (dupes(2)) webDriver.findElements(By.xpath("//label[contains(text(), 'News')]/../../td/input")).get(1).click()
+    if (dupes(3)) webDriver.findElements(By.xpath("//label[contains(text(), 'Web Content')]/../../td/input")).get(1).click()
+
     click on cssSelector("[value=Continue]")
-    if (id("emailId").findElement(webDriver).isDefined) {
-      textField("emailId").value = faker.lastName() + faker.numerify("####")
+
+//    If there are no duplicates then we want to make sure this information gets added
+    if (!visible) dupes(1) = true
+    if (!dupes(0) || !dupes(1) || !dupes(2) || !dupes(3)) {
+      if (id("emailId").findElement(webDriver).isDefined) {
+        textField("emailId").value = faker.lastName() + faker.numerify("####")
+      }
+      if (id("source_sakai.iframe").findElement(webDriver).isDefined) {
+        textField("source_sakai.iframe").value = Config.targetServer
+      }
+      click on cssSelector("[value=Continue]")
     }
-    if (id("source_sakai.iframe").findElement(webDriver).isDefined) {
-      textField("source_sakai.iframe").value = Config.targetServer
-    }
-    click on cssSelector("[value=Continue]")
+
     if (Config.defaultPortal == "xsl") {
       click on name("review")
     } else {
       click on cssSelector("[value=Finish]")
     }
+
     eventually {
       switch to defaultContent
     }
