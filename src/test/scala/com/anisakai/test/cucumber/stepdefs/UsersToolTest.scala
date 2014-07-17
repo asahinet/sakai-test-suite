@@ -3,8 +3,6 @@ package com.anisakai.test.cucumber.stepdefs
 import cucumber.api.scala.{EN, ScalaDsl}
 import com.anisakai.test.pageobjects.{UsersTool, Portal}
 import junit.framework.Assert._
-import cucumber.runtime.PendingException
-import org.scalatest.selenium.WebBrowser.switch
 import cucumber.api.DataTable
 
 /**

@@ -66,7 +66,7 @@ class SiteManageTool extends Page {
     click on cssSelector("[value=Continue]")
 
     if (membershipDoesNotExist(eid)) {
-      click on cssSelector("[value=" + role + "]")
+      click on xpath("//input[@value='"+role+"']")
       click on cssSelector("[value=Continue]")
       click on cssSelector("[value=Continue]")
       click on cssSelector("[value=Finish]")

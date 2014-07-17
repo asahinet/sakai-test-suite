@@ -38,7 +38,7 @@ Feature: Site Management
     | course-test-3 | instructor2  | Instructor  |
     | course-test-3 | student01    | Student     |
     | course-test-3 | student02    | Student     |
-    | portfolio-test-1 | reviewer1 | Reviewer    |
+    | portfolio-test-1 | hfisher | CIG Coordinator |
 
 #  Scenario:  Create A Site
 #   Given I am on the 'Administration Workspace' site using the 'Site Setup' tool
