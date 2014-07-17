@@ -30,9 +30,10 @@ class VerifyTools extends Page {
         switch to defaultContent
         var toolName = webDriver.findElements(By.xpath("//*[contains(@class, '"+groupName+"')]")).get(i).getText()
         click on webDriver.findElements(By.xpath("//*[contains(@class, '"+groupName+"')]")).get(i)
-        webDriver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS)
+        webDriver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS)
 
         // If there is an iframe present we want to check inside of that iframe
+
         var iFrame = xpath("//iframe[contains(@title,'"+toolName+"')]").findElement(webDriver).isDefined
         if (!iFrame) {
           if (xpath("//h3[contains(text(), 'Error')]").findElement(webDriver).isDefined)
@@ -43,7 +44,7 @@ class VerifyTools extends Page {
             fails += toolName
         }
 
-        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS)
+        webDriver.manage().timeouts().implicitlyWait(Config.timeout.toInt, TimeUnit.SECONDS)
       }
     } catch {
       case e: Exception => {
