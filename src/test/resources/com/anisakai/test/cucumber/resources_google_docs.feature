@@ -7,21 +7,23 @@ Feature: Adding Google Docs to Resources
 Scenario: add a google document to resources
   Given I'm logged in as an 'instructor'
   And I am on a course with 'Resources' tool
-  When I add a 'link to google docs' with default properties to resources
-  Then I should see the google doc in resources
+  When I add a google doc with 'default' dates
+  And I'm logged in as a 'student'
+  And I am on a course with 'Resources' tool
+  Then the resource 'should' be visible to the student
 
 Scenario: add a google document to resources with a from date in the future
   Given I'm logged in as an 'instructor'
+  And I am on a course with 'Resources' too
+  When I add a google doc with 'future' dates
+  And I'm logged in as a 'student'
   And I am on a course with 'Resources' tool
-  And I add a 'student' to the course
-  When I add a 'link to google docs'
-  And I set the from date in the future
-  Then the resource should not be visible to the 'student'
+  Then the resource 'shouldnt' be visible to the student
 
 Scenario: add a google document to resources with an until date in the past
   Given I'm logged in as an 'instructor'
   And I am on a course with 'Resources' tool
-  And I add a 'student' to the course
-  When I add a 'link to google docs'
-  And I set the until date in the past
-  Then the resource should not be visible to the 'student'
+  When I add a google doc with 'past' dates
+  And I'm logged in as a 'student'
+  And I am on a course with 'Resources' tool
+  Then the resource 'shouldnt' be visible to the student
