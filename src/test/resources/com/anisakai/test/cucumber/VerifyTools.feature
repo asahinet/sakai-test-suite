@@ -1,5 +1,6 @@
 @tools @suite
 Feature: Verifying all tool links are working correctly
+
   Background:
     Given I am logged on as an admin user
 

@@ -13,6 +13,7 @@ Feature: Test the Admin Users Tool
       | student02   | joe@zappa.com   | joe       | zappa    | registered | password |
       | instructor1 | bbob@zappa.com  | billy     | smith    | maintain   | password |
       | instructor2 | fred@zappa.com  | fred      | jones    | maintain   | password |
+      | hfisher     | henry@zappa.com | henry     | fisher   | maintain   | password |
 
   Scenario: User Search
     When I search for a user with an eid of 'student01'

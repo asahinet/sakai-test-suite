@@ -1,9 +1,9 @@
 package com.anisakai.test.cucumber.stepdefs
 
-import cucumber.api.scala.{EN, ScalaDsl}
-import com.anisakai.test.pageobjects.{TurnItIn, AssignmentTool, Portal}
-import junit.framework.Assert._
 import com.anisakai.test.Config
+import com.anisakai.test.pageobjects.{AssignmentTool, Portal, TurnItIn}
+import cucumber.api.scala.{EN, ScalaDsl}
+import junit.framework.Assert._
 
 
 /**
@@ -16,7 +16,7 @@ import com.anisakai.test.Config
 class TurnItInTest extends ScalaDsl with EN with TearDown {
 
   var assignmentTitle: String = ""
-  var eid : String = ""
+  var eid: String = ""
   var password: String = ""
 
   def login(role: String) {
@@ -38,11 +38,11 @@ class TurnItInTest extends ScalaDsl with EN with TearDown {
     Portal.login()
   }
 
-  Given("""^I'm logged in as an? '(.+)' on a Turn It In instance$"""){ (role : String) =>
+  Given( """^I'm logged in as an? '(.+)' on a Turn It In instance$""") { (role: String) =>
     login(role)
   }
 
-  When("""^I add a Turn It In assignment '(.+)'$"""){ (correct: String) =>
+  When( """^I add a Turn It In assignment '(.+)'$""") { (correct: String) =>
     Portal.gotoSite("TurnItIn Test 01")
     Portal.gotoTool("Assignments")
     AssignmentTool.gotoAdd()
@@ -53,31 +53,27 @@ class TurnItInTest extends ScalaDsl with EN with TearDown {
     }
   }
 
-  Then("""^I should get a warning message$"""){ () =>
+  Then( """^I should get a warning message$""") { () =>
     assertTrue(TurnItIn.warningMessage())
   }
 
-  Then("""^The status of the assignment should be '(.+)'$"""){ (status : String) =>
+  Then( """^The status of the assignment should be '(.+)'$""") { (status: String) =>
     assertTrue(TurnItIn.assignmentStatus(status, assignmentTitle))
   }
 
-  Given("""^A course exists with a Turn It In assignment$"""){ () =>
+  Given( """^A course exists with a Turn It In assignment$""") { () =>
     login("instructor")
     Portal.gotoSite("TurnItIn Test 01")
     Portal.gotoTool("Assignments")
     assertTrue(TurnItIn.turnItInExists(assignmentTitle))
   }
 
-  When("""^I submit a Turn It In assignment$""") { () =>
+  When( """^I submit a Turn It In assignment$""") { () =>
     Portal.gotoSite("TurnItIn Test 01")
     Portal.gotoTool("Assignments")
     AssignmentTool.openAssignment(assignmentTitle)
     TurnItIn.uploadFile()
   }
-
-
-
-
 
 
 }

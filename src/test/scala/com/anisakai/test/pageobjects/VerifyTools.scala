@@ -1,10 +1,11 @@
 package com.anisakai.test.pageobjects
 
-import org.openqa.selenium.{WebElement, By}
-import scala.collection.mutable.ListBuffer
-import java.util.List
 import java.util.concurrent.TimeUnit
+
 import com.anisakai.test.Config
+import org.openqa.selenium.By
+
+import scala.collection.mutable.ListBuffer
 
 
 /**
@@ -26,20 +27,20 @@ class VerifyTools extends Page {
       groupName = "icon-sakai-"
     }
     try {
-      for (i <- 0 until webDriver.findElements(By.xpath("//*[contains(@class, '"+groupName+"')]")).size) {
+      for (i <- 0 until webDriver.findElements(By.xpath("//*[contains(@class, '" + groupName + "')]")).size) {
         switch to defaultContent
-        var toolName = webDriver.findElements(By.xpath("//*[contains(@class, '"+groupName+"')]")).get(i).getText()
-        click on webDriver.findElements(By.xpath("//*[contains(@class, '"+groupName+"')]")).get(i)
+        var toolName = webDriver.findElements(By.xpath("//*[contains(@class, '" + groupName + "')]")).get(i).getText()
+        click on webDriver.findElements(By.xpath("//*[contains(@class, '" + groupName + "')]")).get(i)
         webDriver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS)
 
         // If there is an iframe present we want to check inside of that iframe
 
-        var iFrame = xpath("//iframe[contains(@title,'"+toolName+"')]").findElement(webDriver).isDefined
+        var iFrame = xpath("//iframe[contains(@title,'" + toolName + "')]").findElement(webDriver).isDefined
         if (!iFrame) {
           if (xpath("//h3[contains(text(), 'Error')]").findElement(webDriver).isDefined)
             fails += toolName
         } else {
-          switch to frame(webDriver.findElement(By.xpath("//iframe[contains(@title,'"+toolName+"')]")))
+          switch to frame(webDriver.findElement(By.xpath("//iframe[contains(@title,'" + toolName + "')]")))
           if (xpath("//h3[contains(text(), 'Error')]").findElement(webDriver).isDefined)
             fails += toolName
         }
@@ -56,17 +57,19 @@ class VerifyTools extends Page {
     return hasFailed(fails)
   }
 
-  def hasFailed(fails : ListBuffer[String]): Boolean = {
+  def hasFailed(fails: ListBuffer[String]): Boolean = {
     return hasFailed(fails, false)
   }
 
-  def hasFailed(fails : ListBuffer[String], failure: Boolean): Boolean = {
+  def hasFailed(fails: ListBuffer[String], failure: Boolean): Boolean = {
     if (fails.isEmpty || failure) {
       true
     } else {
       println("Failed Tools:")
       fails.foreach(e => println(e))
-      if (fails.isEmpty) { println("None\n") }
+      if (fails.isEmpty) {
+        println("None\n")
+      }
       false
     }
   }

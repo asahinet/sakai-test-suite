@@ -1,8 +1,9 @@
 package com.anisakai.test.pageobjects
 
-import scala.collection.mutable.ListBuffer
-import org.openqa.selenium.By
 import com.anisakai.test.util.FileUtil
+import org.openqa.selenium.By
+
+import scala.collection.mutable.ListBuffer
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,7 +26,7 @@ class LessonBuilder extends Page {
   def add(addType: String, contentType: String): String = {
     val title: String = faker.letterify("??????")
     click on linkText("Add " + addType)
-    if (contentType.equalsIgnoreCase("url")){
+    if (contentType.equalsIgnoreCase("url")) {
       textField("mm-url").value = "https://nightly.cle.rsmart.com/portal"
       click on cssSelector("[value=Save]")
       return "https://nightly.cle.rsmart.com/portal"
@@ -61,7 +62,7 @@ class LessonBuilder extends Page {
 
   def link(linkType: String, title: String) {
     click on linkText("Add " + linkType)
-    click on xpath("//input[@title='"+title+"']")
+    click on xpath("//input[@title='" + title + "']")
     click on cssSelector("[value=Use selected item]")
   }
 
@@ -72,7 +73,7 @@ class LessonBuilder extends Page {
   def viewAddition(addition: ListBuffer[String]): Boolean = {
     var isFound: Boolean = true
     addition.toList.takeWhile(isFound => true).foreach(text =>
-      if(!xpath("//*[contains(text(),'"+text+"')]").findElement(webDriver).isDefined) {
+      if (!xpath("//*[contains(text(),'" + text + "')]").findElement(webDriver).isDefined) {
         isFound = false
       } else {
         isFound = true

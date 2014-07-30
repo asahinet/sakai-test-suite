@@ -1,7 +1,7 @@
 package com.anisakai.test.pageobjects
 
-import org.openqa.selenium.By
 import com.anisakai.test.Config
+import org.openqa.selenium.By
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,17 +25,17 @@ class SiteManageTool extends Page {
   }
 
 
-  def createSiteWithSitesTool(siteType:String, siteTitle:String, siteId:String): Boolean = {
+  def createSiteWithSitesTool(siteType: String, siteTitle: String, siteId: String): Boolean = {
     Portal.xslFrameOne
-    click on linkText("New Site" )
+    click on linkText("New Site")
     textField("id").value = siteId
     textField("title").value = siteTitle
     textField("type").value = siteType
     click on name("eventSubmit_doSave")
 
-       // if we get an error that the site exists, click cancel, that is ok
+    // if we get an error that the site exists, click cancel, that is ok
     if (className("alertMessage").findElement(webDriver).isDefined &&
-      className("alertMessage").webElement(webDriver).getText().contains("The site id " + siteId + " is already in use")){
+      className("alertMessage").webElement(webDriver).getText().contains("The site id " + siteId + " is already in use")) {
       click on name("eventSubmit_doCancel")
       return false
     }
@@ -48,10 +48,10 @@ class SiteManageTool extends Page {
     // TODO table fun
   }
 
-  def membershipDoesNotExist(eid: String) : Boolean = {
-      // if we get an error that the site exists, click cancel, that is ok
+  def membershipDoesNotExist(eid: String): Boolean = {
+    // if we get an error that the site exists, click cancel, that is ok
     if (className("information").findElement(webDriver).isDefined &&
-      className("information").webElement(webDriver).getText().contains("The following participants are already members of this site and cannot be re-added: '" + eid + "'")){
+      className("information").webElement(webDriver).getText().contains("The following participants are already members of this site and cannot be re-added: '" + eid + "'")) {
       return false
     }
 
@@ -59,14 +59,14 @@ class SiteManageTool extends Page {
 
   }
 
-  def addUserWithRole(eid: String, role: String){
+  def addUserWithRole(eid: String, role: String) {
     Portal.xslFrameOne
-    click on linkText("Add Participants" )
+    click on linkText("Add Participants")
     textArea("content::officialAccountParticipant").value = eid
     click on cssSelector("[value=Continue]")
 
     if (membershipDoesNotExist(eid)) {
-      click on cssSelector("[value=" + role + "]")
+      click on xpath("//input[@value='" + role + "']")
       click on cssSelector("[value=Continue]")
       click on cssSelector("[value=Continue]")
       click on cssSelector("[value=Finish]")
@@ -75,12 +75,12 @@ class SiteManageTool extends Page {
     }
   }
 
-  def findSiteAndEdit(siteTitle : String): Boolean = {
+  def findSiteAndEdit(siteTitle: String): Boolean = {
     var found = false
     Portal.xslFrameOne
     textField("search").value = siteTitle
     click on cssSelector("[value=Search]")
-    if (className("instruction").webElement(webDriver).getText.contains("No sites were found")){
+    if (className("instruction").webElement(webDriver).getText.contains("No sites were found")) {
       found = false
     } else {
       checkbox("site1").select()
@@ -93,19 +93,19 @@ class SiteManageTool extends Page {
   def createProjectSite(title: String, shortDescription: String,
                         longDescription: String, contactName: String): String = {
     return createSite("project", shortDescription, longDescription, contactName,
-      populateProjectMetaData: (Map[String, String])   => Unit,
+      populateProjectMetaData: (Map[String, String]) => Unit,
       Map(("title", title)))
   }
 
-  def createCourseSite(subject : String, section : String, course : String,
+  def createCourseSite(subject: String, section: String, course: String,
                        shortDescription: String, longDescription: String,
-                       contactName: String, contactEmail : String): String = {
+                       contactName: String, contactEmail: String): String = {
     return createSite("course", shortDescription, longDescription, contactName,
-      populateCourseMetaData : (Map[String, String]) => Unit,
+      populateCourseMetaData: (Map[String, String]) => Unit,
       Map(("subject", subject), ("section", section), ("course", course)))
   }
 
-  def populateCourseMetaData(args : Map[String, String]) : Unit = {
+  def populateCourseMetaData(args: Map[String, String]): Unit = {
     textField("id-Subject:1").value = args("subject")
     textField("id-Course:1").value = args("course")
     textField("id-Section:1").value = args("section")
@@ -113,7 +113,7 @@ class SiteManageTool extends Page {
     click on cssSelector("[value=Continue]")
   }
 
-  def populateProjectMetaData( args : Map[String, String]) {
+  def populateProjectMetaData(args: Map[String, String]) {
     textField("title").value = args("title")
   }
 
@@ -125,7 +125,7 @@ class SiteManageTool extends Page {
     click on cssSelector("[value=Continue]")
 
     click on cssSelector("[value=Finish]")
- }
+  }
 
   def createSite(siteType: String, shortDescription: String, longDescription: String,
                  contactName: String,
@@ -164,7 +164,7 @@ class SiteManageTool extends Page {
     return siteTitle
   }
 
-  def createRandomSite(siteType : String)  : String = {
+  def createRandomSite(siteType: String): String = {
     if (siteType.equalsIgnoreCase("Course")) {
       return createCourseSite(faker.letterify("???"), faker.numerify("#"), faker.numerify("###"),
         faker.sentence(2), faker.sentence(2), faker.name(), faker.firstName() + "." + faker.lastName())
@@ -177,22 +177,74 @@ class SiteManageTool extends Page {
 
 
   def addAllTools() {
+    var dupes = Array(false, false, false, false, false)
+    var visible = Array(true, true, true, true, true)
     Portal.xslFrameOne
     click on linkText("Edit Tools")
+
+    //    Check for duplicate tools
+
+    if (!xpath("//label[contains(text(), 'External Tool')]/../../td/input").findElement(webDriver).isDefined)
+      visible(0) = false
+    else if (xpath("//label[contains(text(), 'External Tool')]/../../td/input").element.isSelected)
+      dupes(0) = true
+
+    if (!xpath("//label[contains(text(), 'Lessons Builder')]/../../td/input").findElement(webDriver).isDefined)
+      visible(1) = false
+    else if (xpath("//label[contains(text(), 'Lessons Builder')]/../../td/input").element.isSelected)
+      dupes(1) = true
+
+    if (!xpath("//label[contains(text(), 'News')]/../../td/input").findElement(webDriver).isDefined)
+      visible(2) = false
+    else if (xpath("//label[contains(text(), 'News')]/../../td/input").element.isSelected)
+      dupes(2) = true
+
+    if (!xpath("//label[contains(text(), 'Web Content')]/../../td/input").findElement(webDriver).isDefined)
+      visible(3) = false
+    else if (xpath("//label[contains(text(), 'Web Content')]/../../td/input").element.isSelected)
+      dupes(3) = true
+
+    if (!xpath("//label[contains(text(), 'Basic LTI')]/../../td/input").findElement(webDriver).isDefined)
+      visible(4) = false
+    else if (xpath("//label[contains(text(), 'Basic LTI')]/../../td/input").element.isSelected)
+      dupes(4) = true
+
     click on checkbox("all")
+
+    //    Remove any duplicate tools
+    if (dupes(0) && visible(0)) webDriver.findElements(By.xpath("//label[contains(text(), 'External Tool')]/../../td/input")).get(1).click()
+    if (dupes(1) && visible(1)) webDriver.findElements(By.xpath("//label[contains(text(), 'Lessons Builder')]/../../td/input")).get(1).click()
+    if (dupes(2) && visible(2)) webDriver.findElements(By.xpath("//label[contains(text(), 'News')]/../../td/input")).get(1).click()
+    if (dupes(3) && visible(3)) webDriver.findElements(By.xpath("//label[contains(text(), 'Web Content')]/../../td/input")).get(1).click()
+    if (dupes(4) && visible(4)) webDriver.findElements(By.xpath("//label[contains(text(), 'Basic LTI')]/../../td/input")).get(1).click()
+
+
     click on cssSelector("[value=Continue]")
-    if (id("emailId").findElement(webDriver).isDefined) {
-      textField("emailId").value = faker.lastName() + faker.numerify("####")
+
+    //    If there are no duplicates then we want to make sure this information gets added
+    if (!visible(0)) dupes(0) = true
+    if (!visible(1)) dupes(1) = true
+    if (!visible(2)) dupes(2) = true
+    if (!visible(3)) dupes(3) = true
+    if (!visible(4)) dupes(4) = true
+
+
+    if (!dupes(0) || !dupes(1) || !dupes(2) || !dupes(3)) {
+      if (id("emailId").findElement(webDriver).isDefined) {
+        textField("emailId").value = faker.lastName() + faker.numerify("####")
+      }
+      if (id("source_sakai.iframe").findElement(webDriver).isDefined) {
+        textField("source_sakai.iframe").value = Config.targetServer
+      }
+      click on cssSelector("[value=Continue]")
     }
-    if (id("source_sakai.iframe").findElement(webDriver).isDefined) {
-      textField("source_sakai.iframe").value = Config.targetServer
-    }
-    click on cssSelector("[value=Continue]")
+
     if (Config.defaultPortal == "xsl") {
       click on name("review")
     } else {
       click on cssSelector("[value=Finish]")
     }
+
     eventually {
       switch to defaultContent
     }

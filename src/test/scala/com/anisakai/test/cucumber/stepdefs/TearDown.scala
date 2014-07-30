@@ -1,10 +1,9 @@
 package com.anisakai.test.cucumber.stepdefs
 
-import cucumber.api.java.{Before, After}
-import cucumber.api.Scenario
-import org.openqa.selenium.{OutputType, TakesScreenshot, WebDriver}
 import com.anisakai.test.Config
-import com.anisakai.test.pageobjects.Portal
+import cucumber.api.Scenario
+import cucumber.api.java.After
+import org.openqa.selenium.{OutputType, TakesScreenshot, WebDriver}
 
 /**
  * Created with IntelliJ IDEA.

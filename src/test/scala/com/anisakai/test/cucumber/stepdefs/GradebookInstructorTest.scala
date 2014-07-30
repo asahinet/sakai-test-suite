@@ -1,26 +1,24 @@
 package com.anisakai.test.cucumber.stepdefs
 
-import cucumber.api.scala.{EN, ScalaDsl}
-import com.anisakai.test.pageobjects.{GradebookTool, TurnItIn, AssignmentTool, Portal}
-import junit.framework.Assert._
 import com.anisakai.test.Config
-import org.openqa.selenium.By
-import org.scalatest.selenium.WebBrowser.{click, switch}
+import com.anisakai.test.pageobjects.{GradebookTool, Portal}
+import cucumber.api.scala.{EN, ScalaDsl}
+import junit.framework.Assert._
 
 class GradebookInstructorTest extends ScalaDsl with EN with TearDown {
 
   var itemName: String = ""
 
-  And("""^I am on a course with '(.+)' tool$""") { (tool : String) =>
+  And( """^I am on a course with '(.+)' tool$""") { (tool: String) =>
     Portal.gotoSite(Config.defaultCourseSiteTitle)
     Portal.gotoTool(tool)
   }
 
-  When("""^I add an entry to gradebook$""") { () =>
+  When( """^I add an entry to gradebook$""") { () =>
     itemName = GradebookTool.addEntry()
   }
 
-  Then("""^The entry '(.+)' be visible in the list$""") { (visible : String) =>
+  Then( """^The entry '(.+)' be visible in the list$""") { (visible: String) =>
     if (visible.equalsIgnoreCase("should")) {
       assertTrue(GradebookTool.isAdded(itemName))
     } else if (visible.equalsIgnoreCase("shouldnt")) {
@@ -28,20 +26,20 @@ class GradebookInstructorTest extends ScalaDsl with EN with TearDown {
     }
   }
 
-  When("""^I change the existing gradebook entry$""") { () =>
+  When( """^I change the existing gradebook entry$""") { () =>
     itemName = GradebookTool.editEntry(itemName)
   }
 
-  When("""^I grade the entry$""") { () =>
+  When( """^I grade the entry$""") { () =>
     GradebookTool.gradeEntry(itemName)
 
   }
 
-  Then("""^The grade should be visible$""") { () =>
+  Then( """^The grade should be visible$""") { () =>
     assertTrue(GradebookTool.checkGrade(itemName))
   }
 
-  When("""^I delete the gradebook entry$""") { () =>
+  When( """^I delete the gradebook entry$""") { () =>
     GradebookTool.deleteEntry(itemName)
   }
 

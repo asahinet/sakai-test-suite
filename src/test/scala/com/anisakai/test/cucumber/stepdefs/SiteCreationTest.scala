@@ -1,11 +1,8 @@
 package com.anisakai.test.cucumber.stepdefs
 
-import cucumber.api.scala.{EN, ScalaDsl}
-import cucumber.runtime.PendingException
-import com.anisakai.test.pageobjects.{Portal, UsersTool, SiteManageTool}
+import com.anisakai.test.pageobjects.{Portal, SiteManageTool}
 import cucumber.api.DataTable
-import junit.framework.Assert._
-import com.anisakai.test.Config
+import cucumber.api.scala.{EN, ScalaDsl}
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,7 +28,7 @@ class SiteCreationTest extends ScalaDsl with EN with TearDown {
         Portal.gotoTool("Site Setup", true)
         if (SiteManageTool.findSiteAndEdit(title)) {
           SiteManageTool.editSite(description, description, contactname)
-            SiteManageTool.addAllTools()
+          SiteManageTool.addAllTools()
 
           SiteManageTool.manageAccess(true, false)
         }
@@ -45,7 +42,7 @@ class SiteCreationTest extends ScalaDsl with EN with TearDown {
       val row = data.asMaps().iterator()
 
       while (row.hasNext) {
-        val map = row.next()
+        val map = ro w.next()
         val siteId = map.get("site-id")
         val userEid = map.get("user-eid")
         val role = map.get("role")
@@ -60,35 +57,35 @@ class SiteCreationTest extends ScalaDsl with EN with TearDown {
       }
   }
 
-  Given("""^I navigate to the '(.+)' tool$"""){ (tool:String) =>
+  Given( """^I navigate to the '(.+)' tool$""") { (tool: String) =>
     Portal.gotoTool(tool)
   }
 
-  When("""^I create '(.+)' site with a title of '(.+)' and an id of'(.+)'$"""){ (siteType: String, siteTitle : String, siteId : String) =>
+  When( """^I create '(.+)' site with a title of '(.+)' and an id of'(.+)'$""") { (siteType: String, siteTitle: String, siteId: String) =>
     SiteManageTool.createSiteWithSitesTool(siteType, siteTitle, siteId)
   }
 
 
-  When("""^I create a site with random data$"""){ () =>
+  When( """^I create a site with random data$""") { () =>
     var siteTitle = SiteManageTool.createRandomSite("course")
     SiteManageTool.findSiteAndEdit(siteTitle)
   }
 
-  When("""^add '(.+)' as a.? '(.+)'$"""){ (eid: String, role : String) =>
+  When( """^add '(.+)' as a.? '(.+)'$""") { (eid: String, role: String) =>
     SiteManageTool.addUserWithRole(eid, role)
   }
 
-  Then("""^I should see '(.+)' with a role of '(.+)'$"""){ (eid: String, role : String) =>
+  Then( """^I should see '(.+)' with a role of '(.+)'$""") { (eid: String, role: String) =>
     SiteManageTool.verifyUserHasRole(eid, role)
   }
 
-  Then("""^I add all the tools$"""){ () =>
+  Then( """^I add all the tools$""") { () =>
     SiteManageTool.addAllTools()
   }
 
-  When("""^I edit the '(.+)' site information$"""){ (siteTitle:String) =>
+  When( """^I edit the '(.+)' site information$""") { (siteTitle: String) =>
     SiteManageTool.findSiteAndEdit(siteTitle)
-    SiteManageTool.editSite("description","description", "john smith")
+    SiteManageTool.editSite("description", "description", "john smith")
   }
 
 }

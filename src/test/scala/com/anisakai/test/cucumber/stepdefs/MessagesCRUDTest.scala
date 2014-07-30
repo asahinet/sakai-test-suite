@@ -1,8 +1,9 @@
 package com.anisakai.test.cucumber.stepdefs
 
+import com.anisakai.test.pageobjects.MessagesCRUD
 import cucumber.api.scala.{EN, ScalaDsl}
-import com.anisakai.test.pageobjects.{MessagesCRUD, TurnItIn, AssignmentTool, Portal}
 import junit.framework.Assert._
+
 /**
  * Created with IntelliJ IDEA.
  * User: gareth
@@ -13,15 +14,15 @@ import junit.framework.Assert._
 class MessagesCRUDTest extends ScalaDsl with EN with TearDown {
   var messageSub: String = ""
 
-  When("""^I add a message to messages$""") { () =>
+  When( """^I add a message to messages$""") { () =>
     messageSub = MessagesCRUD.addMessage()
   }
 
-  Then("""^The created message should be visible in the list$""") { () =>
+  Then( """^The created message should be visible in the list$""") { () =>
     assertTrue(MessagesCRUD.isAdded(messageSub))
   }
 
-  When("""^I add a message with an attachment to messages$""") { () =>
+  When( """^I add a message with an attachment to messages$""") { () =>
     messageSub = MessagesCRUD.addMessage(true)
   }
 

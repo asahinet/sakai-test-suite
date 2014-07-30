@@ -1,11 +1,8 @@
 package com.anisakai.test.cucumber.stepdefs
 
+import com.anisakai.test.pageobjects._
 import cucumber.api.scala.{EN, ScalaDsl}
-import com.anisakai.test.pageobjects.{GradebookTool, TurnItIn, AssignmentTool, Portal}
 import junit.framework.Assert._
-import com.anisakai.test.Config
-import org.openqa.selenium.By
-import org.scalatest.selenium.WebBrowser.{click, switch}
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,20 +13,21 @@ import org.scalatest.selenium.WebBrowser.{click, switch}
  */
 
 class GoogleDocsTest extends ScalaDsl with EN with TearDown {
-  When("""^I add a link to google docs with default properties$"""){ () =>
 
+  var doc = ""
+
+  When( """^I add a google doc with '(.+)' dates$""") { (settings: String) =>
+    if (settings.equalsIgnoreCase("default")) doc = GoogleDocs.addDoc("default")
+    else if (settings.equalsIgnoreCase("past")) doc = GoogleDocs.addDoc("past")
+    else if (settings.equalsIgnoreCase("future")) doc = GoogleDocs.addDoc("future")
   }
 
-  Then("""^I should see the google doc in resources$"""){ () =>
-
+  Then( """^the resource '(.+)' be visible$""") { (settings: String) =>
+    assertTrue(GoogleDocs.docAdded(doc, settings))
   }
 
-  And("""^I set the until date in the '(.+)'$"""){ () =>
-
-  }
-
-  Then("""^Then the resource should not be visible to the student$""") { () =>
-
+  When( """^I remove all google documents$""") { () =>
+    GoogleDocs.cleanup()
   }
 
 }

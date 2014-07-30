@@ -1,9 +1,7 @@
 package com.anisakai.test.pageobjects
 
-import java.util.Calendar
-import org.openqa.selenium.By
-import com.anisakai.test.Config
 import com.anisakai.test.util.FileUtil
+import org.openqa.selenium.By
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,7 +15,7 @@ object TurnItIn extends TurnItIn
 
 class TurnItIn extends Page {
 
-  def warningMessage() : Boolean = {
+  def warningMessage(): Boolean = {
     if (!className("alertMessage").findElement(webDriver).isDefined) {
       return false
     } else {
@@ -25,16 +23,16 @@ class TurnItIn extends Page {
     }
   }
 
-  def assignmentStatus(status: String, assignmentTitle: String) : Boolean = {
-    if (webDriver.findElement(By.xpath("//tr[contains(.,'"+assignmentTitle+"')]/td[3]")).getText.toLowerCase.contains(status.toLowerCase)) {
+  def assignmentStatus(status: String, assignmentTitle: String): Boolean = {
+    if (webDriver.findElement(By.xpath("//tr[contains(.,'" + assignmentTitle + "')]/td[3]")).getText.toLowerCase.contains(status.toLowerCase)) {
       return true
     } else {
       return false
     }
   }
 
-  def turnItInExists (assignmentTitle: String) : Boolean = {
-    click on xpath("//a[.='Edit "+assignmentTitle+"']")
+  def turnItInExists(assignmentTitle: String): Boolean = {
+    click on xpath("//a[.='Edit " + assignmentTitle + "']")
     Portal.getToFrameZero
 
     if (checkbox("new_assignment_use_review_service").isSelected) {

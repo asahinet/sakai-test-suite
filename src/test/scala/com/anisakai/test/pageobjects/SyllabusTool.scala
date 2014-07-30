@@ -2,18 +2,16 @@ package com.anisakai.test.pageobjects
 
 import com.anisakai.test.Config
 import org.openqa.selenium.By
-import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 
 object SyllabusTool extends SyllabusTool
+
 class SyllabusTool extends Page {
 
-  def addSyllabus() : String = {
+  def addSyllabus(): String = {
     return addSyllabus(false)
   }
 
-  def addSyllabus(redirect: Boolean) : String = {
-    def wait = new WebDriverWait(webDriver, 10)
-
+  def addSyllabus(redirect: Boolean): String = {
     val syllabusName: String = faker.letterify("??????")
     Portal.xslFrameOne
     if (redirect) {
@@ -24,14 +22,11 @@ class SyllabusTool extends Page {
       click on partialLinkText("Add Item")
       textField("newTitle").value = syllabusName
       click on xpath("//button[.='Add']")
-      if (!xpath("//*[.='"+syllabusName+"']/../../..//*[.='Click to add body text']").webElement.isDisplayed) {
-        click on xpath("//*[contains(text(), '"+syllabusName+"')]/../../*[contains(@title, 'Click to expand')]")
+      if (!xpath("//*[.='" + syllabusName + "']/../../..//*[.='Click to add body text']").webElement.isDisplayed) {
+        click on xpath("//*[contains(text(), '" + syllabusName + "')]/../../*[contains(@title, 'Click to expand')]")
       }
-      click on xpath("//*[.='"+syllabusName+"']/../../..//div[.='Click to add body text']")
-      eventually {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[contains(@title,'Rich text editor')]")))
-        Portal.richTextEditor()
-      }
+      click on xpath("//*[.='" + syllabusName + "']/../../..//div[.='Click to add body text']")
+      Portal.richTextEditor()
       Portal.xslFrameOne
       click on xpath("//*[.='ok']")
     }
@@ -46,28 +41,36 @@ class SyllabusTool extends Page {
 
   }
 
-  def syllabusExists(syllabusName: String) : Boolean = {
+  def syllabusExists(syllabusName: String): Boolean = {
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
     Portal.xslFrameOne
 
-    if (xpath("//*[.='"+syllabusName+"']").findElement(webDriver).isDefined) { true } else { false }
+    if (xpath("//*[.='" + syllabusName + "']").findElement(webDriver).isDefined) {
+      true
+    } else {
+      false
+    }
 
   }
 
-  def redirectExists(syllabusName: String) : Boolean = {
+  def redirectExists(syllabusName: String): Boolean = {
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
     Portal.xslFrameOne
-      if (xpath("//iframe[@src='"+Config.targetServer+"']").findElement(webDriver).isDefined) { true } else { false }
+    if (xpath("//iframe[@src='" + Config.targetServer + "']").findElement(webDriver).isDefined) {
+      true
+    } else {
+      false
+    }
   }
 
-  def editSyllabus(syllabusName: String) : String = {
+  def editSyllabus(syllabusName: String): String = {
     val newName: String = faker.letterify("??????")
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
     Portal.xslFrameOne
-    click on xpath("//*[.='"+syllabusName+"']")
+    click on xpath("//*[.='" + syllabusName + "']")
     xpath("//input[@class='input-medium']").webElement.clear
     xpath("//input[@class='input-medium']").webElement.sendKeys(newName)
     click on xpath("//*[.='ok']")
@@ -78,7 +81,7 @@ class SyllabusTool extends Page {
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
     Portal.xslFrameOne
-    if (xpath("//iframe[@src='"+Config.targetServer+"']").findElement(webDriver).isDefined) {
+    if (xpath("//iframe[@src='" + Config.targetServer + "']").findElement(webDriver).isDefined) {
       click on partialLinkText("Redirect")
       textField("redirectForm:urlValue").clear
       click on name("redirectForm:_id13")
@@ -91,7 +94,6 @@ class SyllabusTool extends Page {
     click on cssSelector("[title='Update']")
     click on xpath("//input[contains(@value,'Update')]")
   }
-
 
 
 }

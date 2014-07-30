@@ -2,7 +2,6 @@
 Feature: Testing the adding and editing of content from the Lesson Builder Tool
 
 
-
   Scenario: Adding text to Lesson Builder
     Given I'm logged in as an 'instructor'
     And I am on a course with 'Lesson Builder' tool

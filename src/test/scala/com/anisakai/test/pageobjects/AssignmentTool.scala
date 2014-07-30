@@ -1,10 +1,10 @@
 package com.anisakai.test.pageobjects
 
-import com.anisakai.test.Config
-import org.openqa.selenium.By
 import java.util.Calendar
+
+import org.openqa.selenium.By
+
 import scala.util.Random
-import scala.collection.mutable.ListBuffer
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,11 +25,11 @@ class AssignmentTool extends Page {
     Portal.getToFrameZero
   }
 
-  def assignment() : String ={
+  def assignment(): String = {
     return assignment(false, false)
   }
 
-  def assignment(turnItIn: Boolean, correct: Boolean) : String = {
+  def assignment(turnItIn: Boolean, correct: Boolean): String = {
     Portal.xslFrameOne
     val assignmentTitle = faker.letterify("?????? ???????")
     var day = cal.get(Calendar.DAY_OF_MONTH) - 2
@@ -86,19 +86,19 @@ class AssignmentTool extends Page {
     Portal.xslFrameOne
     click on name("post")
 
-    eventually (switch to defaultContent)
+    eventually(switch to defaultContent)
     switch to frame(0)
 
     return assignmentTitle
   }
 
-  def isViewable(assignmentTitle : String) : Boolean = {
+  def isViewable(assignmentTitle: String): Boolean = {
     click on linkText(assignmentTitle)
     Portal.xslFrameOne
     return webDriver.findElement(By.className("discTria")).getText().contains(assignmentTitle)
   }
 
-  def isAdded(eventTitle : String) : Boolean = {
+  def isAdded(eventTitle: String): Boolean = {
     Portal.xslFrameOne
     return linkText(eventTitle).element.isDisplayed
   }
@@ -106,13 +106,13 @@ class AssignmentTool extends Page {
   def openAssignment(assignmentTitle: String) {
     switch to defaultContent
     click on xpath("//a[@title='Reset']")
-    eventually (Portal.xslFrameOne)
+    eventually(Portal.xslFrameOne)
     click on linkText(assignmentTitle)
-    eventually (switch to defaultContent)
+    eventually(switch to defaultContent)
     switch to frame(0)
   }
 
-  def studentSubmitAssignment() : Boolean = {
+  def studentSubmitAssignment(): Boolean = {
     Portal.xslFrameOne
     Portal.richTextEditor()
     Portal.xslFrameOne
@@ -120,9 +120,9 @@ class AssignmentTool extends Page {
     return xpath("//*[@class='success']").element.isDisplayed
   }
 
-  def gotoEdit(assignmentTitle : String) : Array[String] = {
+  def gotoEdit(assignmentTitle: String): Array[String] = {
     Portal.xslFrameOne
-    click on xpath("//a[.='Edit "+assignmentTitle+"']")
+    click on xpath("//a[.='Edit " + assignmentTitle + "']")
     Portal.xslFrameOne
 
     var current = new Array[String](2)
@@ -133,9 +133,7 @@ class AssignmentTool extends Page {
   }
 
 
-
-
-  def edit(current : Array[String]) : String = {
+  def edit(current: Array[String]): String = {
     val newTitle = faker.letterify("?????? ???????")
     textField("new_assignment_title").value = newTitle
     singleSel("new_assignment_dueday").value = (current(1).toInt + 1).toString
@@ -144,8 +142,8 @@ class AssignmentTool extends Page {
     return newTitle
   }
 
-  def verifyEdit(assignmentTitle : String, current : Array[String]) : Boolean = {
-    click on xpath("//a[.='Edit "+assignmentTitle+"']")
+  def verifyEdit(assignmentTitle: String, current: Array[String]): Boolean = {
+    click on xpath("//a[.='Edit " + assignmentTitle + "']")
     Portal.xslFrameOne
     if (textField("new_assignment_title").value != current(0) && singleSel("new_assignment_dueday").value != current(1) && singleSel("new_assignment_closeday").value != current(1)) {
       return true
@@ -154,14 +152,14 @@ class AssignmentTool extends Page {
     }
   }
 
-  def deleteAssignment(assignmentTitle : String) {
+  def deleteAssignment(assignmentTitle: String) {
     Portal.xslFrameOne
-    checkbox(xpath("//label[@class='skip' and contains(text(),'"+ assignmentTitle +"')]/preceding-sibling::input[@type='checkbox']")).select()
+    checkbox(xpath("//label[@class='skip' and contains(text(),'" + assignmentTitle + "')]/preceding-sibling::input[@type='checkbox']")).select()
     click on name("eventSubmit_doDelete_confirm_assignment")
     click on name("eventSubmit_doDelete_assignment")
   }
 
-  def removed(assignmentTitle : String) : Boolean = {
+  def removed(assignmentTitle: String): Boolean = {
     if (!linkText(assignmentTitle).findElement(webDriver).isDefined)
       return true
     else
