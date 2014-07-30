@@ -1,9 +1,8 @@
 package com.anisakai.test.pageobjects
-import org.openqa.selenium.{By, WebElement}
-import java.util.concurrent.TimeUnit
+
 import com.anisakai.test.Config
-import org.scalatest.concurrent.Eventually
-import com.github.javafaker.Faker
+import org.openqa.selenium.By
+
 /**
  * Created with IntelliJ IDEA.
  * User: gareth
@@ -48,7 +47,7 @@ class Announcements extends Page {
     click on id("eventSubmit_doUpdate")
   }
 
-  def isChanged() : Boolean = {
+  def isChanged(): Boolean = {
     if (status == 1) {
       return webDriver.findElement(By.className("textPanelHeader")).isDisplayed()
     } else {

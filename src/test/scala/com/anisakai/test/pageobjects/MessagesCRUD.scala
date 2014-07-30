@@ -1,7 +1,8 @@
 package com.anisakai.test.pageobjects
+
+import com.anisakai.test.util.FileUtil
 import org.openqa.selenium.By
 import org.openqa.selenium.support.ui.Select
-import com.anisakai.test.util.FileUtil
 
 
 /**
@@ -16,7 +17,7 @@ object MessagesCRUD extends MessagesCRUD
 
 class MessagesCRUD extends Page {
 
-  def addMessage(attachment: Boolean) : String = {
+  def addMessage(attachment: Boolean): String = {
     val messageSub = faker.letterify("???????")
     Portal.xslFrameOne
     click on linkText("Compose Message")
@@ -37,14 +38,14 @@ class MessagesCRUD extends Page {
     return messageSub
   }
 
-  def addMessage() : String = {
+  def addMessage(): String = {
     return addMessage(false)
   }
 
-  def isAdded(messageSub: String) : Boolean = {
+  def isAdded(messageSub: String): Boolean = {
     click on linkText("Sent")
     Portal.xslFrameOne
-    if (!xpath("//a[@title='"+messageSub+"']").findElement(webDriver).isDefined) {
+    if (!xpath("//a[@title='" + messageSub + "']").findElement(webDriver).isDefined) {
       false
     } else {
       true

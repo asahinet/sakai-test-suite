@@ -1,8 +1,10 @@
 package com.anisakai.test.pageobjects
 
-import org.openqa.selenium.By
 import java.util.Calendar
+
+import org.openqa.selenium.By
 import org.openqa.selenium.support.ui.Select
+
 import scala.util.Random
 
 /**
@@ -13,9 +15,10 @@ import scala.util.Random
  * To change this template use File | Settings | File Templates.
  */
 object CalendarObj extends CalendarObj
+
 class CalendarObj extends Page {
 
-  def checkCalendar() : Boolean = {
+  def checkCalendar(): Boolean = {
     return webDriver.findElement(By.tagName("h3")).getText().contains("Calendar")
   }
 
@@ -24,7 +27,7 @@ class CalendarObj extends Page {
     click on xpath("//a[contains(@title,'Add')]")
   }
 
-  def createRandomEvent() : String = {
+  def createRandomEvent(): String = {
     val eventTitle = faker.letterify("??????????")
     val cal = Calendar.getInstance
     cal.add(Calendar.DATE, 1)
@@ -52,7 +55,7 @@ class CalendarObj extends Page {
     return eventTitle
   }
 
-  def isAdded(eventTitle : String) : Boolean = {
+  def isAdded(eventTitle: String): Boolean = {
     return linkText(eventTitle).element.isDisplayed
   }
 

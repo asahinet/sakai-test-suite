@@ -1,11 +1,8 @@
 package com.anisakai.test.cucumber.stepdefs
 
-import cucumber.api.scala.{EN, ScalaDsl}
 import com.anisakai.test.pageobjects._
+import cucumber.api.scala.{EN, ScalaDsl}
 import junit.framework.Assert._
-import com.anisakai.test.Config
-import org.openqa.selenium.By
-import org.scalatest.selenium.WebBrowser.{click, switch}
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,11 +13,11 @@ import org.scalatest.selenium.WebBrowser.{click, switch}
  */
 class WebContentTest extends ScalaDsl with EN with TearDown {
   var source: String = ""
-  When("""^I add web content to the tool$""") { () =>
+  When( """^I add web content to the tool$""") { () =>
     source = WebContent.addWebContent()
   }
 
-  Then("""^The web page should be displayed$""") { () =>
+  Then( """^The web page should be displayed$""") { () =>
     assertTrue(WebContent.isDisplayed(source))
   }
 }

@@ -1,9 +1,10 @@
 package com.anisakai.test.pageobjects
 
-import scala.collection.JavaConversions._
-import org.openqa.selenium.support.ui.Select
 import com.anisakai.test.Config
 import org.openqa.selenium.By
+import org.openqa.selenium.support.ui.Select
+
+import scala.collection.JavaConversions._
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,23 +17,31 @@ import org.openqa.selenium.By
 object UsersTool extends UsersTool
 
 class UsersTool extends Page {
-  var currentEid : String = null
-  var currentFirstName : String = null
-  var oldFirstName : String = null
+  var currentEid: String = null
+  var currentFirstName: String = null
+  var oldFirstName: String = null
 
   switch to defaultContent
 
-  def userEid : TextField = textField("eid")
-  def lastName : TextField = textField("last-name")
-  def search: TextField = textField("search")
-  def firstName: TextField = textField("first-name")
-  def email: TextField = textField("email")
-  def pw: PasswordField = pwdField("pw")
-  def pw0: PasswordField = pwdField("pw0")
-  def userTypeSelect: Select = new Select(webDriver.findElement(By.name("type")))
-  def userTypeTextInput : TextField = textField("type")
+  def userEid: TextField = textField("eid")
 
-  def createUser(eid : String, firstname : String, lastname : String, email : String, usertype : String, password : String)  {
+  def lastName: TextField = textField("last-name")
+
+  def search: TextField = textField("search")
+
+  def firstName: TextField = textField("first-name")
+
+  def email: TextField = textField("email")
+
+  def pw: PasswordField = pwdField("pw")
+
+  def pw0: PasswordField = pwdField("pw0")
+
+  def userTypeSelect: Select = new Select(webDriver.findElement(By.name("type")))
+
+  def userTypeTextInput: TextField = textField("type")
+
+  def createUser(eid: String, firstname: String, lastname: String, email: String, usertype: String, password: String) {
     Portal.xslFrameOne
     click on linkText("New User")
     this.userEid.value = eid
@@ -52,16 +61,16 @@ class UsersTool extends Page {
 
     // if we get an error that the user exists, click cancel, that is ok
     if (className("alertMessage").findElement(webDriver).isDefined &&
-      className("alertMessage").webElement(webDriver).getText().contains("user id is already in use")){
+      className("alertMessage").webElement(webDriver).getText().contains("user id is already in use")) {
       click on name("eventSubmit_doCancel")
     }
   }
 
-  def findOrCreateUser(eid : String) {
+  def findOrCreateUser(eid: String) {
     createUser(eid, faker.firstName(), faker.lastName(), eid + "@asdf.com", "registered", "password")
   }
 
-  def randomUser() : String = {
+  def randomUser(): String = {
     val eid = faker.numerify("#########")
     createUser(eid, faker.firstName(), faker.lastName(), eid + "@asdf.com", "registered", "password")
     return eid
@@ -71,7 +80,7 @@ class UsersTool extends Page {
     click on linkText("Search")
   }
 
-  def enterSearchText(search : String) {
+  def enterSearchText(search: String) {
     Portal.xslFrameOne
     this.search.value = search
   }
@@ -79,16 +88,15 @@ class UsersTool extends Page {
   def clickAllLinks() {
     var linkElements = webDriver.findElements(By.tagName("a"));
     var linkTexts = new Array[String](linkElements.length)
-    var i : Int = 0;
+    var i: Int = 0;
 
     //extract the link texts of each link element
-    for (e  <- linkElements)
-    {
+    for (e <- linkElements) {
       linkTexts(i) = e.getText();
       i = i + 1
     }
 
-    linkTexts.foreach {(t : String) =>
+    linkTexts.foreach { (t: String) =>
       webDriver.findElement(By.linkText(t)).click();
       System.out.println("\"" + t + "\"" + " is working.");
       webDriver.navigate().back();
@@ -96,12 +104,12 @@ class UsersTool extends Page {
 
   }
 
-  def foundUser(eid : String) : Boolean = {
+  def foundUser(eid: String): Boolean = {
     this.currentEid = eid;
     return partialLinkText(eid) != null
   }
 
-  def editFirstName(firstName : String) {
+  def editFirstName(firstName: String) {
     click on partialLinkText(currentEid)
     oldFirstName = this.firstName.value
     this.firstName.value = firstName
@@ -109,7 +117,7 @@ class UsersTool extends Page {
     click on name("eventSubmit_doSave")
   }
 
-  def hasFirstNameChanged() : Boolean = {
+  def hasFirstNameChanged(): Boolean = {
     return cssSelector("h4:contains('" + currentFirstName + "')") != null
   }
 

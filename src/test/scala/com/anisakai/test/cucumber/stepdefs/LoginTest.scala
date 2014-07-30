@@ -1,10 +1,9 @@
 package com.anisakai.test.cucumber.stepdefs
 
+import com.anisakai.test.Config
+import com.anisakai.test.pageobjects.Portal
 import cucumber.api.scala.{EN, ScalaDsl}
 import junit.framework.Assert._
-import com.anisakai.test.pageobjects.{CalendarObj, Portal}
-import cucumber.runtime.PendingException
-import com.anisakai.test.Config
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,17 +37,17 @@ class LoginTest extends ScalaDsl with EN with TearDown {
 
 
   Then( """^I should see my workspace""") {
-      assertTrue(Portal.isMyWorkspace())
+    assertTrue(Portal.isMyWorkspace())
   }
 
-  Given("""^I am logged on as an admin user$""") {
+  Given( """^I am logged on as an admin user$""") {
     Portal.login(Config.defaultAdminEid, Config.defaultAdminPassword)
   }
 
-  Given("""^I am logged on as '(.+)' with a password of '(.+)'$"""){ (eid: String, password: String) =>
+  Given( """^I am logged on as '(.+)' with a password of '(.+)'$""") { (eid: String, password: String) =>
     Portal.login(eid, password)
   }
-  Given("""^I am on the '(.+)' site using the '(.+)' tool$"""){ (siteName : String, toolName : String) =>
+  Given( """^I am on the '(.+)' site using the '(.+)' tool$""") { (siteName: String, toolName: String) =>
     Portal.gotoSite(siteName)
     Portal.gotoTool(toolName)
   }

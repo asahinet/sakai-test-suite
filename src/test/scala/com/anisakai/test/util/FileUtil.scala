@@ -19,7 +19,9 @@ class FileUtil {
 
   def createRandomTextFile(numOfParagraphs: Int): String = {
     val sb = new StringBuilder()
-    faker.paragraphs(numOfParagraphs).toList.foreach{ sb.append(_) }
+    faker.paragraphs(numOfParagraphs).toList.foreach {
+      sb.append(_)
+    }
     createTextFile(sb.toString())
   }
 

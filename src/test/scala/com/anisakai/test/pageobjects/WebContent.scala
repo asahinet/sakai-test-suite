@@ -1,6 +1,5 @@
 package com.anisakai.test.pageobjects
 
-import org.openqa.selenium.By
 import com.anisakai.test.Config
 
 /**
@@ -14,7 +13,7 @@ object WebContent extends WebContent
 
 class WebContent extends Page {
 
-  def addWebContent() : String = {
+  def addWebContent(): String = {
     switch to defaultContent
     if (Config.defaultPortal == "xsl")
       Portal.getToFrameZero
@@ -26,8 +25,8 @@ class WebContent extends Page {
     return "https://nightly.cle.rsmart.com/portal/"
   }
 
-  def isDisplayed(webPage: String) : Boolean = {
+  def isDisplayed(webPage: String): Boolean = {
     switch to defaultContent
-    return xpath("//iframe[@src='"+webPage+"']").findElement(webDriver).isDefined
+    return xpath("//iframe[@src='" + webPage + "']").findElement(webDriver).isDefined
   }
 }
