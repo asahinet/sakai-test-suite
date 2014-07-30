@@ -3,7 +3,7 @@
 Feature: Testing adding a matrix to a portfolio
 
   Scenario: Add a Matrix to an existing portfolio site
-    Given I 'Portfolio' site on the 'Matrices' tool
+    Given I have created a 'Portfolio' site
     When I add a matrix to the site
     And I add the user to the site
     Then I see the Manage Matrices page display
