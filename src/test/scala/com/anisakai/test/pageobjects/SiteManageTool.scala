@@ -151,6 +151,9 @@ class SiteManageTool extends Page {
     if (className("source_sakai.iframe").findElement(webDriver).isDefined) {
       textField("source_sakai.iframe").value = Config.targetServer
     }
+    if (className("title_sakai.lessonbuildertool").findElement(webDriver).isDefined) {
+      textField("title_sakai.lessonbuildertool").value = "Lesson Builder"
+    }
     click on cssSelector("[value=Continue]")
     click on cssSelector("[value=Continue]")
 

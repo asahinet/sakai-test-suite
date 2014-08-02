@@ -203,15 +203,29 @@ class Portal extends Page with Eventually {
         click on linkText("Site Info")
       }
     } else {
-      if (webDriver.findElement(By.className("title")).getText == toolName) {
-        click on xpath("//a[contains(@title,'Reset')]")
+//      iframes are fun...
+      if (!className("siteTitle").findElement(webDriver).isDefined) {
+        xslFrameOne
       } else {
+        if (!className("siteTitle").webElement(webDriver).getText.contains(Config.defaultCourseSiteTitle)) {
+          xslFrameOne
+        }
+      }
+      if (webDriver.findElement(By.className("title")).getText.contains(toolName)) {
+        click on xpath("//a[contains(@title,'Reset')]")
+        switch to defaultContent
+      } else {
+        switch to defaultContent
         click on linkText(toolName)
       }
     }
 
     if (reset) {
-      switch to defaultContent
+      if (!className("siteTitle").findElement(webDriver).isDefined) {
+        xslFrameOne
+      } else {
+        switch to defaultContent
+      }
       click on xpath("//a[contains(@title,'Reset')]")
     }
 

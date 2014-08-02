@@ -19,8 +19,8 @@ class LessonBuilderTest extends ScalaDsl with EN with TearDown {
     addition.clear()
   }
 
-  When( """^I add '(.+)' '(.+)' to the lessons tool$""") { (addType: String, contentType: String) =>
-    addition += LessonBuilder.add(contentType, addType)
+  When( """^I add a '(.+)' '(.+)' to the lessons tool$""") { (addType: String, contentType: String) =>
+    addition += LessonBuilder.add(addType, contentType)
   }
 
   When( """^I add '(.+)' subpages to the lesson tool$""") { (count: Int) =>

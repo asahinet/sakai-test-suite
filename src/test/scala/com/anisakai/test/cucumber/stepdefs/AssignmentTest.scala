@@ -33,7 +33,7 @@ class AssignmentTest extends ScalaDsl with EN with TearDown {
   When( """^I create an assignment in '(.*)' site$""") { (siteType: String) =>
     if (siteType.equalsIgnoreCase("course")) {
       Portal.gotoSite(Config.defaultCourseSiteTitle)
-      Portal.gotoTool("Assignments")
+      Portal.gotoTool("Assignments", true)
       AssignmentTool.gotoAdd()
       assignmentTitle = AssignmentTool.assignment()
     }
@@ -63,7 +63,7 @@ class AssignmentTest extends ScalaDsl with EN with TearDown {
 
   And( """^I have created a course with an assignment$""") { () =>
     Portal.gotoSite(Config.defaultCourseSiteTitle)
-    Portal.gotoTool("Assignments")
+    Portal.gotoTool("Assignments", true)
   }
 
   When( """^I edit the existing assignment$""") { () =>
