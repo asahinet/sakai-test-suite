@@ -2,6 +2,7 @@ package com.anisakai.test.pageobjects
 
 import com.anisakai.test.Config
 import org.openqa.selenium.By
+import scala.collection.JavaConverters._
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,7 +36,7 @@ class SiteManageTool extends Page {
 
     // if we get an error that the site exists, click cancel, that is ok
     if (className("alertMessage").findElement(webDriver).isDefined &&
-      className("alertMessage").webElement(webDriver).getText().contains("The site id " + siteId + " is already in use")) {
+      className("alertMessage").webElement(webDriver).getText.contains("The site id " + siteId + " is already in use")) {
       click on name("eventSubmit_doCancel")
       return false
     }
@@ -51,12 +52,10 @@ class SiteManageTool extends Page {
   def membershipDoesNotExist(eid: String): Boolean = {
     // if we get an error that the site exists, click cancel, that is ok
     if (className("information").findElement(webDriver).isDefined &&
-      className("information").webElement(webDriver).getText().contains("The following participants are already members of this site and cannot be re-added: '" + eid + "'")) {
+      className("information").webElement(webDriver).getText.contains("The following participants are already members of this site and cannot be re-added: '" + eid + "'")) {
       return false
     }
-
     return true
-
   }
 
   def addUserWithRole(eid: String, role: String) {
@@ -66,7 +65,13 @@ class SiteManageTool extends Page {
     click on cssSelector("[value=Continue]")
 
     if (membershipDoesNotExist(eid)) {
-      click on xpath("//input[@value='" + role + "']")
+      if (xpath("//input[@value='" + role + "']").findElement(webDriver).isDefined) {
+        click on xpath("//input[@value='" + role + "']")
+      } else if (role.toLowerCase == "student") {
+        click on xpath("//input[@value='access']")
+      } else {
+        click on xpath("//input[@value='maintain']")
+      }
       click on cssSelector("[value=Continue]")
       click on cssSelector("[value=Continue]")
       click on cssSelector("[value=Finish]")
@@ -130,9 +135,11 @@ class SiteManageTool extends Page {
   def createSite(siteType: String, shortDescription: String, longDescription: String,
                  contactName: String,
                  siteMetaData: (Map[String, String]) => Unit, siteMetaDataArgs: Map[String, String]): String = {
+    val maintainRole = getMaintainRole
+    Portal.goToTool("Site Setup")
     Portal.getToFrameZero
     click on linkText("New")
-    click on radioButton(siteType.toLowerCase())
+    click on radioButton(siteType.toLowerCase)
     click on id("submitBuildOwn")
 
 
@@ -143,16 +150,7 @@ class SiteManageTool extends Page {
     textField("siteContactName").value = contactName
     click on cssSelector("[value=Continue]")
 
-    click on checkbox("all")
-    click on cssSelector("[value=Continue]")
-    if (className("emailId").findElement(webDriver).isDefined) {
-      textField("emailId").value = faker.lastName() + faker.numerify("####")
-    }
-    if (className("source_sakai.iframe").findElement(webDriver).isDefined) {
-      textField("source_sakai.iframe").value = Config.targetServer
-    }
-    click on cssSelector("[value=Continue]")
-    click on cssSelector("[value=Continue]")
+    addAllTools(false)
 
     val siteTitle = xpath("//table[@class='itemSummary']//tr[1]//td[1]").element.text
 
@@ -160,8 +158,7 @@ class SiteManageTool extends Page {
     eventually {
       Portal.getToFrameZero
     }
-
-    return siteTitle
+    siteTitle
   }
 
   def createRandomSite(siteType: String): String = {
@@ -175,71 +172,44 @@ class SiteManageTool extends Page {
 
   }
 
-
   def addAllTools() {
-    var dupes = Array(false, false, false, false, false)
-    var visible = Array(true, true, true, true, true)
+    addAllTools(true)
+  }
+
+  def addAllTools(withSitesTool : Boolean) {
+    // We should only use this function upon creating a new site
+    // otherwise we will see duplicate tools on an existing site
     Portal.xslFrameOne
-    click on linkText("Edit Tools")
+    if (withSitesTool) {
+      goToEditTools
+    }
 
-    //    Check for duplicate tools
-
-    if (!xpath("//label[contains(text(), 'External Tool')]/../../td/input").findElement(webDriver).isDefined)
-      visible(0) = false
-    else if (xpath("//label[contains(text(), 'External Tool')]/../../td/input").element.isSelected)
-      dupes(0) = true
-
-    if (!xpath("//label[contains(text(), 'Lessons Builder')]/../../td/input").findElement(webDriver).isDefined)
-      visible(1) = false
-    else if (xpath("//label[contains(text(), 'Lessons Builder')]/../../td/input").element.isSelected)
-      dupes(1) = true
-
-    if (!xpath("//label[contains(text(), 'News')]/../../td/input").findElement(webDriver).isDefined)
-      visible(2) = false
-    else if (xpath("//label[contains(text(), 'News')]/../../td/input").element.isSelected)
-      dupes(2) = true
-
-    if (!xpath("//label[contains(text(), 'Web Content')]/../../td/input").findElement(webDriver).isDefined)
-      visible(3) = false
-    else if (xpath("//label[contains(text(), 'Web Content')]/../../td/input").element.isSelected)
-      dupes(3) = true
-
-    if (!xpath("//label[contains(text(), 'Basic LTI')]/../../td/input").findElement(webDriver).isDefined)
-      visible(4) = false
-    else if (xpath("//label[contains(text(), 'Basic LTI')]/../../td/input").element.isSelected)
-      dupes(4) = true
-
-    click on checkbox("all")
-
-    //    Remove any duplicate tools
-    if (dupes(0) && visible(0)) webDriver.findElements(By.xpath("//label[contains(text(), 'External Tool')]/../../td/input")).get(1).click()
-    if (dupes(1) && visible(1)) webDriver.findElements(By.xpath("//label[contains(text(), 'Lessons Builder')]/../../td/input")).get(1).click()
-    if (dupes(2) && visible(2)) webDriver.findElements(By.xpath("//label[contains(text(), 'News')]/../../td/input")).get(1).click()
-    if (dupes(3) && visible(3)) webDriver.findElements(By.xpath("//label[contains(text(), 'Web Content')]/../../td/input")).get(1).click()
-    if (dupes(4) && visible(4)) webDriver.findElements(By.xpath("//label[contains(text(), 'Basic LTI')]/../../td/input")).get(1).click()
-
+    if (Config.sakaiDistro.equals("ani")) {
+      if (Config.sakaiVersion.startsWith("10.")) {
+        switch to defaultContent
+        click on id("selectAll")
+        click on id("unSelectAll")
+        Portal.xslFrameOne
+      } else {
+        click on checkbox("all")
+      }
+    } else {
+      clickAllTools
+    }
 
     click on cssSelector("[value=Continue]")
 
-    //    If there are no duplicates then we want to make sure this information gets added
-    if (!visible(0)) dupes(0) = true
-    if (!visible(1)) dupes(1) = true
-    if (!visible(2)) dupes(2) = true
-    if (!visible(3)) dupes(3) = true
-    if (!visible(4)) dupes(4) = true
-
-
-    if (!dupes(0) || !dupes(1) || !dupes(2) || !dupes(3)) {
-      if (id("emailId").findElement(webDriver).isDefined) {
-        textField("emailId").value = faker.lastName() + faker.numerify("####")
-      }
-      if (id("source_sakai.iframe").findElement(webDriver).isDefined) {
-        textField("source_sakai.iframe").value = Config.targetServer
-      }
-      click on cssSelector("[value=Continue]")
+    // Add the email address and the URL for the web content tool
+    if (id("emailId").findElement(webDriver).isDefined) {
+      textField("emailId").value = faker.lastName() + faker.numerify("####")
     }
+    if (id("source_sakai.iframe").findElement(webDriver).isDefined) {
+      textField("source_sakai.iframe").value = Config.targetServer // Needs to be https
+    }
+    click on cssSelector("[value=Continue]")
 
-    if (Config.defaultPortal == "xsl") {
+
+    if (Config.skin == "xsl") {
       click on name("review")
     } else {
       click on cssSelector("[value=Finish]")
@@ -251,4 +221,24 @@ class SiteManageTool extends Page {
 
   }
 
+  def clickAllTools {
+    val linkElements = webDriver.findElements(By.xpath("//input[@type='checkbox']")).asScala
+    //check if it is already check, if not then check it
+    linkElements.foreach(e =>
+      if (!e.isSelected) {
+        e.click
+      }
+    )
+  }
+
+  def getMaintainRole : String = {
+    Portal.goToAdminWorkspace
+    Portal.goToTool("Realms")
+    Portal.xslFrameOne
+    webDriver.findElement(By.xpath("//a[contains(text(), '!site.template.course')]/../../following-sibling::td[@headers='Maintain']")).getText
+  }
+
+  def goToEditTools {
+    click on linkText("Edit Tools")
+  }
 }

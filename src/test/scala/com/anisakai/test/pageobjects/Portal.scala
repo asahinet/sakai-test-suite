@@ -1,7 +1,7 @@
 package com.anisakai.test.pageobjects
 
 import com.anisakai.test.Config
-import org.openqa.selenium.By
+import org.openqa.selenium.{UnhandledAlertException, By}
 import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 import org.scalatest.concurrent.Eventually
 
@@ -19,21 +19,28 @@ class Portal extends Page with Eventually {
   //  def password: PasswordField = pwdField("pw")
 
   def getToFrameZero {
-    switch to defaultContent
+      switch to defaultContent
     switch to frame(0)
   }
 
   def xslFrameOne {
-    if (Config.defaultPortal == "xsl") {
-      if (Config.client == "learnersedge") {
-        getToFrameZero
+    try {
+      if (Config.skin == "xsl") {
+        if (Config.client == "learnersedge" || Config.client == "sgu") {
+          getToFrameZero
+        } else {
+          switch to defaultContent
+          switch to frame(1)
+        }
       } else {
-        switch to defaultContent
-        switch to frame(1)
+        getToFrameZero
       }
-    } else {
+    } catch {
+      case ae: UnhandledAlertException => println("Unhandled Alert Exception is normal, test can still pass")
+    } finally {
       getToFrameZero
     }
+
   }
 
   def login() {
@@ -59,7 +66,7 @@ class Portal extends Page with Eventually {
   }
 
   def isMyWorkspace(): Boolean = {
-    if (Config.defaultPortal == "xsl") {
+    if (Config.skin == "xsl") {
       return webDriver.findElement(By.id("siteTitle")).getText().startsWith("My Workspace")
     } else {
       return webDriver.findElement(By.className("siteTitle")).getText().startsWith("My Workspace")
@@ -67,7 +74,7 @@ class Portal extends Page with Eventually {
   }
 
   def isAdminWorkspace(): Boolean = {
-    if (Config.defaultPortal == "xsl") {
+    if (Config.skin == "xsl") {
       return webDriver.findElement(By.id("siteTitle")).getText().startsWith("Administration Workspace")
     } else {
       return webDriver.findElement(By.className("siteTitle")).getText().startsWith("Administration Workspace")
@@ -77,7 +84,7 @@ class Portal extends Page with Eventually {
   def isEnrolled(siteName: String): Boolean = {
     switch to defaultContent
     var siteTitle = webDriver.findElement(By.xpath("//*"))
-    if (Config.defaultPortal == "xsl") {
+    if (Config.skin == "xsl") {
       siteTitle = webDriver.findElement(By.id("siteTitle"))
     } else {
       siteTitle = webDriver.findElement(By.className("siteTitle"))
@@ -89,7 +96,7 @@ class Portal extends Page with Eventually {
         return true
       } else {
         click on cssSelector("a[title='More Sites']")
-        if (Config.defaultPortal == "neo")
+        if (Config.skin == "neo")
           textField("txtSearch").value = siteName
         if (partialLinkText(siteName).findElement(webDriver).isDefined) {
           return true
@@ -102,30 +109,33 @@ class Portal extends Page with Eventually {
     }
   }
 
-  def gotoAdminWorkspace() {
+  def goToAdminWorkspace() {
     switch to defaultContent
     click on linkText("Administration Workspace")
   }
 
-  def gotoSiteDirectly(siteId: String) {
+  def goToSiteDirectly(siteId: String) {
+
     var server = Config.targetServer
+
+    // remove excess content of the URL
     if (server.contains("/xlogin")) {
       server = server.dropRight(7)
     }
     if (server.contains("/xsl-portal")) {
       server = server.dropRight(11)
     }
-    if (Config.defaultPortal == "neo") {
+    if (Config.skin == "neo") {
       go to server + "/site/" + siteId
     } else {
       go to server + "/xsl-portal/site/" + siteId
     }
   }
 
-  def gotoSite(siteName: String) {
+  def goToSite(siteName: String) {
     switch to defaultContent
     var siteTitle = webDriver.findElement(By.xpath("//*"))
-    if (Config.defaultPortal == "xsl") {
+    if (Config.skin == "xsl") {
       siteTitle = webDriver.findElement(By.id("siteTitle"))
     } else {
       siteTitle = webDriver.findElement(By.className("title"))
@@ -137,18 +147,18 @@ class Portal extends Page with Eventually {
         click on partialLinkText(siteName)
       } else {
         click on cssSelector("a[title='More Sites']")
-        if (Config.defaultPortal == "neo")
+        if (Config.skin == "neo")
           textField("txtSearch").value = siteName
         click on partialLinkText(siteName)
       }
     }
   }
 
-  def gotoSite(siteName: String, siteType: String) {
+  def goToSite(siteName: String, siteType: String) {
     switch to defaultContent
 
     // if we are already on the right site, skip this
-    if (Config.defaultPortal == "neo")
+    if (Config.skin == "neo")
       click on linkText("Home")
 
     if (!webDriver.findElement(By.id("siteTitle")).getText.contains(siteName)) {
@@ -157,13 +167,13 @@ class Portal extends Page with Eventually {
         click on partialLinkText(siteName)
       } else {
         click on cssSelector("a[title='More Sites']")
-        if (Config.defaultPortal == "neo")
+        if (Config.skin == "neo")
           textField("txtSearch").value = siteName
         //If site is found go to site, if not create the site
         if (partialLinkText(siteName).findElement(webDriver).isDefined) {
           click on partialLinkText(siteName)
         } else {
-          if (Config.defaultPortal == "neo") {
+          if (Config.skin == "neo") {
             click on cssSelector("a[title='Close this drawer']")
             if (!isMyWorkspace()) {
               click on cssSelector("a[title='My Workspace']")
@@ -182,46 +192,54 @@ class Portal extends Page with Eventually {
   }
 
   def createSite(siteType: String) {
-    gotoTool("Site Setup")
+    goToTool("Site Setup")
     var siteTitle = SiteManageTool.createRandomSite(siteType)
-    gotoSite(siteTitle)
+    goToSite(siteTitle)
   }
 
 
-  def gotoTool(toolName: String) {
-    gotoTool(toolName, false)
+  def goToTool(toolName: String) {
+    goToTool(toolName, false)
   }
 
 
-  def gotoTool(toolName: String, reset: Boolean) {
+  def goToTool(toolName: String, reset: Boolean) {
+    // reset will refresh the tool before using it to ensure clean tool
     switch to defaultContent
-
-    if (toolName.equals("Site Setup") && !Config.sakaiDistro.equalsIgnoreCase("ani")) {
+    if (toolName.equals("Site Setup") || toolName.equals("Site Editor") && !Config.sakaiDistro.equalsIgnoreCase("ani")) {
+//      Different names for the same thing
       if (linkText("Worksite Setup").findElement(webDriver).isDefined) {
         click on linkText("Worksite Setup")
       } else if (linkText("Site Info").findElement(webDriver).isDefined) {
         click on linkText("Site Info")
       }
     } else {
-      if (webDriver.findElement(By.className("title")).getText == toolName) {
+      //      If we are on the correct tool reset it, otherwise go to the tool
+      //      XSL Portal uses element id instead of className
+
+      if (webDriver.findElement(By.className("title")).getText.contains(toolName)) {
         click on xpath("//a[contains(@title,'Reset')]")
       } else {
         click on linkText(toolName)
+        if (reset) {
+          click on xpath("//a[contains(@title,'Reset')]")
+        }
       }
     }
-
-    if (reset) {
-      switch to defaultContent
-      click on xpath("//a[contains(@title,'Reset')]")
-    }
-
   }
 
   def richTextEditor(): String = {
+//    Used to insert text into any CKEditor
     def wait = new WebDriverWait(webDriver, 10)
     val text = faker.paragraph(2)
-    wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[contains(@title,'Rich text editor')]")))
-    switch to frame(xpath("//iframe[contains(@title,'Rich text editor')]"))
+    var frameName = ""
+    if (Config.sakaiVersion.startsWith("10.")) {
+      frameName = "'Rich Text Editor'"
+    } else {
+      frameName = "'Rich text editor'"
+    }
+    wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[contains(@title, " + frameName + " )]")))
+    switch to frame(xpath("//iframe[contains(@title," + frameName + ")]"))
     webDriver.switchTo.activeElement.sendKeys(text)
     webDriver.switchTo.defaultContent
     getToFrameZero

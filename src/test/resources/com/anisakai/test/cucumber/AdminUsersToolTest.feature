@@ -5,7 +5,6 @@ Feature: Test the Admin Users Tool
     Given I am logged on as an admin user
     Given I am on the 'Administration Workspace' site using the 'Users' tool
 
-
   Scenario:  Create Users
     Given the following users exist:
       | eid         | email           | firstname | lastname | type       | password |

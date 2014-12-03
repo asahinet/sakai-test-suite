@@ -18,7 +18,7 @@ class LoginTest extends ScalaDsl with EN with TearDown {
     (url: String) =>
       Portal.navigateToPage(url)
 
-      Portal.logout()
+      Portal.logout
   }
 
   When( """^I enter '(.+)' for user""") {
@@ -32,12 +32,12 @@ class LoginTest extends ScalaDsl with EN with TearDown {
   }
 
   When( """^I click the Login button""") {
-    Portal.login();
+    Portal.login
   }
 
 
   Then( """^I should see my workspace""") {
-    assertTrue(Portal.isMyWorkspace())
+    assertTrue(Portal.isMyWorkspace)
   }
 
   Given( """^I am logged on as an admin user$""") {
@@ -48,8 +48,8 @@ class LoginTest extends ScalaDsl with EN with TearDown {
     Portal.login(eid, password)
   }
   Given( """^I am on the '(.+)' site using the '(.+)' tool$""") { (siteName: String, toolName: String) =>
-    Portal.gotoSite(siteName)
-    Portal.gotoTool(toolName)
+    Portal.goToSite(siteName)
+    Portal.goToTool(toolName, true)
   }
 
 

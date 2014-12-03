@@ -1,10 +1,10 @@
-@suite @calendar
+@calendar
 
 Feature: Test adding a calendar event
 
   Background:
-    Given I am logged on as 'student01' with a password of 'password'
-    Given I am on the 'My Workspace' site using the 'Calendar' tool
+    Given I am logged on as an admin user
+    And I am on a course with 'Calendar' tool
 
   Scenario: Add a calendar event
     When I create an event with random data

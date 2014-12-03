@@ -43,9 +43,9 @@ class TurnItInTest extends ScalaDsl with EN with TearDown {
   }
 
   When( """^I add a Turn It In assignment '(.+)'$""") { (correct: String) =>
-    Portal.gotoSite("TurnItIn Test 01")
-    Portal.gotoTool("Assignments")
-    AssignmentTool.gotoAdd()
+    Portal.goToSite("TurnItIn Test 01")
+    Portal.goToTool("Assignments")
+    AssignmentTool.goToAdd()
     if (correct.equalsIgnoreCase("correctly")) {
       assignmentTitle = AssignmentTool.assignment(true, true)
     } else {
@@ -63,14 +63,14 @@ class TurnItInTest extends ScalaDsl with EN with TearDown {
 
   Given( """^A course exists with a Turn It In assignment$""") { () =>
     login("instructor")
-    Portal.gotoSite("TurnItIn Test 01")
-    Portal.gotoTool("Assignments")
+    Portal.goToSite("TurnItIn Test 01")
+    Portal.goToTool("Assignments")
     assertTrue(TurnItIn.turnItInExists(assignmentTitle))
   }
 
   When( """^I submit a Turn It In assignment$""") { () =>
-    Portal.gotoSite("TurnItIn Test 01")
-    Portal.gotoTool("Assignments")
+    Portal.goToSite("TurnItIn Test 01")
+    Portal.goToTool("Assignments")
     AssignmentTool.openAssignment(assignmentTitle)
     TurnItIn.uploadFile()
   }

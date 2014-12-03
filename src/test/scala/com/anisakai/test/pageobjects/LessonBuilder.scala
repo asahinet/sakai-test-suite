@@ -1,7 +1,10 @@
 package com.anisakai.test.pageobjects
 
+import com.anisakai.test.Config
 import com.anisakai.test.util.FileUtil
 import org.openqa.selenium.By
+import org.openqa.selenium.interactions.Actions
+import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 
 import scala.collection.mutable.ListBuffer
 
@@ -15,9 +18,15 @@ import scala.collection.mutable.ListBuffer
 object LessonBuilder extends LessonBuilder
 
 class LessonBuilder extends Page {
+  def action = new Actions(webDriver)
+  def webWait = new WebDriverWait(webDriver, 5)
 
   def addText(): String = {
-    click on cssSelector("Add Text")
+    Portal.xslFrameOne
+    click on xpath("//span[.='Add Content']/..")
+    action.moveToElement(webDriver.findElement(By.linkText("Add Text")))
+    webWait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Add Text")))
+    click on linkText("Add Text")
     val text = Portal.richTextEditor()
     click on cssSelector("[value=Save]")
     return text
@@ -25,11 +34,21 @@ class LessonBuilder extends Page {
 
   def add(addType: String, contentType: String): String = {
     val title: String = faker.letterify("??????")
-    click on linkText("Add " + addType)
+    Portal.xslFrameOne
+    click on xpath("//span[.='Add Content']/..")
+    if (addType == "multimedia") {
+      action.moveToElement(webDriver.findElement(By.linkText("Add Text")))
+      webWait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Add Text")))
+      click on linkText("Embed content on page")
+    } else {
+      action.moveToElement(webDriver.findElement(By.linkText("Add Text")))
+      webWait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Add Text")))
+      click on linkText("Add Content Link")
+    }
     if (contentType.equalsIgnoreCase("url")) {
-      textField("mm-url").value = "https://nightly.cle.rsmart.com/portal"
+      textField("mm-url").value = Config.targetServer
       click on cssSelector("[value=Save]")
-      return "https://nightly.cle.rsmart.com/portal"
+      return Config.targetServer
     } else {
       webDriver.findElement(By.className("mm-file")).sendKeys(FileUtil.createTempFile(title, ".txt", faker.paragraph(2)))
       click on cssSelector("[value=Save]")
@@ -53,6 +72,10 @@ class LessonBuilder extends Page {
 
   def addSubpage(): String = {
     val title: String = faker.letterify("??????")
+    Portal.xslFrameOne
+    action.moveToElement(webDriver.findElement(By.linkText("Add Text")))
+    webWait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Add Text")))
+    click on xpath("//span[.='Add Content']/..")
     click on linkText("Add Subpage")
     textField("subpage-title").value = title
     click on cssSelector("[value=Create]")
@@ -61,13 +84,13 @@ class LessonBuilder extends Page {
   }
 
   def link(linkType: String, title: String) {
+    Portal.xslFrameOne
+    action.moveToElement(webDriver.findElement(By.linkText("Add Text")))
+    webWait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Add Text")))
+    click on xpath("//span[.='Add Content']/..")
     click on linkText("Add " + linkType)
     click on xpath("//input[@title='" + title + "']")
     click on cssSelector("[value=Use selected item]")
-  }
-
-  def linkQuiz(): String = {
-    return "TODO"
   }
 
   def viewAddition(addition: ListBuffer[String]): Boolean = {

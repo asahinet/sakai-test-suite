@@ -27,7 +27,7 @@ class Config {
   val sakaiDistro: String = loadProperty("sakai.distro", "ani")
   val defaultAdminEid: String = loadProperty("sakai.admin.eid", "admin")
   val defaultAdminPassword: String = loadProperty("sakai.admin.pwd", "admin")
-  val defaultPortal: String = loadProperty("sakai.portal", "neo")
+  val skin: String = loadProperty("sakai.portal", "neo")
   val client: String = loadProperty("sakai.client", "nightly")
   val timeout: String = loadProperty("driver.timeout", "5")
 
@@ -55,7 +55,7 @@ class Config {
     var selectedDriver: WebDriver = null
 
     if (!StringUtils.isEmpty(systemProperties.getProperty("target.browser"))) {
-      var targetBrowser = systemProperties.getProperty("target.browser")
+      val targetBrowser = systemProperties.getProperty("target.browser")
       if (targetBrowser.equalsIgnoreCase("chrome")) {
         if (StringUtils.isEmpty(systemProperties.getProperty("webdriver.chrome.driver"))) {
           systemProperties.setProperty("webdriver.chrome.driver", "chromedriver/chromedriver-2.6_mac")

@@ -17,7 +17,7 @@ class Announcements extends Page {
   var status = 0
 
   def clickOptions() {
-    if (Config.defaultPortal == "xsl") {
+    if (Config.skin == "xsl") {
       switch to defaultContent
       switch to frame(5)
     }

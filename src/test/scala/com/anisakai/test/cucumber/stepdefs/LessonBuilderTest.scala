@@ -19,8 +19,8 @@ class LessonBuilderTest extends ScalaDsl with EN with TearDown {
     addition.clear()
   }
 
-  When( """^I add '(.+)' '(.+)' to the lessons tool$""") { (addType: String, contentType: String) =>
-    addition += LessonBuilder.add(contentType, addType)
+  When( """^I add a '(.+)' '(.+)' to the lessons tool$""") { (addType: String, contentType: String) =>
+    addition += LessonBuilder.add(addType, contentType)
   }
 
   When( """^I add '(.+)' subpages to the lesson tool$""") { (count: Int) =>
@@ -30,18 +30,18 @@ class LessonBuilderTest extends ScalaDsl with EN with TearDown {
   }
 
   When( """^I create an assignment$""") { () =>
-    Portal.gotoTool("Assignments", true)
-    AssignmentTool.gotoAdd()
+    Portal.goToTool("Assignments", true)
+    AssignmentTool.goToAdd()
     addition += AssignmentTool.assignment()
   }
 
   When( """^I add the '(.+)' to the lesson tool$""") { (linkType: String) =>
-    Portal.gotoTool("Lesson Builder", true)
+    Portal.goToTool("Lesson Builder", true)
     LessonBuilder.link(linkType, addition(0))
   }
 
   When( """^I create a quiz$""") { () =>
-    Portal.gotoTool("Tests & Quizzes", true)
+    Portal.goToTool("Tests & Quizzes", true)
     addition += LessonBuilder.addQuiz()
   }
 }

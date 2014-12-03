@@ -3,6 +3,7 @@ package com.anisakai.test.pageobjects
 import com.anisakai.test.util.FileUtil
 import org.openqa.selenium.By
 import org.openqa.selenium.support.ui.Select
+import com.anisakai.test.Config
 
 
 /**
@@ -28,13 +29,21 @@ class MessagesCRUD extends Page {
     Portal.richTextEditor()
     Portal.xslFrameOne
     if (attachment) {
-      click on name("compose:_id72")
+      if (!Config.sakaiVersion.contains("10.")) {
+        click on name("compose:_id72")
+      } else {
+        click on xpath("//*[@value = 'Add attachments']")
+      }
       webDriver.findElement(By.className("upload")).sendKeys(FileUtil.createRandomTextFile(3))
       textField("url").value = "www.google.com"
       click on id("add_url")
       click on id("attachButton")
     }
-    click on name("compose:_id89")
+    if (!Config.sakaiVersion.contains("10.")) {
+      click on name("compose:_id89")
+    } else {
+      click on xpath("//*[@value = 'Send ']")
+    }
     return messageSub
   }
 
@@ -43,6 +52,8 @@ class MessagesCRUD extends Page {
   }
 
   def isAdded(messageSub: String): Boolean = {
+    Portal.goToTool("Messages", true)
+    Portal.xslFrameOne
     click on linkText("Sent")
     Portal.xslFrameOne
     if (!xpath("//a[@title='" + messageSub + "']").findElement(webDriver).isDefined) {

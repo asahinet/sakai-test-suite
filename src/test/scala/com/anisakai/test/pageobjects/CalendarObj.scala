@@ -50,7 +50,8 @@ class CalendarObj extends Page {
     ampm.selectByVisibleText(am_pm)
     singleSel("eventType").value = "Exam"
     textArea("location").value = "Online"
-    Portal.richTextEditor()
+    Portal.getToFrameZero
+    Portal.richTextEditor
     click on name("eventSubmit_doAdd")
     return eventTitle
   }
