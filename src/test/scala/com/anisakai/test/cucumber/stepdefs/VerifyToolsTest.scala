@@ -19,7 +19,7 @@ class VerifyToolsTest extends ScalaDsl with EN with TearDown {
   //Scenario: Course Site
   Given( """^I am on '(.+)' site$""") { (siteName: String) =>
 
-    Portal.gotoSite(siteName)
+    Portal.goToSite(siteName)
   }
 
   When( """^I click the course tool link the tool should load correctly$""") { () =>

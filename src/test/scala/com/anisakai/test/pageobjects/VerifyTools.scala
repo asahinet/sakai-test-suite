@@ -21,7 +21,7 @@ class VerifyTools extends Page {
   def checkTools(): Boolean = {
     var fails = ListBuffer[String]()
     var groupName: String = ""
-    if (Config.defaultPortal == "neo") {
+    if (Config.skin == "neo") {
       groupName = "toolMenuLink"
     } else {
       groupName = "icon-sakai-"

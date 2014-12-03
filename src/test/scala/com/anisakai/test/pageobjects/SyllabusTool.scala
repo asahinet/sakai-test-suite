@@ -29,6 +29,7 @@ class SyllabusTool extends Page {
       Portal.richTextEditor()
       Portal.xslFrameOne
       click on xpath("//*[.='ok']")
+      click on xpath("//*[contains(text(), '" + syllabusName + "')]/../../*[contains(@title, 'Click to publish')]")
     }
     return syllabusName
   }

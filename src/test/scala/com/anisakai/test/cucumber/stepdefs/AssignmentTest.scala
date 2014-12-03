@@ -15,7 +15,7 @@ import junit.framework.Assert._
 class AssignmentTest extends ScalaDsl with EN with TearDown {
 
   var assignmentTitle: String = ""
-  var current = new Array[String](2)
+  var oldData: Array[String] = null
 
   def login(role: String) {
     if (role.equalsIgnoreCase("instructor")) {
@@ -32,9 +32,9 @@ class AssignmentTest extends ScalaDsl with EN with TearDown {
 
   When( """^I create an assignment in '(.*)' site$""") { (siteType: String) =>
     if (siteType.equalsIgnoreCase("course")) {
-      Portal.gotoSite(Config.defaultCourseSiteTitle)
-      Portal.gotoTool("Assignments", true)
-      AssignmentTool.gotoAdd()
+      Portal.goToSite(Config.defaultCourseSiteTitle)
+      Portal.goToTool("Assignments", true)
+      AssignmentTool.goToAdd()
       assignmentTitle = AssignmentTool.assignment()
     }
     assertFalse(siteType + " is not a supported site type for Assignments", false);
@@ -52,8 +52,8 @@ class AssignmentTest extends ScalaDsl with EN with TearDown {
     assertTrue(Portal.isEnrolled(Config.defaultCourseSiteTitle))
   }
   When( """^I open the assignment listed$""") { () =>
-    Portal.gotoSite(Config.defaultCourseSiteTitle)
-    Portal.gotoTool("Assignments", true)
+    Portal.goToSite(Config.defaultCourseSiteTitle)
+    Portal.goToTool("Assignments", true)
     AssignmentTool.openAssignment(assignmentTitle)
   }
 
@@ -62,20 +62,20 @@ class AssignmentTest extends ScalaDsl with EN with TearDown {
   }
 
   And( """^I have created a course with an assignment$""") { () =>
-    Portal.gotoSite(Config.defaultCourseSiteTitle)
-    Portal.gotoTool("Assignments", true)
+    Portal.goToSite(Config.defaultCourseSiteTitle)
+    Portal.goToTool("Assignments", true)
   }
 
   When( """^I edit the existing assignment$""") { () =>
-    current = AssignmentTool.gotoEdit(assignmentTitle)
+    oldData = AssignmentTool.goToEdit(assignmentTitle)
   }
 
   When( """^I change the title and date$""") { () =>
-    assignmentTitle = AssignmentTool.edit(current)
+    assignmentTitle = AssignmentTool.edit()
   }
 
   Then( """^the updated assignment shows the new title and date$""") { () =>
-    AssignmentTool.verifyEdit(assignmentTitle, current)
+    AssignmentTool.verifyEdit(assignmentTitle, oldData)
   }
 
   When( """^I delete the assignment$""") { () =>
@@ -88,8 +88,8 @@ class AssignmentTest extends ScalaDsl with EN with TearDown {
 
   Then( """^the '(.+)' should no longer have access$""") { (role: String) =>
     login(role)
-    Portal.gotoSite(Config.defaultCourseSiteTitle)
-    Portal.gotoTool("Assignments", true)
+    Portal.goToSite(Config.defaultCourseSiteTitle)
+    Portal.goToTool("Assignments", true)
     assertTrue(AssignmentTool.removed(assignmentTitle))
   }
 }
