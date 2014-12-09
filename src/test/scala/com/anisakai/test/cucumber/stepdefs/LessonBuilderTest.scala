@@ -11,7 +11,7 @@ class LessonBuilderTest extends ScalaDsl with EN with TearDown {
   var addition = new ListBuffer[String]
 
   When( """^I add text to the lessons tool$""") { () =>
-    addition += LessonBuilder.addText()
+    addition += LessonBuilder.addText
   }
 
   Then( """^I can view the addition as an instructor$""") { () =>
@@ -25,7 +25,7 @@ class LessonBuilderTest extends ScalaDsl with EN with TearDown {
 
   When( """^I add '(.+)' subpages to the lesson tool$""") { (count: Int) =>
     for (i <- 0 to count) {
-      addition += LessonBuilder.addSubpage()
+      addition += LessonBuilder.addSubpage
     }
   }
 
@@ -42,6 +42,6 @@ class LessonBuilderTest extends ScalaDsl with EN with TearDown {
 
   When( """^I create a quiz$""") { () =>
     Portal.goToTool("Tests & Quizzes", true)
-    addition += LessonBuilder.addQuiz()
+    addition += LessonBuilder.addQuiz
   }
 }

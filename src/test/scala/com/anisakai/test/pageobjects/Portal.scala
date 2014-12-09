@@ -204,6 +204,7 @@ class Portal extends Page with Eventually {
 
 
   def goToTool(toolName: String, reset: Boolean) {
+    var tool = toolName
     // reset will refresh the tool before using it to ensure clean tool
     switch to defaultContent
     if (toolName.equals("Site Setup") || toolName.equals("Site Editor") && !Config.sakaiDistro.equalsIgnoreCase("ani")) {
@@ -220,7 +221,20 @@ class Portal extends Page with Eventually {
       if (webDriver.findElement(By.className("title")).getText.contains(toolName)) {
         click on xpath("//a[contains(@title,'Reset')]")
       } else {
-        click on linkText(toolName)
+        // Different names for the same thing
+        if (toolName.equalsIgnoreCase("Lessons Builder")) {
+          if (linkText("Lesson Builder").findElement(webDriver).isDefined) {
+            tool = "Lesson Builder"
+            click on linkText(tool)
+          } else if (linkText("Lessons").findElement(webDriver).isDefined) {
+            tool = "Lessons"
+            click on linkText(tool)
+          } else {
+            click on linkText(toolName)
+          }
+        } else {
+          click on linkText(toolName)
+        }
         if (reset) {
           click on xpath("//a[contains(@title,'Reset')]")
         }

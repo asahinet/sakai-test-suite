@@ -85,7 +85,6 @@ class UsersToolTest extends ScalaDsl with EN with TearDown {
   }
 
   Then( """^create a user with random data$""") { () =>
-    //// Express the Regexp above with the code you wish you had
     var newEid = UsersTool.randomUser()
     UsersTool.enterSearchText(newEid)
     UsersTool.submitSearch()

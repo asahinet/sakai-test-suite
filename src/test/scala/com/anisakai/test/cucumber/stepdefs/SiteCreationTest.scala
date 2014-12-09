@@ -37,7 +37,7 @@ class SiteCreationTest extends ScalaDsl with EN with TearDown {
           }
             if (SiteManageTool.findSiteAndEdit(title)) {
               SiteManageTool.editSite(description, description, contactname)
-              SiteManageTool.addAllTools
+              SiteManageTool.addTools(withSitesTool = true)
               SiteManageTool.manageAccess(true, false)
             }
         }
@@ -68,37 +68,6 @@ class SiteCreationTest extends ScalaDsl with EN with TearDown {
           Portal.goToTool("Home")
         }
 
-  }
-
-  Given( """^I navigate to the '(.+)' tool$""") { (tool: String) =>
-    Portal.goToTool(tool)
-  }
-
-  When( """^I create '(.+)' site with a title of '(.+)' and an id of'(.+)'$""") { (siteType: String, siteTitle: String, siteId: String) =>
-    SiteManageTool.createSiteWithSitesTool(siteType, siteTitle, siteId)
-  }
-
-
-  When( """^I create a site with random data$""") { () =>
-    var siteTitle = SiteManageTool.createRandomSite("course")
-    SiteManageTool.findSiteAndEdit(siteTitle)
-  }
-
-  When( """^add '(.+)' as a.? '(.+)'$""") { (eid: String, role: String) =>
-    SiteManageTool.addUserWithRole(eid, role)
-  }
-
-  Then( """^I should see '(.+)' with a role of '(.+)'$""") { (eid: String, role: String) =>
-    SiteManageTool.verifyUserHasRole(eid, role)
-  }
-
-  Then( """^I add all the tools$""") { () =>
-    SiteManageTool.addAllTools()
-  }
-
-  When( """^I edit the '(.+)' site information$""") { (siteTitle: String) =>
-    SiteManageTool.findSiteAndEdit(siteTitle)
-    SiteManageTool.editSite("description", "description", "john smith")
   }
 
 }

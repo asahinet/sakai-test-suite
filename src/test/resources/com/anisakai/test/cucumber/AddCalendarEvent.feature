@@ -1,4 +1,4 @@
-@calendar
+@calendar @indev
 
 Feature: Test adding a calendar event
 
