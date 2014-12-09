@@ -3,6 +3,7 @@ package com.anisakai.test.pageobjects
 import com.anisakai.test.Config
 import org.openqa.selenium.By
 import scala.collection.JavaConverters._
+import scala.collection.mutable.ListBuffer
 
 /**
  * Created with IntelliJ IDEA.
@@ -42,7 +43,7 @@ class SiteManageTool extends Page {
     }
 
 
-    return true
+    true
   }
 
   def verifyUserHasRole(eid: String, role: String) {
@@ -55,13 +56,23 @@ class SiteManageTool extends Page {
       className("information").webElement(webDriver).getText.contains("The following participants are already members of this site and cannot be re-added: '" + eid + "'")) {
       return false
     }
-    return true
+    true
   }
 
-  def addUserWithRole(eid: String, role: String) {
+  def bulkAddUsers(eids: ListBuffer[String], role: String) {
+    eids.foreach(e => addUserWithRole(e, role))
+  }
+
+  def addUserWithRole(eid: String = "", role: String, bulk: Boolean = false, eids: ListBuffer[String] = null) {
     Portal.xslFrameOne
     click on linkText("Add Participants")
-    textArea("content::officialAccountParticipant").value = eid
+    if (bulk) {
+      var eidString = new StringBuilder
+      eids.foreach(e => eidString.append(e + "\n"))
+      textArea("content::officialAccountParticipant").value = eidString.toString
+    } else {
+      textArea("content::officialAccountParticipant").value = eid
+    }
     click on cssSelector("[value=Continue]")
 
     if (membershipDoesNotExist(eid)) {
@@ -84,7 +95,11 @@ class SiteManageTool extends Page {
     var found = false
     Portal.xslFrameOne
     textField("search").value = siteTitle
-    click on cssSelector("[value=Search]")
+    if (Config.client == "wvsu") {
+      click on linkText("Search")
+    } else {
+      click on cssSelector("[value=Search]")
+    }
     if (className("instruction").webElement(webDriver).getText.contains("No sites were found")) {
       found = false
     } else {
@@ -92,22 +107,22 @@ class SiteManageTool extends Page {
       click on linkText("Edit")
       found = true
     }
-    return found
+    found
   }
 
   def createProjectSite(title: String, shortDescription: String,
                         longDescription: String, contactName: String): String = {
-    return createSite("project", shortDescription, longDescription, contactName,
+    createSite("project", shortDescription, longDescription, contactName,
       populateProjectMetaData: (Map[String, String]) => Unit,
       Map(("title", title)))
   }
 
   def createCourseSite(subject: String, section: String, course: String,
                        shortDescription: String, longDescription: String,
-                       contactName: String, contactEmail: String): String = {
-    return createSite("course", shortDescription, longDescription, contactName,
+                       contactName: String, contactEmail: String, tools: Boolean = true): String = {
+    createSite("course", shortDescription, longDescription, contactName,
       populateCourseMetaData: (Map[String, String]) => Unit,
-      Map(("subject", subject), ("section", section), ("course", course)))
+      Map(("subject", subject), ("section", section), ("course", course)), tools)
   }
 
   def populateCourseMetaData(args: Map[String, String]): Unit = {
@@ -134,7 +149,7 @@ class SiteManageTool extends Page {
 
   def createSite(siteType: String, shortDescription: String, longDescription: String,
                  contactName: String,
-                 siteMetaData: (Map[String, String]) => Unit, siteMetaDataArgs: Map[String, String]): String = {
+                 siteMetaData: (Map[String, String]) => Unit, siteMetaDataArgs: Map[String, String], tools: Boolean = true): String = {
     val maintainRole = getMaintainRole
     Portal.goToTool("Site Setup")
     Portal.getToFrameZero
@@ -142,41 +157,30 @@ class SiteManageTool extends Page {
     click on radioButton(siteType.toLowerCase)
     click on id("submitBuildOwn")
 
-
-
     siteMetaData(siteMetaDataArgs)
-
+    val siteTitle = faker.letterify("????????")
+    textField("title").value = siteTitle
     textArea("short_description").value = shortDescription
     textField("siteContactName").value = contactName
     click on cssSelector("[value=Continue]")
 
-    addAllTools(false)
 
-    val siteTitle = xpath("//table[@class='itemSummary']//tr[1]//td[1]").element.text
-
-    click on "addSite"
-    eventually {
-      Portal.getToFrameZero
-    }
+    addTools(false, tools)
     siteTitle
   }
 
-  def createRandomSite(siteType: String): String = {
+  def createRandomSite(siteType: String, tools: Boolean = true): String = {
     if (siteType.equalsIgnoreCase("Course")) {
-      return createCourseSite(faker.letterify("???"), faker.numerify("#"), faker.numerify("###"),
-        faker.sentence(2), faker.sentence(2), faker.name(), faker.firstName() + "." + faker.lastName())
+      createCourseSite(faker.letterify("???"), faker.numerify("#"), faker.numerify("###"),
+        faker.sentence(2), faker.sentence(2), faker.name(), faker.firstName() + "." + faker.lastName(), tools)
     } else {
-      return createProjectSite(siteType + " Test " + faker.numerify("###"), faker.sentence(2),
+      createProjectSite(siteType + " Test " + faker.numerify("###"), faker.sentence(2),
         faker.sentence(2), faker.name)
     }
 
   }
 
-  def addAllTools() {
-    addAllTools(true)
-  }
-
-  def addAllTools(withSitesTool : Boolean) {
+  def addTools(withSitesTool : Boolean = false, all : Boolean = true) {
     // We should only use this function upon creating a new site
     // otherwise we will see duplicate tools on an existing site
     Portal.xslFrameOne
@@ -184,36 +188,38 @@ class SiteManageTool extends Page {
       goToEditTools
     }
 
-    if (Config.sakaiDistro.equals("ani")) {
+    if (all) { // adding all tools
       if (Config.sakaiVersion.startsWith("10.")) {
-        switch to defaultContent
-        click on id("selectAll")
-        click on id("unSelectAll")
-        Portal.xslFrameOne
+        clickAllTools
       } else {
         click on checkbox("all")
       }
-    } else {
-      clickAllTools
     }
 
     click on cssSelector("[value=Continue]")
 
-    // Add the email address and the URL for the web content tool
-    if (id("emailId").findElement(webDriver).isDefined) {
-      textField("emailId").value = faker.lastName() + faker.numerify("####")
+    if (all) { // we only want this if we are adding tools
+      // Add the email address and the URL for the web content tool
+      if (id("emailId").findElement(webDriver).isDefined) {
+        textField("emailId").value = faker.lastName() + faker.numerify("####")
+      }
+      if (id("source_sakai.iframe").findElement(webDriver).isDefined) {
+        textField("source_sakai.iframe").value = Config.targetServer
+      }
+      click on cssSelector("[value=Continue]")
     }
-    if (id("source_sakai.iframe").findElement(webDriver).isDefined) {
-      textField("source_sakai.iframe").value = Config.targetServer // Needs to be https
-    }
-    click on cssSelector("[value=Continue]")
-
 
     if (Config.skin == "xsl") {
       click on name("review")
     } else {
-      click on cssSelector("[value=Finish]")
+      if (Config.sakaiVersion.startsWith(("10."))) {
+        click on cssSelector("[value=Continue]")
+      } else {
+        click on cssSelector("[value=Finish]")
+      }
     }
+
+    click on xpath("//*[@value='Request Site']")
 
     eventually {
       switch to defaultContent
@@ -223,7 +229,7 @@ class SiteManageTool extends Page {
 
   def clickAllTools {
     val linkElements = webDriver.findElements(By.xpath("//input[@type='checkbox']")).asScala
-    //check if it is already check, if not then check it
+    //see if it is already checked, if not then check it
     linkElements.foreach(e =>
       if (!e.isSelected) {
         e.click

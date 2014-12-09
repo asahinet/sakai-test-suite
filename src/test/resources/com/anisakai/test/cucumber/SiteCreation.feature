@@ -25,11 +25,3 @@ Feature: Site Management
       | course-test-1    | instructor1 | Instructor      |
       | course-test-1    | student01   | Student         |
       | course-test-1    | student02   | Student         |
-
-#  Scenario:  Create A Site
-#   Given I am on the 'Administration Workspace' site using the 'Site Setup' tool
-#   When I create a site with random data
-#   And add 'instructor1' as an 'Instructor'
-#   And add 'student01' as a 'Student'
-#   Then I should see 'instructor1' with a role of 'Instructor'
-#   And I should see 'student01' with a role of 'Student'

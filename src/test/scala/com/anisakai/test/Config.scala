@@ -27,6 +27,7 @@ class Config {
   val sakaiDistro: String = loadProperty("sakai.distro", "ani")
   val defaultAdminEid: String = loadProperty("sakai.admin.eid", "admin")
   val defaultAdminPassword: String = loadProperty("sakai.admin.pwd", "admin")
+  val randomUserEmail: String = loadProperty("random.user.email", "goes@nowhere.com")
   val skin: String = loadProperty("sakai.portal", "neo")
   val client: String = loadProperty("sakai.client", "nightly")
   val timeout: String = loadProperty("driver.timeout", "5")
@@ -42,6 +43,8 @@ class Config {
   def defaultInstructorPassword = "password"
 
   def defaultStudentPassword = "password"
+
+
 
   def loadProperty(name: String, defaultValue: String) = {
     if (!StringUtils.isEmpty(systemProperties.getProperty(name))) {

@@ -1,4 +1,4 @@
-@lessonbuilder @suite
+@lessonbuilder @indev
 Feature: Testing the adding and editing of content from the Lesson Builder Tool
 
 

@@ -1,4 +1,4 @@
-@dev @matrix
+@indev @matrix
 
 Feature: Testing adding a matrix to a portfolio
 

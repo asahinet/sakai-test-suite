@@ -18,10 +18,10 @@ import scala.collection.mutable.ListBuffer
 object LessonBuilder extends LessonBuilder
 
 class LessonBuilder extends Page {
-  def action = new Actions(webDriver)
-  def webWait = new WebDriverWait(webDriver, 5)
+  val action = new Actions(webDriver)
+  val webWait = new WebDriverWait(webDriver, 5)
 
-  def addText(): String = {
+  def addText : String = {
     Portal.xslFrameOne
     click on xpath("//span[.='Add Content']/..")
     action.moveToElement(webDriver.findElement(By.linkText("Add Text")))
@@ -29,7 +29,7 @@ class LessonBuilder extends Page {
     click on linkText("Add Text")
     val text = Portal.richTextEditor()
     click on cssSelector("[value=Save]")
-    return text
+    text
   }
 
   def add(addType: String, contentType: String): String = {
@@ -37,26 +37,27 @@ class LessonBuilder extends Page {
     Portal.xslFrameOne
     click on xpath("//span[.='Add Content']/..")
     if (addType == "multimedia") {
-      action.moveToElement(webDriver.findElement(By.linkText("Add Text")))
-      webWait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Add Text")))
+      action.moveToElement(webDriver.findElement(By.linkText("Embed content on page"))) // Keeps the drawer open
+      webWait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Embed content on page")))
       click on linkText("Embed content on page")
     } else {
-      action.moveToElement(webDriver.findElement(By.linkText("Add Text")))
-      webWait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Add Text")))
+      action.moveToElement(webDriver.findElement(By.linkText("Embed content on page")))
+      webWait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Embed content on page")))
       click on linkText("Add Content Link")
     }
     if (contentType.equalsIgnoreCase("url")) {
+      webWait.until(ExpectedConditions.presenceOfElementLocated(By.id("mm-url")))
       textField("mm-url").value = Config.targetServer
       click on cssSelector("[value=Save]")
-      return Config.targetServer
+      Config.targetServer
     } else {
-      webDriver.findElement(By.className("mm-file")).sendKeys(FileUtil.createTempFile(title, ".txt", faker.paragraph(2)))
+      webDriver.findElement(By.id("mm-file")).sendKeys(FileUtil.createTempFile(title, ".txt", faker.paragraph(2)))
       click on cssSelector("[value=Save]")
-      return title
+      title
     }
   }
 
-  def addQuiz(): String = {
+  def addQuiz : String = {
     val title: String = faker.letterify("??????")
     textField("authorIndexForm:title").value = title
     singleSel("authorIndexForm:assessmentTemplate").value = "3"
@@ -67,27 +68,27 @@ class LessonBuilder extends Page {
     click on cssSelector("[value=Save]")
     click on linkText("Publish")
     click on cssSelector("[value=Publish]")
-    return title
+    title
   }
 
-  def addSubpage(): String = {
+  def addSubpage : String = {
     val title: String = faker.letterify("??????")
     Portal.xslFrameOne
-    action.moveToElement(webDriver.findElement(By.linkText("Add Text")))
-    webWait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Add Text")))
     click on xpath("//span[.='Add Content']/..")
+    action.moveToElement(webDriver.findElement(By.linkText("Add Subpage"))) // Keep drawer open
+    webWait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Add Subpage")))
     click on linkText("Add Subpage")
     textField("subpage-title").value = title
     click on cssSelector("[value=Create]")
     click on xpath("//a[contains(@title,'Reset')]")
-    return title
+    title
   }
 
   def link(linkType: String, title: String) {
     Portal.xslFrameOne
-    action.moveToElement(webDriver.findElement(By.linkText("Add Text")))
-    webWait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Add Text")))
     click on xpath("//span[.='Add Content']/..")
+    action.moveToElement(webDriver.findElement(By.linkText("Add " + linkType)))
+    webWait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Add " + linkType)))
     click on linkText("Add " + linkType)
     click on xpath("//input[@title='" + title + "']")
     click on cssSelector("[value=Use selected item]")
@@ -102,7 +103,7 @@ class LessonBuilder extends Page {
         isFound = true
       })
 
-    return isFound
+    isFound
   }
 
 }

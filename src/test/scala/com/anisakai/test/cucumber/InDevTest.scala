@@ -7,7 +7,7 @@ import cucumber.api.junit.Cucumber.Options
 //Change the tag to whatever script you are developing
 
 @RunWith(classOf[Cucumber])
-@Options(tags = Array("@assignment"), glue = Array("com.anisakai.test.cucumber.stepdefs"), format = Array("progress", "html:target/cucumber-report"))
+@Options(tags = Array("@populatesite"), glue = Array("com.anisakai.test.cucumber.stepdefs"), format = Array("progress", "html:target/cucumber-report"))
 class InDevTest
 
 

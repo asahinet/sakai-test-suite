@@ -72,7 +72,7 @@ class UsersTool extends Page {
 
   def randomUser(): String = {
     val eid = faker.numerify("#########")
-    createUser(eid, faker.firstName(), faker.lastName(), eid + "@asdf.com", "registered", "password")
+    createUser(eid, faker.firstName(), faker.lastName(), Config.randomUserEmail, "registered", "password")
     return eid
   }
 
