@@ -134,19 +134,14 @@ class Portal extends Page with Eventually {
 
   def goToSite(siteName: String) {
     switch to defaultContent
-    var siteTitle = webDriver.findElement(By.xpath("//*"))
-    if (Config.skin == "xsl") {
-      siteTitle = webDriver.findElement(By.id("siteTitle"))
-    } else {
-      siteTitle = webDriver.findElement(By.className("title"))
-    }
+    val siteTitle = webDriver.findElement(By.xpath("//title")).getText
     // if we are already on the right site, skip this
-    if (!siteTitle.getText.contains(siteName)) {
+    if (!siteTitle.contains(siteName)) {
       //If site is listed, click on site, if not click on "More Sites"
       if (partialLinkText(siteName).findElement(webDriver).isDefined) {
         click on partialLinkText(siteName)
       } else {
-        click on cssSelector("a[title='More Sites']")
+        click on xpath("//a[@title='More Sites']")
         if (Config.skin == "neo")
           textField("txtSearch").value = siteName
         click on partialLinkText(siteName)
@@ -204,7 +199,6 @@ class Portal extends Page with Eventually {
 
 
   def goToTool(toolName: String, reset: Boolean) {
-    var tool = toolName
     // reset will refresh the tool before using it to ensure clean tool
     switch to defaultContent
     if (toolName.equals("Site Setup") || toolName.equals("Site Editor") && !Config.sakaiDistro.equalsIgnoreCase("ani")) {
@@ -224,14 +218,25 @@ class Portal extends Page with Eventually {
         // Different names for the same thing
         if (toolName.equalsIgnoreCase("Lessons Builder")) {
           if (linkText("Lesson Builder").findElement(webDriver).isDefined) {
-            tool = "Lesson Builder"
-            click on linkText(tool)
+            click on linkText("Lesson Builder")
           } else if (linkText("Lessons").findElement(webDriver).isDefined) {
-            tool = "Lessons"
-            click on linkText(tool)
+            click on linkText("Lessons")
           } else {
             click on linkText(toolName)
           }
+        } else if (toolName.equalsIgnoreCase("Forums")) {
+          if (linkText("Discussions").findElement(webDriver).isDefined) {
+            click on linkText("Discussions")
+          } else {
+            click on linkText(toolName)
+          }
+        } else if (toolName.equalsIgnoreCase("Messages")) {
+          if (linkText("Course Email").findElement(webDriver).isDefined) {
+            click on linkText("Course Email")
+          } else {
+            click on linkText(toolName)
+          }
+
         } else {
           click on linkText(toolName)
         }

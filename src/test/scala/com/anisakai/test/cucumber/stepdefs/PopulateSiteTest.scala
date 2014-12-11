@@ -2,8 +2,6 @@ package com.anisakai.test.cucumber.stepdefs
 
 import com.anisakai.test.pageobjects._
 import cucumber.api.scala.{EN, ScalaDsl}
-import junit.framework.Assert._
-
 import scala.collection.mutable.ListBuffer
 
 /**
