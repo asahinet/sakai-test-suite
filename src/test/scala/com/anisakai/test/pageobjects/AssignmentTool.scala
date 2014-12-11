@@ -48,6 +48,7 @@ class AssignmentTool extends Page {
     cal.add(Calendar.DAY_OF_YEAR, 1)
     val tomorrow = cal.getTime
 
+
     val assignmentTitle = faker.letterify("?????? ???????")
     val openDate = dateFormat.format(today).toLowerCase
     val dueDate = dateFormat.format(tomorrow).toLowerCase
