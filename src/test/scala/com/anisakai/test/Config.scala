@@ -27,6 +27,8 @@ class Config {
   val sakaiDistro: String = loadProperty("sakai.distro", "ani")
   val defaultAdminEid: String = loadProperty("sakai.admin.eid", "admin")
   val defaultAdminPassword: String = loadProperty("sakai.admin.pwd", "admin")
+  val defaultGoogleEmail: String = loadProperty("google.email", "default@gmail.com")
+  val defaultGooglePW: String = loadProperty("google.pw", "password")
   val randomUserEmail: String = loadProperty("random.user.email", "goes@nowhere.com")
   val skin: String = loadProperty("sakai.portal", "neo")
   val client: String = loadProperty("sakai.client", "nightly")
