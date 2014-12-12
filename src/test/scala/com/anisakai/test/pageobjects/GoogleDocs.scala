@@ -2,6 +2,8 @@ package com.anisakai.test.pageobjects
 
 import java.util.Calendar
 
+import com.anisakai.test.Config
+
 /**
  * Created with IntelliJ IDEA.
  * User: gareth
@@ -32,8 +34,8 @@ class GoogleDocs extends Page {
     if (xpath("//button[.=Proceed to Google]").findElement(webDriver).isDefined) {
       click on xpath("//button[.=Proceed to Google]")
       switch to defaultContent
-      textField("Email").value = "rsmartsupp@gmail.com"
-      textField("Passwd").value = "r5m@rt!!"
+      textField("Email").value = Config.defaultGoogleEmail
+      textField("Passwd").value = Config.defaultGooglePW
       click on id("signIn")
       click on id("submit_approve_access")
       eventually {
