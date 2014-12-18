@@ -17,7 +17,6 @@ class LoginTest extends ScalaDsl with EN with TearDown {
   Given( """^I am on the '(.+)' gateway page$""") {
     (url: String) =>
       Portal.navigateToPage(url)
-
       Portal.logout
   }
 
