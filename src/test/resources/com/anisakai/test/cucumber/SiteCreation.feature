@@ -8,6 +8,8 @@ Feature: Site Management
     Given the following 'course' sites exist:
       | id            | title              | description | contactname |
       | course-test-1 | Course Site Test 1 | for testing | sally       |
+    And the sites have the following tools:
+      | All |
 
   Scenario:  Create Project Sites
     Given the following 'project' sites exist:
