@@ -30,7 +30,7 @@ class Config {
   val defaultGoogleEmail: String = loadProperty("google.email", "default@gmail.com")
   val defaultGooglePW: String = loadProperty("google.pw", "password")
   val randomUserEmail: String = loadProperty("random.user.email", "goes@nowhere.com")
-  val skin: String = loadProperty("sakai.portal", "neo")
+  val skin: String = loadProperty("sakai.skin", "neo")
   val client: String = loadProperty("sakai.client", "nightly")
   val timeout: String = loadProperty("driver.timeout", "5")
 

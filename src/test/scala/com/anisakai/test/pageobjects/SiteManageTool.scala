@@ -3,7 +3,6 @@ package com.anisakai.test.pageobjects
 import com.anisakai.test.Config
 import org.openqa.selenium.By
 import scala.collection.JavaConverters._
-import scala.collection.mutable.ListBuffer
 
 /**
  * Created with IntelliJ IDEA.
@@ -49,11 +48,11 @@ class SiteManageTool extends Page {
     }
   }
 
-  def bulkAddUsers(eids: ListBuffer[String], role: String) {
+  def bulkAddUsers(eids: List[String], role: String) {
     eids.foreach(e => addUserWithRole(e, role))
   }
 
-  def addUserWithRole(eid: String = "", role: String, bulk: Boolean = false, eids: ListBuffer[String] = null) {
+  def addUserWithRole(eid: String = "", role: String, bulk: Boolean = false, eids: List[String] = null) {
     Portal.xslFrameOne
     click on linkText("Add Participants")
     if (bulk) {

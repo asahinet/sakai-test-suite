@@ -5,9 +5,6 @@ import com.anisakai.test.util.FileUtil
 import org.openqa.selenium.By
 import org.openqa.selenium.interactions.Actions
 import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
-
-import scala.collection.mutable.ListBuffer
-
 /**
  * Created with IntelliJ IDEA.
  * User: gareth
@@ -94,8 +91,7 @@ class LessonBuilder extends Page {
     click on cssSelector("[value=Use selected item]")
   }
 
-  def viewAddition(addition: ListBuffer[String]): Boolean = {
-    var isFound: Boolean = true
+  def viewAddition(addition: List[String]): Boolean = {
     addition.foreach { text =>
       if (!xpath("//*[contains(text(),'" + text + "')]").findElement(webDriver).isDefined) {
         return false

@@ -6,7 +6,7 @@ version of Sakai. It performs actions via direct browser interactions.
 
 The tests are feature or behavior driven (BDD) using cucumber.  These tests are then implemented in scala using the [cucumber-jvm](https://github.com/cucumber/cucumber-jvm)
 via cucumber-scala and cucumber-junit.  The ScalaTest library is used for the [Selenium DSL](http://www.scalatest.org/user_guide/using_selenium),
-which ends up pushing the Selenium WebDriver, but in a more natural and simply way.  The Selenium DSL will let you get directly at the
+which ends up pushing the Selenium WebDriver, but in a more natural and simpler way.  The Selenium DSL will let you get directly at the
 [Selenium WebDriver](http://selenium.googlecode.com/svn/trunk/docs/api/java/index.html) object when you need more power.
 
 Creating a Test
@@ -21,78 +21,84 @@ Create a text file with a ".feature" extension in the resources area.
          Scenario: CLE Local User Login
          Given I am on the 'https://nightly.cle.rsmart.com/portal' gateway page
          When I enter 'admin' for user
-             And I enter 'admin' for password
-             And I click the Login button
+         And I enter 'admin' for password
+         And I click the Login button
          Then I should see my workspace
 
 ### Create The Scala Test
 
-Next you'll need to create your scala test. These will extra the variables from your cucumber text file
-and delegate calls to your page object.
-
-    class LoginTest extends ScalaDsl with EN {
-       lazy val gatewayPage = new GatewayPage()
-
-
-       Given( """^I am on the '(.+)' gateway page$""") {
-         (url: String) =>
-           gatewayPage.navigateToPage(url)
-       }
-
-       When( """^I enter '(.+)' for user""") {
-         (eid: String) =>
-           gatewayPage.enterEid(eid)
-       }
-
-       When( """^I enter '(.+)' for password""") {
-         (password: String) =>
-           gatewayPage.enterPassword(password)
-       }
-
-       When( """^I click the Login button""") {
-         gatewayPage.login();
-       }
-
-
-       Then( """^I should see my workspace""") {
-           assertTrue(gatewayPage.isMyWorkspace())
-       }
-
-       After() {
-         gatewayPage.webDriver.quit();
-       }
-     }
-
+Next you'll need to create your scala test. These will extract the variables from your cucumber text file
+and delegate calls to your page object. Create a Scala file in the scala/com.anisakai.test/cucumber/stepdefs directory
 
 If you simply run the test before creating the Scala file, the output from junit will actually tell you what
 you method will look like, then you can simply copy and paste that in, and address the dynamic parts and implement.
+The output will give both scala and java version of the code, you only want the scala output.
 
 For example, you would see something like this
 
      You can implement missing steps with the snippets below:
 
-     Given("""^I am logged on as 'admin'$"""){ () =>
+     Given("""^I am on the 'https://nightly.cle.rsmart.com/portal' gateway page$"""){ () =>
        //// Express the Regexp above with the code you wish you had
        throw new PendingException()
      }
+
+The variables, as in the case above will be outputted from junit as a string. These should be changed to a regex which will then be extracted as a variable.
+This allows for reuse of the scenario throughout the test suite.
+
+    Given( """^I am on the '(.+)' gateway page$""") {
+      (url: String) =>
+        gatewayPage.navigateToPage(url)
+    }
+
+Your final test would then look like this
+
+    class LoginTest extends ScalaDsl with EN with TearDown {
+
+      Given( """^I am on the '(.+)' gateway page$""") {
+        (url: String) =>
+          Portal.navigateToPage(url)
+          Portal.logout
+      }
+
+      When( """^I enter '(.+)' for user""") {
+        (eid: String) =>
+          Portal.enterEid(eid)
+      }
+
+      When( """^I enter '(.+)' for password""") {
+        (password: String) =>
+          Portal.enterPassword(password)
+      }
+
+      When( """^I click the Login button""") {
+        Portal.login
+      }
+
+      Then( """^I should see my workspace""") {
+        assertTrue(Portal.isMyWorkspace)
+      }
+    }
 
 ### Create Page Objects
 
 We've tried just recording tests using the straight Selenium IDE in firefox and while its easy to start,
 it becomes hard to finish, as the maintenance of it quickly becomes unbearable.
 
-The idea of the page object it to encapsulate the actual WebDriver logic into one place.  In the beginning it seems
+The idea of the page object is to encapsulate the actual WebDriver logic into one place.  In the beginning it seems
 like a waste of time and busy work, but over time you will understand the advantage of this.  The Selenium code
 ends up getting tied to xpath, or cssSelector, or other text on the page.  Then things can change and break your tests.
 By isolating this stuff you shield you code base from impact of these changes.  Also, this aids with reuse as your test
 suite grows.
 
-    class GatewayPage extends Page{
+    object Portal extends Portal
+
+    class Portal extends Page{
        def eid: TextField = textField("eid");
        def password: PasswordField = pwdField("pw");
 
-       def login() {
-         submit();
+       def login {
+         submit
        }
 
        def enterEid(eid: String) {
@@ -100,13 +106,11 @@ suite grows.
        }
 
        def enterPassword(password: String) {
-
          this.password.value = password;
        }
 
-       def isMyWorkspace() : Boolean = {
-         return webDriver.findElementByClassName("siteTitle").getText().startsWith("My Workspace");
-       }
+       def isMyWorkspace: Boolean = webDriver.findElementByClassName("siteTitle").getText.startsWith("My Workspace")
+
     }
 
 Running the Tests
@@ -163,6 +167,30 @@ The following system properties are available.  These should be sent to the as J
 
     The password for the admin user on the instance you are testing.  Defaults to "admin"
 
+- google.email
+
+	The account that is used for GoogleDocs in the Resources tool. If testing GoogleDocs this needs to be added
+
+- google.pw
+
+	The password for the google account. If testing GoogleDocs this needs to be added
+
+- random.user.email
+
+	This can be used to specify the email address to be used for bulk adding of users
+
+- sakai.skin
+
+	The skin that you are testing on. Valid strings are "neo" and "xsl". There are a few UI differences that this property will toggle. Defaults to "neo"
+
+- sakai.client
+
+	The client that is being tested against. Different clients may have different settings that cause UI differences and this setting will toggle those. Defaults to "nightly".
+
+- driver.timeout
+
+	The implicit timeout of the WebDriver. If it is looking for an element and cannot find it, the WebDriver will time out after this amount of time. Defaults to "5"
+
 
 
 Example invocation with some properties...
@@ -202,13 +230,15 @@ Typically, you are going to be using your browser's Inspect feature to grab ids.
 there isn't one or its dynamic.  You can install Selenium IDE into firefox and then record what you are doing and look
 at the selection items it figures out, this is a good way to learn some new ideas until you get good at it.
 
-This is a good reference for sorting out xpath and css syntax for indexing elements
-https://www.simple-talk.com/dotnet/.net-framework/xpath,-css,-dom-and-selenium-the-rosetta-stone/
-
 Sakai lack of consistency regarding the use of buttons can be daunting to get it right.  I've found that using the
 label of the button in a cssSelector works most of the time
 
     click on cssSelector("[value=Continue]")
+
+If all else fails, xpath is the most powerful tool you have to locate elements. [Xpath Checker](https://code.google.com/p/xpathchecker/) is a useful Firefox addon that interactively displays
+the results of an xpath expression to ensure you are locating the correct element.
+Used in combination with [this reference for sorting out xpath and css syntax for indexing elements](https://www.simple-talk.com/dotnet/.net-framework/xpath,-css,-dom-and-selenium-the-rosetta-stone/)
+you should be able to locate any element you need.
 
 Running Firefox/Chrome Headless in AWS via Jenkins
 --------------------------------------------------

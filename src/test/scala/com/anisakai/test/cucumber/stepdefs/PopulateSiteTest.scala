@@ -21,6 +21,6 @@ class PopulateSiteTest extends ScalaDsl with EN with TearDown{
   Then("""I add the students to a random site""") { () =>
     Portal.goToSite(SiteManageTool.createRandomSite("course"))
     Portal.goToTool("Site Setup")
-    SiteManageTool.addUserWithRole(role = "Student", bulk = true, eids = eids)
+    SiteManageTool.addUserWithRole(role = "Student", bulk = true, eids = eids.toList)
   }
 }
