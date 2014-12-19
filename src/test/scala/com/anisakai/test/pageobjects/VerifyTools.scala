@@ -7,7 +7,6 @@ import org.openqa.selenium.By
 
 import scala.collection.mutable.ListBuffer
 
-
 /**
  * Created with IntelliJ IDEA.
  * User: gareth
@@ -18,9 +17,10 @@ import scala.collection.mutable.ListBuffer
 object VerifyTools extends VerifyTools
 
 class VerifyTools extends Page {
-  def checkTools(): Boolean = {
-    var fails = ListBuffer[String]()
+  def checkTools: Boolean = {
+    var fails = new ListBuffer[String]
     var groupName: String = ""
+
     if (Config.skin == "neo") {
       groupName = "toolMenuLink"
     } else {
@@ -29,14 +29,14 @@ class VerifyTools extends Page {
     try {
       for (i <- 0 until webDriver.findElements(By.xpath("//*[contains(@class, '" + groupName + "')]")).size) {
         switch to defaultContent
-        var toolName = webDriver.findElements(By.xpath("//*[contains(@class, '" + groupName + "')]")).get(i).getText()
+        val toolName = webDriver.findElements(By.xpath("//*[contains(@class, '" + groupName + "')]")).get(i).getText
         click on webDriver.findElements(By.xpath("//*[contains(@class, '" + groupName + "')]")).get(i)
-        webDriver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS)
+
+        // This is done to avoid a long wait in between clicking each tool, but we don't want it too fast where the browser can't keep up
+        webDriver.manage.timeouts.implicitlyWait(500, TimeUnit.MILLISECONDS)
 
         // If there is an iframe present we want to check inside of that iframe
-
-        var iFrame = xpath("//iframe[contains(@title,'" + toolName + "')]").findElement(webDriver).isDefined
-        if (!iFrame) {
+        if (!xpath("//iframe[contains(@title,'" + toolName + "')]").findElement(webDriver).isDefined) {
           if (xpath("//h3[contains(text(), 'Error')]").findElement(webDriver).isDefined)
             fails += toolName
         } else {
@@ -44,24 +44,17 @@ class VerifyTools extends Page {
           if (xpath("//h3[contains(text(), 'Error')]").findElement(webDriver).isDefined)
             fails += toolName
         }
-
-        webDriver.manage().timeouts().implicitlyWait(Config.timeout.toInt, TimeUnit.SECONDS)
+        webDriver.manage.timeouts.implicitlyWait(Config.timeout.toInt, TimeUnit.SECONDS)
       }
     } catch {
-      case e: Exception => {
-        e.printStackTrace()
-        return hasFailed(fails, true)
-      }
+      case e: Exception =>
+        e.printStackTrace
+        return hasFailed(fails.toList, true)
     }
-
-    return hasFailed(fails)
+    hasFailed(fails.toList)
   }
 
-  def hasFailed(fails: ListBuffer[String]): Boolean = {
-    return hasFailed(fails, false)
-  }
-
-  def hasFailed(fails: ListBuffer[String], failure: Boolean): Boolean = {
+  def hasFailed(fails: List[String], failure: Boolean = false): Boolean = {
     if (fails.isEmpty || failure) {
       true
     } else {

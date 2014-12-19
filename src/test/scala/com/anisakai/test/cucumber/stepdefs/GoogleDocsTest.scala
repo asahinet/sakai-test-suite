@@ -27,7 +27,7 @@ class GoogleDocsTest extends ScalaDsl with EN with TearDown {
   }
 
   When( """^I remove all google documents$""") { () =>
-    GoogleDocs.cleanup()
+    GoogleDocs.cleanup
   }
 
 }

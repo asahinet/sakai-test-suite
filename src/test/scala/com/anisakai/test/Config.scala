@@ -21,7 +21,7 @@ import org.openqa.selenium.firefox.{FirefoxDriver, FirefoxProfile}
 object Config extends Config
 
 class Config {
-  val systemProperties = System.getProperties()
+  val systemProperties = System.getProperties
   val targetServer: String = loadProperty("target.server", "https://nightly.cle.rsmart.com/portal")
   val sakaiVersion: String = loadProperty("sakai.version", "2.9.1")
   val sakaiDistro: String = loadProperty("sakai.distro", "ani")
@@ -30,23 +30,16 @@ class Config {
   val defaultGoogleEmail: String = loadProperty("google.email", "default@gmail.com")
   val defaultGooglePW: String = loadProperty("google.pw", "password")
   val randomUserEmail: String = loadProperty("random.user.email", "goes@nowhere.com")
-  val skin: String = loadProperty("sakai.portal", "neo")
+  val skin: String = loadProperty("sakai.skin", "neo")
   val client: String = loadProperty("sakai.client", "nightly")
   val timeout: String = loadProperty("driver.timeout", "5")
 
   def defaultCourseSiteId = "course-test-1"
-
   def defaultCourseSiteTitle = "Course Site Test 1"
-
   def defaultInstructorEid = "instructor1"
-
   def defaultStudentEid = "student01"
-
   def defaultInstructorPassword = "password"
-
   def defaultStudentPassword = "password"
-
-
 
   def loadProperty(name: String, defaultValue: String) = {
     if (!StringUtils.isEmpty(systemProperties.getProperty(name))) {
@@ -58,50 +51,38 @@ class Config {
 
   val webDriver: WebDriver = {
     var selectedDriver: WebDriver = null
-
     if (!StringUtils.isEmpty(systemProperties.getProperty("target.browser"))) {
       val targetBrowser = systemProperties.getProperty("target.browser")
-      if (targetBrowser.equalsIgnoreCase("chrome")) {
-        if (StringUtils.isEmpty(systemProperties.getProperty("webdriver.chrome.driver"))) {
-          systemProperties.setProperty("webdriver.chrome.driver", "chromedriver/chromedriver-2.6_mac")
-        }
-        selectedDriver = Chrome.webDriver
-      } else if (targetBrowser.equalsIgnoreCase("ie") || targetBrowser.equalsIgnoreCase("internetexplorer")) {
-        selectedDriver = InternetExplorer.webDriver
-      } else if (targetBrowser.equalsIgnoreCase("safari")) {
-        selectedDriver = Safari.webDriver
-      } else if (targetBrowser.equalsIgnoreCase("htmlunit")) {
-        selectedDriver = HtmlUnit.webDriver
-      } else if (targetBrowser.equalsIgnoreCase("firefox")) {
-        selectedDriver = Firefox.webDriver
-      } else if (targetBrowser.equalsIgnoreCase("phantomjs")) {
-
-        if (StringUtils.isEmpty(systemProperties.getProperty("webdriver.phantomjs.binary"))) {
-          systemProperties.setProperty("webdriver.phantomjs.binary", "phantomjs/phantomjs-1.9.1-macosx")
-        }
-
-        val capabilities = new DesiredCapabilities
-        capabilities.setJavascriptEnabled(true)
-        capabilities.setCapability("takesScreenshot", false)
-        capabilities.setCapability(
-          PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,
-          systemProperties.getProperty("webdriver.phantomjs.binary"))
-        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, Array("--ignore-ssl-errors=yes", "--web-security=false", "--ssl-protocol=any"));
-
-        selectedDriver = PhantomJSDriverObject(capabilities)
+      targetBrowser.toLowerCase match {
+        case "chrome" =>
+          if (StringUtils.isEmpty(systemProperties.getProperty("webdriver.chrome.driver"))) {
+            systemProperties.setProperty("webdriver.chrome.driver", "chromedriver/chromedriver-2.6_mac")
+          }
+          selectedDriver = Chrome.webDriver
+        case "ie" | "internetexplorer" => selectedDriver = InternetExplorer.webDriver
+        case "safari" => selectedDriver = Safari.webDriver
+        case "htmlunit" => selectedDriver = HtmlUnit.webDriver
+        case "firefox" => selectedDriver = Firefox.webDriver
+        case "phantomjs" =>
+          if (StringUtils.isEmpty(systemProperties.getProperty("webdriver.phantomjs.binary"))) {
+            systemProperties.setProperty("webdriver.phantomjs.binary", "phantomjs/phantomjs-1.9.1-macosx")
+          }
+          val capabilities = new DesiredCapabilities
+          capabilities.setJavascriptEnabled(true)
+          capabilities.setCapability("takesScreenshot", false)
+          capabilities.setCapability(
+            PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,
+            systemProperties.getProperty("webdriver.phantomjs.binary"))
+          capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, Array("--ignore-ssl-errors=yes", "--web-security=false", "--ssl-protocol=any"))
+          selectedDriver = PhantomJSDriverObject(capabilities)
+        case _ => selectedDriver = Firefox.webDriver
 
       }
-    }
-
-
-
-    if (selectedDriver == null) {
+    } else {
       Firefox.firefoxProfile.setAcceptUntrustedCertificates(true)
       selectedDriver = Firefox.webDriver
     }
-
-    //TODO probably should make the timeout configurable
-    selectedDriver.manage().timeouts().implicitlyWait(timeout.toInt, TimeUnit.SECONDS)
+    selectedDriver.manage.timeouts.implicitlyWait(timeout.toInt, TimeUnit.SECONDS)
     selectedDriver
   }
 

@@ -18,7 +18,7 @@ class UsersToolTest extends ScalaDsl with EN with TearDown {
     UsersTool.enterSearchText(searchText)
   }
   When( """^I click the Search button$""") { () =>
-    UsersTool.submitSearch()
+    UsersTool.submitSearch
   }
   Then( """^I should see the '(.+)' user$""") { (eid: String) =>
     assertTrue(UsersTool.foundUser(eid))
@@ -26,7 +26,7 @@ class UsersToolTest extends ScalaDsl with EN with TearDown {
 
   Given( """^I search for a user with an eid of '(.+)'$""") { (searchText: String) =>
     UsersTool.enterSearchText(searchText)
-    UsersTool.submitSearch()
+    UsersTool.submitSearch
     assertTrue(UsersTool.foundUser(searchText))
   }
 
@@ -48,9 +48,9 @@ class UsersToolTest extends ScalaDsl with EN with TearDown {
 
   Given( """^the following users exist:$""") {
     (arg0: DataTable) =>
-      val row = arg0.asMaps().iterator()
+      val row = arg0.asMaps(classOf[String], classOf[String]).iterator
       while (row.hasNext) {
-        val map = row.next()
+        val map = row.next
         val eid = map.get("eid")
         val firstname = map.get("firstname")
         val lastname = map.get("lastname")
@@ -60,7 +60,7 @@ class UsersToolTest extends ScalaDsl with EN with TearDown {
 
         UsersTool.createUser(eid, firstname, lastname, email, usertype, password)
         UsersTool.enterSearchText(eid)
-        UsersTool.submitSearch()
+        UsersTool.submitSearch
         assertTrue(UsersTool.foundUser(eid))
 
       }
@@ -70,7 +70,7 @@ class UsersToolTest extends ScalaDsl with EN with TearDown {
     (eid: String, firstname: String, lastname: String, email: String, usertype: String, password: String) =>
       UsersTool.createUser(eid, firstname, lastname, email, usertype, password)
       UsersTool.enterSearchText(eid)
-      UsersTool.submitSearch()
+      UsersTool.submitSearch
       assertTrue(UsersTool.foundUser(eid))
 
   }
@@ -80,14 +80,14 @@ class UsersToolTest extends ScalaDsl with EN with TearDown {
     (eid: String, firstname: String, lastname: String, email: String, usertype: String, password: String) =>
       UsersTool.createUser(eid, firstname, lastname, email, usertype, password)
       UsersTool.enterSearchText(eid)
-      UsersTool.submitSearch()
+      UsersTool.submitSearch
       assertTrue(UsersTool.foundUser(eid))
   }
 
   Then( """^create a user with random data$""") { () =>
-    var newEid = UsersTool.randomUser()
+    var newEid = UsersTool.randomUser
     UsersTool.enterSearchText(newEid)
-    UsersTool.submitSearch()
+    UsersTool.submitSearch
     assertTrue(UsersTool.foundUser(newEid))
 
   }

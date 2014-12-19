@@ -15,7 +15,7 @@ class GradebookInstructorTest extends ScalaDsl with EN with TearDown {
   }
 
   When( """^I add an entry to gradebook$""") { () =>
-    itemName = GradebookTool.addEntry()
+    itemName = GradebookTool.addEntry
   }
 
   Then( """^The entry '(.+)' be visible in the list$""") { (visible: String) =>

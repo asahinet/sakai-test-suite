@@ -23,13 +23,13 @@ class VerifyToolsTest extends ScalaDsl with EN with TearDown {
   }
 
   When( """^I click the course tool link the tool should load correctly$""") { () =>
-    assertTrue(VerifyTools.checkTools())
+    assertTrue(VerifyTools.checkTools)
   }
 
   //Scenario: Project Site
 
   When( """^I click the project tool link the tool should load correctly$""") { () =>
-    assertTrue(VerifyTools.checkTools())
+    assertTrue(VerifyTools.checkTools)
   }
 
   //Scenario: Portfolio Site

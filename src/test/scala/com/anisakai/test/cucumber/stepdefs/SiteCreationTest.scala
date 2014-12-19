@@ -23,7 +23,7 @@ class SiteCreationTest extends ScalaDsl with EN with TearDown {
     (siteType: String, data: DataTable) =>
       val row = data.asMaps(classOf[String], classOf[String]).iterator
       while (row.hasNext) {
-        val map = row.next()
+        val map = row.next
         siteIDs += map.get("id") // we do this so we can add the appropriate tools to each site
         val siteId = map.get("id")
         val title = map.get("title")
@@ -59,7 +59,7 @@ class SiteCreationTest extends ScalaDsl with EN with TearDown {
       val row = data.asMaps(classOf[String], classOf[String]).iterator
 
       while (row.hasNext) {
-        val map = row.next()
+        val map = row.next
         val siteId = map.get("site-id")
         val userEid = map.get("user-eid")
         var role = map.get("role")

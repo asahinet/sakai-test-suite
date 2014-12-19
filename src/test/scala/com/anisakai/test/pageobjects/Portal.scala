@@ -19,7 +19,7 @@ class Portal extends Page with Eventually {
   //  def password: PasswordField = pwdField("pw")
 
   def getToFrameZero {
-      switch to defaultContent
+    switch to defaultContent
     switch to frame(0)
   }
 
@@ -43,41 +43,35 @@ class Portal extends Page with Eventually {
 
   }
 
-  def login() {
-    submit()
+  def login {
+    submit
   }
 
   def login(eid: String, password: String) {
     go to Config.targetServer
-
-    logout()
-
+    logout
     enterEid(eid)
     enterPassword(password)
-    submit
+    login
   }
 
-  def enterEid(eid: String) {
-    textField("eid").value = eid
-  }
+  def enterEid(eid: String) = textField("eid").value = eid
 
-  def enterPassword(password: String) {
-    pwdField("pw").value = password
-  }
+  def enterPassword(password: String) = pwdField("pw").value = password
 
-  def isMyWorkspace(): Boolean = {
+  def isMyWorkspace: Boolean = {
     if (Config.skin == "xsl") {
-      return webDriver.findElement(By.id("siteTitle")).getText().startsWith("My Workspace")
+      webDriver.findElement(By.id("siteTitle")).getText.startsWith("My Workspace")
     } else {
-      return webDriver.findElement(By.className("siteTitle")).getText().startsWith("My Workspace")
+      webDriver.findElement(By.className("siteTitle")).getText.startsWith("My Workspace")
     }
   }
 
-  def isAdminWorkspace(): Boolean = {
+  def isAdminWorkspace: Boolean = {
     if (Config.skin == "xsl") {
-      return webDriver.findElement(By.id("siteTitle")).getText().startsWith("Administration Workspace")
+      webDriver.findElement(By.id("siteTitle")).getText.startsWith("Administration Workspace")
     } else {
-      return webDriver.findElement(By.className("siteTitle")).getText().startsWith("Administration Workspace")
+      webDriver.findElement(By.className("siteTitle")).getText.startsWith("Administration Workspace")
     }
   }
 
@@ -93,23 +87,23 @@ class Portal extends Page with Eventually {
     if (!siteTitle.getText.contains(siteName)) {
       //If site is listed return true, if not click on "More Sites"
       if (partialLinkText(siteName).findElement(webDriver).isDefined) {
-        return true
+        true
       } else {
         click on cssSelector("a[title='More Sites']")
         if (Config.skin == "neo")
           textField("txtSearch").value = siteName
         if (partialLinkText(siteName).findElement(webDriver).isDefined) {
-          return true
+          true
         } else {
-          return false
+          false
         }
       }
     } else {
-      return true
+      true
     }
   }
 
-  def goToAdminWorkspace() {
+  def goToAdminWorkspace {
     switch to defaultContent
     click on linkText("Administration Workspace")
   }
@@ -170,16 +164,15 @@ class Portal extends Page with Eventually {
         } else {
           if (Config.skin == "neo") {
             click on cssSelector("a[title='Close this drawer']")
-            if (!isMyWorkspace()) {
+            if (!isMyWorkspace) {
               click on cssSelector("a[title='My Workspace']")
             }
           } else {
             click on cssSelector("a[title='More Sites']")
-            if (!isAdminWorkspace()) {
+            if (!isAdminWorkspace) {
               click on cssSelector("a[title='Administration Workspace']")
             }
           }
-
           createSite(siteType)
         }
       }
@@ -188,17 +181,10 @@ class Portal extends Page with Eventually {
 
   def createSite(siteType: String) {
     goToTool("Site Setup")
-    var siteTitle = SiteManageTool.createRandomSite(siteType)
-    goToSite(siteTitle)
+    goToSite(SiteManageTool.createRandomSite(siteType))
   }
 
-
-  def goToTool(toolName: String) {
-    goToTool(toolName, false)
-  }
-
-
-  def goToTool(toolName: String, reset: Boolean) {
+  def goToTool(toolName: String, reset: Boolean = false) {
     // reset will refresh the tool before using it to ensure clean tool
     switch to defaultContent
     if (toolName.equals("Site Setup") || toolName.equals("Site Editor") && !Config.sakaiDistro.equalsIgnoreCase("ani")) {
@@ -236,7 +222,6 @@ class Portal extends Page with Eventually {
           } else {
             click on linkText(toolName)
           }
-
         } else {
           click on linkText(toolName)
         }
@@ -247,7 +232,7 @@ class Portal extends Page with Eventually {
     }
   }
 
-  def richTextEditor(): String = {
+  def richTextEditor: String = {
 //    Used to insert text into any CKEditor
     def wait = new WebDriverWait(webDriver, 10)
     val text = faker.paragraph(2)
@@ -262,13 +247,13 @@ class Portal extends Page with Eventually {
     webDriver.switchTo.activeElement.sendKeys(text)
     webDriver.switchTo.defaultContent
     getToFrameZero
-    return text
+    text
   }
 
-  def logout() {
+  def logout {
     try {
       switch to defaultContent
-      val logoutLink = webDriver.findElement(By.linkText("Logout"));
+      val logoutLink = webDriver.findElement(By.linkText("Logout"))
       if (logoutLink != null && logoutLink.isDisplayed) {
         click on linkText("Logout")
       }

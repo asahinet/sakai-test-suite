@@ -7,11 +7,7 @@ object SyllabusTool extends SyllabusTool
 
 class SyllabusTool extends Page {
 
-  def addSyllabus(): String = {
-    return addSyllabus(false)
-  }
-
-  def addSyllabus(redirect: Boolean): String = {
+  def addSyllabus(redirect: Boolean = false): String = {
     val syllabusName: String = faker.letterify("??????")
     Portal.xslFrameOne
     if (redirect) {
@@ -26,44 +22,33 @@ class SyllabusTool extends Page {
         click on xpath("//*[contains(text(), '" + syllabusName + "')]/../../*[contains(@title, 'Click to expand')]")
       }
       click on xpath("//*[.='" + syllabusName + "']/../../..//div[.='Click to add body text']")
-      Portal.richTextEditor()
+      Portal.richTextEditor
       Portal.xslFrameOne
       click on xpath("//*[.='ok']")
       click on xpath("//*[contains(text(), '" + syllabusName + "')]/../../*[contains(@title, 'Click to publish')]")
     }
-    return syllabusName
+    syllabusName
   }
 
-  def noneExist(): Boolean = {
+  def noneExist: Boolean = {
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
     Portal.xslFrameOne
-    return xpath("//*[contains(text(), 'No Syllabus currently exists.')]").findElement(webDriver).isDefined
-
+    xpath("//*[contains(text(), 'No Syllabus currently exists.')]").findElement(webDriver).isDefined
   }
 
   def syllabusExists(syllabusName: String): Boolean = {
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
     Portal.xslFrameOne
-
-    if (xpath("//*[.='" + syllabusName + "']").findElement(webDriver).isDefined) {
-      true
-    } else {
-      false
-    }
-
+    xpath("//*[.='" + syllabusName + "']").findElement(webDriver).isDefined
   }
 
   def redirectExists(syllabusName: String): Boolean = {
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
     Portal.xslFrameOne
-    if (xpath("//iframe[@src='" + Config.targetServer + "']").findElement(webDriver).isDefined) {
-      true
-    } else {
-      false
-    }
+    xpath("//iframe[@src='" + Config.targetServer + "']").findElement(webDriver).isDefined
   }
 
   def editSyllabus(syllabusName: String): String = {
@@ -75,10 +60,10 @@ class SyllabusTool extends Page {
     xpath("//input[@class='input-medium']").webElement.clear
     xpath("//input[@class='input-medium']").webElement.sendKeys(newName)
     click on xpath("//*[.='ok']")
-    return newName
+    newName
   }
 
-  def removeAllSyllabus() {
+  def removeAllSyllabus {
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
     Portal.xslFrameOne
@@ -95,6 +80,4 @@ class SyllabusTool extends Page {
     click on cssSelector("[title='Update']")
     click on xpath("//input[contains(@value,'Update')]")
   }
-
-
 }

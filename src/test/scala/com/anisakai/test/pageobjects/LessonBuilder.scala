@@ -5,9 +5,6 @@ import com.anisakai.test.util.FileUtil
 import org.openqa.selenium.By
 import org.openqa.selenium.interactions.Actions
 import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
-
-import scala.collection.mutable.ListBuffer
-
 /**
  * Created with IntelliJ IDEA.
  * User: gareth
@@ -27,7 +24,7 @@ class LessonBuilder extends Page {
     action.moveToElement(webDriver.findElement(By.linkText("Add Text")))
     webWait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Add Text")))
     click on linkText("Add Text")
-    val text = Portal.richTextEditor()
+    val text = Portal.richTextEditor
     click on cssSelector("[value=Save]")
     text
   }
@@ -64,7 +61,7 @@ class LessonBuilder extends Page {
     click on cssSelector("[value=Create]")
     singleSel("assesssmentForm:parts:0:changeQType").value = "6"
     textField("itemForm:answerptr").value = "100"
-    textArea("itemForm:_id73_textinput").value = faker.paragraph()
+    textArea("itemForm:_id73_textinput").value = faker.paragraph
     click on cssSelector("[value=Save]")
     click on linkText("Publish")
     click on cssSelector("[value=Publish]")
@@ -94,16 +91,13 @@ class LessonBuilder extends Page {
     click on cssSelector("[value=Use selected item]")
   }
 
-  def viewAddition(addition: ListBuffer[String]): Boolean = {
-    var isFound: Boolean = true
-    addition.toList.takeWhile(isFound => true).foreach(text =>
+  def viewAddition(addition: List[String]): Boolean = {
+    addition.foreach { text =>
       if (!xpath("//*[contains(text(),'" + text + "')]").findElement(webDriver).isDefined) {
-        isFound = false
-      } else {
-        isFound = true
-      })
-
-    isFound
+        return false
+      }
+    }
+    true
   }
 
 }

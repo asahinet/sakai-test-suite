@@ -18,18 +18,18 @@ object MessagesCRUD extends MessagesCRUD
 
 class MessagesCRUD extends Page {
 
-  def addMessage(attachment: Boolean): String = {
+  def addMessage(attachment: Boolean = false): String = {
     val messageSub = faker.letterify("???????")
     Portal.xslFrameOne
     click on linkText("Compose Message")
     def select = new Select(webDriver.findElement(By.id("compose:list1")))
-    select.deselectAll()
+    select.deselectAll
     select.selectByIndex(0)
     textField("compose:subject").value = messageSub
-    Portal.richTextEditor()
+    Portal.richTextEditor
     Portal.xslFrameOne
     if (attachment) {
-      if (!Config.sakaiVersion.contains("10.")) {
+      if (!Config.sakaiVersion.startsWith("10.")) {
         click on name("compose:_id72")
       } else {
         click on xpath("//*[@value = 'Add attachments']")
@@ -39,16 +39,12 @@ class MessagesCRUD extends Page {
       click on id("add_url")
       click on id("attachButton")
     }
-    if (!Config.sakaiVersion.contains("10.")) {
+    if (!Config.sakaiVersion.startsWith("10.")) {
       click on name("compose:_id89")
     } else {
       click on xpath("//*[@value = 'Send ']")
     }
-    return messageSub
-  }
-
-  def addMessage(): String = {
-    return addMessage(false)
+    messageSub
   }
 
   def isAdded(messageSub: String): Boolean = {
@@ -61,7 +57,6 @@ class MessagesCRUD extends Page {
     } else {
       true
     }
-
   }
 
 }

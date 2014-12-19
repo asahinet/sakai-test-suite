@@ -15,34 +15,17 @@ object TurnItIn extends TurnItIn
 
 class TurnItIn extends Page {
 
-  def warningMessage(): Boolean = {
-    if (!className("alertMessage").findElement(webDriver).isDefined) {
-      return false
-    } else {
-      return true
-    }
-  }
+  def warningMessage: Boolean = className("alertMessage").findElement(webDriver).isDefined
 
-  def assignmentStatus(status: String, assignmentTitle: String): Boolean = {
-    if (webDriver.findElement(By.xpath("//tr[contains(.,'" + assignmentTitle + "')]/td[3]")).getText.toLowerCase.contains(status.toLowerCase)) {
-      return true
-    } else {
-      return false
-    }
-  }
+  def assignmentStatus(status: String, assignmentTitle: String): Boolean = webDriver.findElement(By.xpath("//tr[contains(.,'" + assignmentTitle + "')]/td[3]")).getText.toLowerCase.contains(status.toLowerCase)
 
   def turnItInExists(assignmentTitle: String): Boolean = {
     click on xpath("//a[.='Edit " + assignmentTitle + "']")
     Portal.getToFrameZero
-
-    if (checkbox("new_assignment_use_review_service").isSelected) {
-      return true
-    } else {
-      return false
-    }
+    checkbox("new_assignment_use_review_service").isSelected
   }
 
-  def uploadFile() {
+  def uploadFile {
     webDriver.findElement(By.className("upload")).sendKeys(FileUtil.createRandomTextFile(3))
     click on name("post")
     eventually(Portal.getToFrameZero)

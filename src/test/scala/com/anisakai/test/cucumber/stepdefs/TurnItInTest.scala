@@ -21,7 +21,7 @@ class TurnItInTest extends ScalaDsl with EN with TearDown {
 
   def login(role: String) {
     Portal.navigateToPage(Config.targetServer)
-    Portal.logout()
+    Portal.logout
 
     if (role.equalsIgnoreCase("admin")) {
       eid = Config.defaultAdminEid
@@ -35,7 +35,7 @@ class TurnItInTest extends ScalaDsl with EN with TearDown {
     }
     Portal.enterEid(eid)
     Portal.enterPassword(password)
-    Portal.login()
+    Portal.login
   }
 
   Given( """^I'm logged in as an? '(.+)' on a Turn It In instance$""") { (role: String) =>
@@ -45,7 +45,7 @@ class TurnItInTest extends ScalaDsl with EN with TearDown {
   When( """^I add a Turn It In assignment '(.+)'$""") { (correct: String) =>
     Portal.goToSite("TurnItIn Test 01")
     Portal.goToTool("Assignments")
-    AssignmentTool.goToAdd()
+    AssignmentTool.goToAdd
     if (correct.equalsIgnoreCase("correctly")) {
       assignmentTitle = AssignmentTool.assignment(true, true)
     } else {
@@ -54,7 +54,7 @@ class TurnItInTest extends ScalaDsl with EN with TearDown {
   }
 
   Then( """^I should get a warning message$""") { () =>
-    assertTrue(TurnItIn.warningMessage())
+    assertTrue(TurnItIn.warningMessage)
   }
 
   Then( """^The status of the assignment should be '(.+)'$""") { (status: String) =>
@@ -72,7 +72,7 @@ class TurnItInTest extends ScalaDsl with EN with TearDown {
     Portal.goToSite("TurnItIn Test 01")
     Portal.goToTool("Assignments")
     AssignmentTool.openAssignment(assignmentTitle)
-    TurnItIn.uploadFile()
+    TurnItIn.uploadFile
   }
 
 

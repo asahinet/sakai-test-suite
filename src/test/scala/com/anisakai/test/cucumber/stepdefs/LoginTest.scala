@@ -34,7 +34,6 @@ class LoginTest extends ScalaDsl with EN with TearDown {
     Portal.login
   }
 
-
   Then( """^I should see my workspace""") {
     assertTrue(Portal.isMyWorkspace)
   }
@@ -50,6 +49,5 @@ class LoginTest extends ScalaDsl with EN with TearDown {
     Portal.goToSite(siteName)
     Portal.goToTool(toolName, true)
   }
-
 
 }

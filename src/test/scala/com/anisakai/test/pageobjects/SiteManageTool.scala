@@ -1,11 +1,8 @@
 package com.anisakai.test.pageobjects
 
-import java.util
-
 import com.anisakai.test.Config
 import org.openqa.selenium.By
 import scala.collection.JavaConverters._
-import scala.collection.mutable.ListBuffer
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,12 +18,8 @@ class SiteManageTool extends Page {
     Portal.xslFrameOne
     click on linkText("Manage Access")
     click on radioButton("publish")
-
-    //TODO actually look at parameters sent in
-
     click on cssSelector("[value=Update]")
   }
-
 
   def createSiteWithSitesTool(siteType: String, siteTitle: String, siteId: String): Boolean = {
     Portal.xslFrameOne
@@ -42,29 +35,24 @@ class SiteManageTool extends Page {
       click on name("eventSubmit_doCancel")
       return false
     }
-
-
     true
-  }
-
-  def verifyUserHasRole(eid: String, role: String) {
-    // TODO table fun
   }
 
   def membershipDoesNotExist(eid: String): Boolean = {
     // if we get an error that the site exists, click cancel, that is ok
     if (className("information").findElement(webDriver).isDefined &&
       className("information").webElement(webDriver).getText.contains("The following participants are already members of this site and cannot be re-added: '" + eid + "'")) {
-      return false
+      false
+    } else {
+      true
     }
-    true
   }
 
-  def bulkAddUsers(eids: ListBuffer[String], role: String) {
+  def bulkAddUsers(eids: List[String], role: String) {
     eids.foreach(e => addUserWithRole(e, role))
   }
 
-  def addUserWithRole(eid: String = "", role: String, bulk: Boolean = false, eids: ListBuffer[String] = null) {
+  def addUserWithRole(eid: String = "", role: String, bulk: Boolean = false, eids: List[String] = null) {
     Portal.xslFrameOne
     click on linkText("Add Participants")
     if (bulk) {
@@ -104,7 +92,7 @@ class SiteManageTool extends Page {
     if (className("instruction").webElement(webDriver).getText.contains("No sites were found")) {
       found = false
     } else {
-      checkbox("site1").select()
+      checkbox("site1").select
       click on linkText("Edit")
       found = true
     }
@@ -126,7 +114,7 @@ class SiteManageTool extends Page {
       Map(("subject", subject), ("section", section), ("course", course)))
   }
 
-  def populateCourseMetaData(args: Map[String, String]): Unit = {
+  def populateCourseMetaData(args: Map[String, String]) = {
     textField("id-Subject:1").value = args("subject")
     textField("id-Course:1").value = args("course")
     textField("id-Section:1").value = args("section")
@@ -139,12 +127,10 @@ class SiteManageTool extends Page {
   }
 
   def editSite(shortDescription: String, longDescription: String, contactName: String) {
-
     click on linkText("Edit Site Information")
     textArea("short_description").value = shortDescription
     textField("siteContactName").value = contactName
     click on cssSelector("[value=Continue]")
-
     click on cssSelector("[value=Finish]")
   }
 
@@ -177,12 +163,11 @@ class SiteManageTool extends Page {
   def createRandomSite(siteType: String, tools: List[String] = Nil): String = {
     siteType.toLowerCase match {
       case "course" => createCourseSite(faker.letterify("???"), faker.numerify("#"), faker.numerify("###"),
-        faker.sentence(2), faker.sentence(2), faker.name(), faker.firstName() + "." + faker.lastName(), tools)
+        faker.sentence(2), faker.sentence(2), faker.name, faker.firstName + "." + faker.lastName, tools)
       case _ => createProjectSite(siteType + " Test " + faker.numerify("###"), faker.sentence(2),
         faker.sentence(2), faker.name)
     }
   }
-
 
   /*
   * The extraClick boolean in the following methods is used because when certain tools are added they require
@@ -249,21 +234,20 @@ class SiteManageTool extends Page {
     }
     if (email) {
       if (id("emailId").findElement(webDriver).isDefined) {
-        textField("emailId").value = faker.lastName() + faker.numerify("####")
+        textField("emailId").value = faker.lastName + faker.numerify("####")
         extraClick = true
       }
     }
     if (url) {
       if (id("source_sakai.iframe").findElement(webDriver).isDefined) {
-        textField("source_sakai.iframe").value = faker.lastName() + faker.numerify("####")
+        textField("source_sakai.iframe").value = faker.lastName + faker.numerify("####")
         extraClick = true
       }
     }
     if (vm && email && url) {
       extraClick = true
     }
-
-    return extraClick
+    extraClick
   }
 
   // This is used to click all the tools if parameterless, or certain tools if a list of tools is sent
