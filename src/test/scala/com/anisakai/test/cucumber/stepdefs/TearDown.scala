@@ -18,16 +18,14 @@ trait TearDown {
   def tearDown(result: Scenario) {
     if (result.isFailed) {
       if (webDriver.isInstanceOf[TakesScreenshot]) {
-        val screenshot = webDriver.asInstanceOf[TakesScreenshot].getScreenshotAs(OutputType.BYTES);
+        val screenshot = webDriver.asInstanceOf[TakesScreenshot].getScreenshotAs(OutputType.BYTES)
         try {
           result.embed(screenshot, "image/png")
         } catch {
-          case e: Exception => e.printStackTrace()
+          case e: Exception => e.printStackTrace
         }
       }
     }
   }
-
   val webDriver: WebDriver = Config.webDriver
-
 }

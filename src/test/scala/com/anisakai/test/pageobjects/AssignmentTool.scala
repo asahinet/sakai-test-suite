@@ -22,20 +22,17 @@ class AssignmentTool extends Page {
   val isTen : Boolean = Config.sakaiVersion.startsWith("10.") //Sakai 10.x
   val cal = Calendar.getInstance
 
-  def goToAdd() {
+  def goToAdd {
     Portal.xslFrameOne
     click on linkText("Add")
     Portal.getToFrameZero
   }
 
-  def assignment(): String = {
-    return assignment(false, false)
-  }
 
   // The turnItIn and correct booleans relate to turn it in assignments.
   // If you just want to create a regular assignment using the assignments
-  // tool use assignment()
-  def assignment(turnItIn: Boolean, correct: Boolean): String = {
+  // tool call this method parameterless
+  def assignment(turnItIn: Boolean = false, correct: Boolean = false): String = {
     Portal.xslFrameOne
     val dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a")
     val dayFormat = new SimpleDateFormat("dd")
@@ -47,7 +44,6 @@ class AssignmentTool extends Page {
     val today = cal.getTime
     cal.add(Calendar.DAY_OF_YEAR, 1)
     val tomorrow = cal.getTime
-
 
     val assignmentTitle = faker.letterify("?????? ???????")
     val openDate = dateFormat.format(today).toLowerCase
@@ -99,10 +95,8 @@ class AssignmentTool extends Page {
       singleSel("new_assignment_closemin").value = dueMin.toString
       singleSel("new_assignment_closeampm").value = amOrPm.toUpperCase
     } else { // Sakai 10
-      def wait = new WebDriverWait(webDriver, 10)
-
       click on id("opendate")
-      wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[.='Now']")))
+      new WebDriverWait(webDriver, 10).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[.='Now']")))
       click on xpath("//button[.='Now']")
       click on xpath("//button[.='Done']")
       // accept default due and close dates
@@ -120,10 +114,10 @@ class AssignmentTool extends Page {
       if (!isTen) click on name("new_assignment_add_to_gradebook")
     }
 
-    checkbox("new_assignment_check_add_due_date").select()
+    checkbox("new_assignment_check_add_due_date").select
     if (turnItIn)
-      checkbox("new_assignment_use_review_service").select()
-    Portal.richTextEditor()
+      checkbox("new_assignment_use_review_service").select
+    Portal.richTextEditor
     Portal.xslFrameOne
     click on name("post")
 
@@ -136,7 +130,7 @@ class AssignmentTool extends Page {
   def isViewable(assignmentTitle: String): Boolean = {
     click on linkText(assignmentTitle)
     Portal.xslFrameOne
-    webDriver.findElement(By.className("discTria")).getText().contains(assignmentTitle)
+    webDriver.findElement(By.className("discTria")).getText.contains(assignmentTitle)
   }
 
   def isAdded(eventTitle: String): Boolean = {
@@ -153,9 +147,9 @@ class AssignmentTool extends Page {
     switch to frame(0)
   }
 
-  def studentSubmitAssignment(): Boolean = {
+  def studentSubmitAssignment: Boolean = {
     Portal.xslFrameOne
-    Portal.richTextEditor()
+    Portal.richTextEditor
     Portal.xslFrameOne
     click on name("post")
     xpath("//*[@class='success']").element.isDisplayed
@@ -177,7 +171,7 @@ class AssignmentTool extends Page {
   }
 
 
-  def edit(): String = {
+  def edit: String = {
     cal.add(Calendar.DAY_OF_YEAR, 1)
     val tomorrow = cal.getTime
     val dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a")
@@ -197,7 +191,6 @@ class AssignmentTool extends Page {
       close.clear
       close.sendKeys(dueDate)
     }
-
     click on name("post")
     newTitle
   }
@@ -219,17 +212,11 @@ class AssignmentTool extends Page {
 
   def deleteAssignment(assignmentTitle: String) {
     Portal.xslFrameOne
-    checkbox(xpath("//label[@class='skip' and contains(text(),'" + assignmentTitle + "')]/preceding-sibling::input[@type='checkbox']")).select()
+    checkbox(xpath("//label[@class='skip' and contains(text(),'" + assignmentTitle + "')]/preceding-sibling::input[@type='checkbox']")).select
     click on name("eventSubmit_doDelete_confirm_assignment")
     click on name("eventSubmit_doDelete_assignment")
   }
 
-  def removed(assignmentTitle: String): Boolean = {
-    if (!linkText(assignmentTitle).findElement(webDriver).isDefined) {
-      true
-    } else {
-      false
-    }
-  }
+  def removed(assignmentTitle: String): Boolean = !linkText(assignmentTitle).findElement(webDriver).isDefined
 
 }

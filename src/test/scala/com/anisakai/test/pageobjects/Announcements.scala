@@ -16,17 +16,16 @@ class Announcements extends Page {
 
   var status = 0
 
-  def clickOptions() {
+  def clickOptions {
     if (Config.skin == "xsl") {
       switch to defaultContent
       switch to frame(5)
     }
     switch to frame(0)
     click on xpath("//*[@title='Message of the Day Options']")
-
   }
 
-  def selectSubject() {
+  def selectSubject {
     if (radioButtonGroup("show-subject").value == "false") {
       radioButtonGroup("show-subject").value = "true"
     } else {
@@ -34,7 +33,7 @@ class Announcements extends Page {
     }
   }
 
-  def checkCurrent() {
+  def checkCurrent {
     Portal.getToFrameZero
     if (!className("textPanelHeader").findElement(webDriver).isDefined) {
       status = 1
@@ -43,15 +42,15 @@ class Announcements extends Page {
     }
   }
 
-  def updateMotd() {
+  def updateMotd {
     click on id("eventSubmit_doUpdate")
   }
 
-  def isChanged(): Boolean = {
+  def isChanged: Boolean = {
     if (status == 1) {
-      return webDriver.findElement(By.className("textPanelHeader")).isDisplayed()
+      webDriver.findElement(By.className("textPanelHeader")).isDisplayed
     } else {
-      return webDriver.findElement(By.className("textPanel")).isDisplayed()
+      webDriver.findElement(By.className("textPanel")).isDisplayed
     }
 
   }

@@ -34,10 +34,10 @@ class AssignmentTest extends ScalaDsl with EN with TearDown {
     if (siteType.equalsIgnoreCase("course")) {
       Portal.goToSiteDirectly(Config.defaultCourseSiteId)
       Portal.goToTool("Assignments", true)
-      AssignmentTool.goToAdd()
+      AssignmentTool.goToAdd
       assignmentTitle = AssignmentTool.assignment()
     }
-    assertFalse(siteType + " is not a supported site type for Assignments", false);
+    assertFalse(siteType + " is not a supported site type for Assignments", false)
   }
 
   Then( """^I see an assignment listed$""") { () =>
@@ -58,7 +58,7 @@ class AssignmentTest extends ScalaDsl with EN with TearDown {
   }
 
   Then( """^I should be able to submit the assignment$""") { () =>
-    assertTrue(AssignmentTool.studentSubmitAssignment())
+    assertTrue(AssignmentTool.studentSubmitAssignment)
   }
 
   And( """^I have created a course with an assignment$""") { () =>
@@ -71,7 +71,7 @@ class AssignmentTest extends ScalaDsl with EN with TearDown {
   }
 
   When( """^I change the title and date$""") { () =>
-    assignmentTitle = AssignmentTool.edit()
+    assignmentTitle = AssignmentTool.edit
   }
 
   Then( """^the updated assignment shows the new title and date$""") { () =>

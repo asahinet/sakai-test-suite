@@ -47,11 +47,11 @@ class GoogleDocs extends Page {
     click on xpath("//*[@value='Next']")
 
     if (settings == "past") {
-      checkbox("retractCheck").select()
+      checkbox("retractCheck").select
       singleSel("endDateBean.month").value = past.toString
     } else if (settings == "future") {
       click on id("hideItemRadio")
-      checkbox("retractCheck").select()
+      checkbox("retractCheck").select
       singleSel("endDateBean.month").value = future.toString
     }
     click on xpath("//*[@value='Finish']")
@@ -67,7 +67,7 @@ class GoogleDocs extends Page {
     }
   }
 
-  def cleanup() {
+  def cleanup {
     Portal.xslFrameOne
     click on id("selectall")
     click on id("delete-button")

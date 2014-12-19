@@ -6,14 +6,14 @@ object GradebookTool extends GradebookTool
 
 class GradebookTool extends Page {
 
-  def addEntry(): String = {
+  def addEntry: String = {
     val itemName: String = faker.letterify("???? ???")
     Portal.xslFrameOne
     click on linkText("Add Gradebook Item(s)")
     textField("gbForm:bulkNewAssignmentsTable:0:title").value = itemName
     textField("gbForm:bulkNewAssignmentsTable:0:points").value = "100"
     click on xpath("//*[@id='gbForm:saveButton']")
-    return itemName
+    itemName
   }
 
   def isAdded(itemName: String): Boolean = {
@@ -21,9 +21,9 @@ class GradebookTool extends Page {
     click on xpath("//a[contains(@title,'Reset')]")
     Portal.xslFrameOne
     if (xpath("//*[contains(.,'" + itemName + "')]").findElement(webDriver).isDefined) {
-      return true
+      true
     } else {
-      return false
+      false
     }
   }
 
@@ -34,7 +34,7 @@ class GradebookTool extends Page {
     textField("gbForm:title").value = newItemName
     textField("gbForm:points").value = "100"
     click on xpath("//*[@id='gbForm:saveButton']")
-    return newItemName
+    newItemName
   }
 
   def gradeEntry(itemName: String) {
@@ -49,7 +49,7 @@ class GradebookTool extends Page {
 
   def checkGrade(itemName: String): Boolean = {
     Portal.xslFrameOne
-    return webDriver.findElement(By.xpath("//*[.='" + itemName + "']/following-sibling::*[2]")).getText.equals("90/100")
+    webDriver.findElement(By.xpath("//*[.='" + itemName + "']/following-sibling::*[2]")).getText.equals("90/100")
   }
 
   def deleteEntry(itemName: String) {
@@ -57,7 +57,7 @@ class GradebookTool extends Page {
     click on linkText(itemName)
     Portal.xslFrameOne
     click on id("gbForm:removeAssignment")
-    checkbox("gbForm:removeConfirmed").select()
+    checkbox("gbForm:removeConfirmed").select
     click on id("gbForm:_idJsp38")
   }
 

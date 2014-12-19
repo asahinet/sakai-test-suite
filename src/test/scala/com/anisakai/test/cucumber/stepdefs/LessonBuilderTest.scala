@@ -16,7 +16,7 @@ class LessonBuilderTest extends ScalaDsl with EN with TearDown {
 
   Then( """^I can view the addition as an instructor$""") { () =>
     assertTrue(LessonBuilder.viewAddition(addition))
-    addition.clear()
+    addition.clear
   }
 
   When( """^I add a '(.+)' '(.+)' to the lessons tool$""") { (addType: String, contentType: String) =>
@@ -31,8 +31,8 @@ class LessonBuilderTest extends ScalaDsl with EN with TearDown {
 
   When( """^I create an assignment$""") { () =>
     Portal.goToTool("Assignments", true)
-    AssignmentTool.goToAdd()
-    addition += AssignmentTool.assignment()
+    AssignmentTool.goToAdd
+    addition += AssignmentTool.assignment
   }
 
   When( """^I add the '(.+)' to the lesson tool$""") { (linkType: String) =>

@@ -14,7 +14,7 @@ class PopulateSiteTest extends ScalaDsl with EN with TearDown{
   And("""I create '(.+)' users""") { (numUsers: Int) =>
     for (i <- 1 to numUsers) {
       Portal.goToTool("Users")
-      eids += UsersTool.randomUser()
+      eids += UsersTool.randomUser
     }
   }
 

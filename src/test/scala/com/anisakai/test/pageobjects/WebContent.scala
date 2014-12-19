@@ -13,7 +13,7 @@ object WebContent extends WebContent
 
 class WebContent extends Page {
 
-  def addWebContent(): String = {
+  def addWebContent: String = {
     switch to defaultContent
     //Portal.xslFrameOne
     click on xpath("//a[@title='Edit']")
@@ -24,12 +24,9 @@ class WebContent extends Page {
     textField("title-of-page").value = "Web Content"
     textField("source").value = Config.targetServer
     click on name("sakai.update")
-
-    return Config.targetServer
+    Config.targetServer
   }
 
-  def isDisplayed(webPage: String): Boolean = {
-    //Portal.xslFrameOne
-    return xpath("//iframe[@src='" + webPage + "']").findElement(webDriver).isDefined
-  }
+  def isDisplayed(webPage: String): Boolean = xpath("//iframe[@src='" + webPage + "']").findElement(webDriver).isDefined
+
 }

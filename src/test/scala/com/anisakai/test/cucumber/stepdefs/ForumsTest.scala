@@ -15,14 +15,14 @@ class ForumsTest extends ScalaDsl with EN with TearDown {
 
   When( """^I create a new '(.+)' as an? '(.+)'$""") { (theType: String, role: String) =>
     if (theType.equalsIgnoreCase("forum")) {
-      forum = Forums.createForum()
+      forum = Forums.createForum
     }
     else if (theType.equalsIgnoreCase("topic")) {
-      topic = Forums.createTopic()
+      topic = Forums.createTopic
     }
     else if (theType.equalsIgnoreCase("conversation")) {
       if (role.equalsIgnoreCase("student")) conversation = Forums.createConversation(true)
-      else conversation = Forums.createConversation()
+      else conversation = Forums.createConversation
     }
   }
 
@@ -42,15 +42,15 @@ class ForumsTest extends ScalaDsl with EN with TearDown {
   }
 
   When( """^I reply to a message$""") { () =>
-    reply = Forums.createReply()
+    reply = Forums.createReply
   }
 
   When( """^I '(.+)' an existing message$""") { (editOrDel: String) =>
     if (editOrDel == "edit") {
-      newReply = Forums.editMessage()
+      newReply = Forums.editMessage
     }
     else {
-      Forums.delMessage()
+      Forums.delMessage
     }
   }
 

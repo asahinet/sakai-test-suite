@@ -7,14 +7,14 @@ object Forums extends Forums
 class Forums extends Page {
 
   //Setting posting names
-  var forum: String = faker.sentence(2)
-  var topic: String = faker.sentence(2)
-  var conversation: String = faker.sentence(2)
-  var studConv: String = faker.sentence(2)
-  var reply: String = ""
-  var newReply: String = ""
+  var forum = faker.sentence(2)
+  var topic = faker.sentence(2)
+  var conversation = faker.sentence(2)
+  var studConv = faker.sentence(2)
+  var reply = ""
+  var newReply = ""
 
-  def createForum(): String = {
+  def createForum: String = {
     Portal.xslFrameOne
     click on linkText("New Forum")
     textField("revise:forum_title").value = forum
@@ -22,7 +22,7 @@ class Forums extends Page {
     forum
   }
 
-  def createTopic(): String = {
+  def createTopic: String = {
     Portal.xslFrameOne
     click on xpath("//a[contains(@title, '" + forum + "')]/following-sibling::a[@title='New Topic']")
     textField("revise:topic_title").value = topic
@@ -43,17 +43,16 @@ class Forums extends Page {
     text
   }
 
-  def createConversation(): String = {
-    createConversation(false)
-  }
+  def createConversation: String = createConversation(false)
 
-  def createReply(): String = {
+
+  def createReply: String = {
     reset
     Portal.xslFrameOne
     click on xpath("//a[contains(@title,'" + topic + "')]")
     click on linkText(studConv)
     click on linkText("Reply to Initial Message")
-    reply = Portal.richTextEditor()
+    reply = Portal.richTextEditor
     Portal.xslFrameOne
     click on xpath("//input[@value='Post']")
     reply
@@ -69,13 +68,13 @@ class Forums extends Page {
     xpath("//*[contains(text(),'" + text + "')]").findElement(webDriver).isDefined
   }
 
-  def editMessage(): String = {
+  def editMessage: String = {
     reset
     Portal.xslFrameOne
     click on xpath("//a[contains(@title, '" + topic + "')]")
     click on linkText(studConv)
     click on xpath("//p[contains(text(),'" + reply.substring(0, 10) + "')]/..//preceding-sibling::*//a[.='Edit']")
-    newReply = Portal.richTextEditor()
+    newReply = Portal.richTextEditor
     click on xpath("//input[@value='Post Edited Message']")
     reset
     newReply
@@ -86,7 +85,7 @@ class Forums extends Page {
     click on xpath("//a[contains(@title,'Reset')]")
   }
 
-  def delMessage() {
+  def delMessage {
     reset
     Portal.xslFrameOne
     click on xpath("//a[contains(@title, '" + topic + "')]")
@@ -96,7 +95,7 @@ class Forums extends Page {
     reset
   }
 
-  def cleanup() {
+  def cleanup {
     reset
     Portal.xslFrameOne
     while (webDriver.findElements(By.linkText("More")).size != 0) {

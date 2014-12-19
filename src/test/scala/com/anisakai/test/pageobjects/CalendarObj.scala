@@ -18,16 +18,14 @@ object CalendarObj extends CalendarObj
 
 class CalendarObj extends Page {
 
-  def checkCalendar(): Boolean = {
-    return webDriver.findElement(By.tagName("h3")).getText().contains("Calendar")
-  }
+  def checkCalendar: Boolean = webDriver.findElement(By.tagName("h3")).getText.contains("Calendar")
 
-  def addCalEvent() {
+  def addCalEvent {
     Portal.getToFrameZero
     click on xpath("//a[contains(@title,'Add')]")
   }
 
-  def createRandomEvent(): String = {
+  def createRandomEvent: String = {
     val eventTitle = faker.letterify("??????????")
     val cal = Calendar.getInstance
     cal.add(Calendar.DATE, 1)
@@ -36,15 +34,15 @@ class CalendarObj extends Page {
     val month = cal.get(Calendar.MONTH) + 1
     val year = cal.get(Calendar.YEAR)
 
-    val rand = new Random()
+    val rand = new Random
     val hour = rand.nextInt(12) + 1
     var am_pm = "AM"
 
     textField("activitytitle").value = eventTitle
-    singleSel("month").value = month.toString()
-    singleSel("day").value = day.toString()
-    singleSel("yearSelect").value = year.toString()
-    singleSel("startHour").value = hour.toString()
+    singleSel("month").value = month.toString
+    singleSel("day").value = day.toString
+    singleSel("yearSelect").value = year.toString
+    singleSel("startHour").value = hour.toString
     singleSel("startMinute").value = "0"
     def ampm = new Select(webDriver.findElement(By.name("startAmpm")))
     ampm.selectByVisibleText(am_pm)
@@ -53,11 +51,9 @@ class CalendarObj extends Page {
     Portal.getToFrameZero
     Portal.richTextEditor
     click on name("eventSubmit_doAdd")
-    return eventTitle
+    eventTitle
   }
 
-  def isAdded(eventTitle: String): Boolean = {
-    return linkText(eventTitle).element.isDisplayed
-  }
+  def isAdded(eventTitle: String): Boolean = linkText(eventTitle).element.isDisplayed
 
 }

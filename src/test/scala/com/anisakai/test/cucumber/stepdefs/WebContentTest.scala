@@ -14,7 +14,7 @@ import junit.framework.Assert._
 class WebContentTest extends ScalaDsl with EN with TearDown {
   var source: String = ""
   When( """^I add web content to the tool$""") { () =>
-    source = WebContent.addWebContent()
+    source = WebContent.addWebContent
   }
 
   Then( """^The web page should be displayed$""") { () =>

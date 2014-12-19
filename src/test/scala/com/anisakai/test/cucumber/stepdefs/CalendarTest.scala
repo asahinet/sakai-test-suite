@@ -15,8 +15,8 @@ class CalendarTest extends ScalaDsl with EN with TearDown {
   var eventTitle: String = ""
 
   When( """^I create an event with random data$""") { () =>
-    CalendarObj.addCalEvent()
-    eventTitle = CalendarObj.createRandomEvent()
+    CalendarObj.addCalEvent
+    eventTitle = CalendarObj.createRandomEvent
   }
   Then( """^the event should be added to my calendar$""") { () =>
     assertTrue(CalendarObj.isAdded(eventTitle))

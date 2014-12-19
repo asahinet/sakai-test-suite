@@ -18,8 +18,8 @@ import scala.collection.mutable.ListBuffer
 object VerifyTools extends VerifyTools
 
 class VerifyTools extends Page {
-  def checkTools(): Boolean = {
-    var fails = ListBuffer[String]()
+  def checkTools: Boolean = {
+    var fails = new ListBuffer[String]
     var groupName: String = ""
     if (Config.skin == "neo") {
       groupName = "toolMenuLink"
@@ -29,9 +29,9 @@ class VerifyTools extends Page {
     try {
       for (i <- 0 until webDriver.findElements(By.xpath("//*[contains(@class, '" + groupName + "')]")).size) {
         switch to defaultContent
-        var toolName = webDriver.findElements(By.xpath("//*[contains(@class, '" + groupName + "')]")).get(i).getText()
+        var toolName = webDriver.findElements(By.xpath("//*[contains(@class, '" + groupName + "')]")).get(i).getText
         click on webDriver.findElements(By.xpath("//*[contains(@class, '" + groupName + "')]")).get(i)
-        webDriver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS)
+        webDriver.manage.timeouts.implicitlyWait(500, TimeUnit.MILLISECONDS)
 
         // If there is an iframe present we want to check inside of that iframe
 
@@ -45,23 +45,18 @@ class VerifyTools extends Page {
             fails += toolName
         }
 
-        webDriver.manage().timeouts().implicitlyWait(Config.timeout.toInt, TimeUnit.SECONDS)
+        webDriver.manage.timeouts.implicitlyWait(Config.timeout.toInt, TimeUnit.SECONDS)
       }
     } catch {
       case e: Exception => {
-        e.printStackTrace()
+        e.printStackTrace
         return hasFailed(fails, true)
       }
     }
-
-    return hasFailed(fails)
+    hasFailed(fails)
   }
 
-  def hasFailed(fails: ListBuffer[String]): Boolean = {
-    return hasFailed(fails, false)
-  }
-
-  def hasFailed(fails: ListBuffer[String], failure: Boolean): Boolean = {
+  def hasFailed(fails: ListBuffer[String], failure: Boolean = false): Boolean = {
     if (fails.isEmpty || failure) {
       true
     } else {

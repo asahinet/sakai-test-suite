@@ -147,7 +147,7 @@ The following system properties are available.  These should be sent to the as J
 
 - sakai.distro
 
-    The distribution of Sakai you are using.  Validate strings are "ani", "rsmart", "community".  There are a few UI
+    The distribution of Sakai you are using.  Validate strings are "ani" and "sakai".  There are a few UI
     differences in the ani distribution that this property will toggle, allowing the suite to be run against multiple
     distributions.
 

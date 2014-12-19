@@ -15,17 +15,17 @@ import junit.framework.Assert._
 class AnnouncementsTest extends ScalaDsl with EN with TearDown {
 
   When( """^I click on the MOTD Options button$""") { () =>
-    Announcements.checkCurrent()
-    Announcements.clickOptions()
+    Announcements.checkCurrent
+    Announcements.clickOptions
   }
   When( """^I select the Show Announcement subject radio button$""") { () =>
-    Announcements.selectSubject()
+    Announcements.selectSubject
   }
   When( """^I click the update button$""") { () =>
-    Announcements.updateMotd()
+    Announcements.updateMotd
   }
   Then( """^the Message of the day text should contain '(.+)'$""") { (motd: String) =>
-    assertTrue(Announcements.isChanged())
+    assertTrue(Announcements.isChanged)
   }
 
 }

@@ -10,7 +10,7 @@ import org.scalatest.selenium._
  *
  */
 abstract class Page extends WebBrowser with Eventually {
-  val faker: Faker = new Faker()
+  val faker: Faker = new Faker
 
   implicit val webDriver: WebDriver = Config.webDriver
 
