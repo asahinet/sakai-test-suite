@@ -9,6 +9,13 @@ via cucumber-scala and cucumber-junit.  The ScalaTest library is used for the [S
 which ends up pushing the Selenium WebDriver, but in a more natural and simpler way.  The Selenium DSL will let you get directly at the
 [Selenium WebDriver](http://selenium.googlecode.com/svn/trunk/docs/api/java/index.html) object when you need more power.
 
+Requirements
+-------------
+
+[Maven 3.2.3+](http://maven.apache.org/download.cgi)
+
+[Scala 2.10.4+](http://www.scala-lang.org/download/2.10.4.html)
+
 Creating a Test
 ---------------
 
