@@ -19,8 +19,8 @@ class SiteCreationTest extends ScalaDsl with EN with TearDown {
   var newlyCreatedSite: Boolean = true
   var siteIDs = new ListBuffer[String]
 
-  Given( """^the following '(.+)' sites exist:$""") {
-    (siteType: String, data: DataTable) =>
+  Given( """^the following sites exist:$""") {
+    (data: DataTable) =>
       val row = data.asMaps(classOf[String], classOf[String]).iterator
       while (row.hasNext) {
         val map = row.next
@@ -29,6 +29,7 @@ class SiteCreationTest extends ScalaDsl with EN with TearDown {
         val title = map.get("title")
         val description = map.get("description")
         val contactname = map.get("contactname")
+        val siteType = map.get("sitetype")
         maintainRole = SiteManageTool.getMaintainRole
         Portal.goToTool("Sites")
         newlyCreatedSite = SiteManageTool.createSiteWithSitesTool(siteType, title, siteId)

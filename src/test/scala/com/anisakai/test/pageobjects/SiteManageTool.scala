@@ -189,6 +189,7 @@ class SiteManageTool extends Page {
     }
     click on linkText("Edit Tools")
     Portal.xslFrameOne
+    click on partialLinkText("Plugin Tools")
 
     var toolList = tools
     if (tools == Nil) {
@@ -229,9 +230,13 @@ class SiteManageTool extends Page {
   }
   
   def getAllToolNames : List[String] = {
-    val elements = webDriver.findElements(By.xpath("//input[@type='checkbox']"))
+    val elements = webDriver.findElements(By.xpath("//input[@type='checkbox']/../label"))
     val tools = new ListBuffer[String]
-    elements.asScala.foreach (e => tools += e.getAttribute("text").trim)
+    elements.asScala.foreach (e =>
+      if (e.getText != "") {
+        tools += e.getText
+      }
+    )
     tools.toList
   }
 
@@ -239,12 +244,11 @@ class SiteManageTool extends Page {
   def clickTools(tools: List[String]) : Boolean = {
     val selectedTools = webDriver.findElements(By.xpath("//a[@class='removeTool ']/../../li[not(@style='display: none;')]"))
     var extraClick = false
-    click on partialLinkText("Plugin Tools")
     tools.foreach { tool =>
-      val e = webDriver.findElement(By.xpath("//label[contains(text(), '"+tool+"')]/../input"))
+      val e = webDriver.findElement(By.xpath("//label[normalize-space() = '"+tool+"']/../input"))
       tool.toLowerCase match {
         case "web content" | "email archive" | "external tool" | "lesson builder" | "lessons" | "lesson" =>
-          if (!isSelected(e, selectedTools)) {
+          if (!isSelected(tool, selectedTools)) {
             e.click
             extraClick = true
           }
@@ -258,10 +262,10 @@ class SiteManageTool extends Page {
   }
 
   // Used to determine if a specific tool is already selected, to avoid duplicates
-  def isSelected(tool: WebElement, selectedTools: java.util.List[WebElement]): Boolean = {
+  def isSelected(tool: String, selectedTools: java.util.List[WebElement]): Boolean = {
     selectedTools.asScala.foreach {
-      e => if (tool.getAttribute("text").trim.equalsIgnoreCase(e.getAttribute("text").trim)) {
-        true
+      e => if (tool.equalsIgnoreCase(e.getText.dropRight(2))) {
+        return true
       }
     }
     false
