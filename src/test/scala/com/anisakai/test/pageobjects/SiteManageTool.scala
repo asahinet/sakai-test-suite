@@ -189,7 +189,7 @@ class SiteManageTool extends Page {
     }
     click on linkText("Edit Tools")
     Portal.xslFrameOne
-    click on partialLinkText("Plugin Tools")
+    //click on partialLinkText("Plugin Tools")
 
     var toolList = tools
     if (tools == Nil) {
