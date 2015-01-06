@@ -1,8 +1,9 @@
 package com.anisakai.test.pageobjects
 
 import com.anisakai.test.Config
-import org.openqa.selenium.By
+import org.openqa.selenium.{WebElement, By}
 import scala.collection.JavaConverters._
+import scala.collection.mutable.ListBuffer
 
 /**
  * Created with IntelliJ IDEA.
@@ -56,7 +57,7 @@ class SiteManageTool extends Page {
     Portal.xslFrameOne
     click on linkText("Add Participants")
     if (bulk) {
-      var eidString = new StringBuilder
+      val eidString = new StringBuilder
       eids.foreach(e => eidString.append(e + "\n"))
       textArea("content::officialAccountParticipant").value = eidString.toString
     } else {
@@ -170,12 +171,10 @@ class SiteManageTool extends Page {
   }
 
   /*
-  * The extraClick boolean in the following methods is used because when certain tools are added they require
-  * further information before we can proceed. This inserts an extra screen between selecting tools and confirming
-  * their selection. In the clickTools method we ensure that if the tool isn't already selected, when we actually
-  * do select it we flag the extra click. We add a final check in addExtraToolInfo mostly because of Virtual Meeting.
-  * Sometimes when the tool is added it requires confirmation of Site ID, sometimes it doesn't. If it is there the
-  * extraClick returns true.
+  * When certain tools are added they require further information before we can proceed. This inserts an extra screen
+  * between selecting tools and confirming their selection. In the clickTools method we ensure that if the tool isn't
+  * already selected, when we actually do select it we flag the extra click. We then check if extra information such
+  * as email address or tool name needs to be added based on the tools that are in the list.
   */
 
   def addTools(withSitesTool : Boolean = false, tools: List[String] = Nil, siteID: String = "") {
@@ -191,93 +190,81 @@ class SiteManageTool extends Page {
     click on linkText("Edit Tools")
     Portal.xslFrameOne
 
-    var extraClick = false
-
+    var toolList = tools
     if (tools == Nil) {
-      // adding tools
-      extraClick = clickTools()
-    } else {
-      extraClick = clickTools(tools)
+      toolList = getAllToolNames
+    }
+
+    if (clickTools(toolList)) {
+      click on cssSelector("[value=Continue]")
+      toolList.foreach {
+            // Some tools require extra info to be added on the next page
+        e => e match {
+          case "Web Content" => addExtraToolInfo(url = true)
+          case "Email Archive" => addExtraToolInfo(email = true)
+          case _ => // continue
+        }
+      }
     }
     click on cssSelector("[value=Continue]")
-    if (extraClick) {
-      if (!tools.isEmpty) {
-        tools.foreach {
-          e => e match {
-            case "Web Content" => extraClick = addExtraToolInfo(url = true)
-            case "Email Archive" => extraClick = addExtraToolInfo(email = true)
-            case "ANI Virtual Meeting" => extraClick = addExtraToolInfo(vm = true)
-            case _ => // continue
-          }
-        }
-      } else {
-        // if the list is empty we are adding all tools
-        addExtraToolInfo(true, true, true)
-      }
-      if (extraClick) { click on cssSelector("[value=Continue]") }
-    }
 
-    Config.skin match {
+    Config.skin match { // More can be added when necessary
       case "xsl" => click on name("review")
       case _ => click on cssSelector("[value=Finish]")
     }
   }
 
   // This is used to add the information required on the extra screen
-  def addExtraToolInfo(email: Boolean = false, url: Boolean = false, vm: Boolean = false): Boolean = {
-    var extraClick = false
-    if (vm) {
-      if (id("1_SITE_ID").findElement(webDriver).isDefined) {
-        textField("1_SITE_ID").value = Config.defaultCourseSiteId
-        extraClick = true
-      }
-    }
+  def addExtraToolInfo(email: Boolean = false, url: Boolean = false){
     if (email) {
       if (id("emailId").findElement(webDriver).isDefined) {
         textField("emailId").value = faker.lastName + faker.numerify("####")
-        extraClick = true
       }
     }
     if (url) {
       if (id("source_sakai.iframe").findElement(webDriver).isDefined) {
-        textField("source_sakai.iframe").value = faker.lastName + faker.numerify("####")
-        extraClick = true
+        textField("source_sakai.iframe").value = Config.targetServer
       }
     }
-    if (vm && email && url) {
-      extraClick = true
-    }
-    extraClick
+  }
+  
+  def getAllToolNames : List[String] = {
+    val elements = webDriver.findElements(By.xpath("//input[@type='checkbox']"))
+    val tools = new ListBuffer[String]
+    elements.asScala.foreach (e => tools += e.getAttribute("text").trim)
+    tools.toList
   }
 
-  // This is used to click all the tools if parameterless, or certain tools if a list of tools is sent
-  def clickTools(tools: List[String] = Nil) : Boolean = {
+  // This is used to click all the tools in the list
+  def clickTools(tools: List[String]) : Boolean = {
+    val selectedTools = webDriver.findElements(By.xpath("//a[@class='removeTool ']/../../li[not(@style='display: none;')]"))
     var extraClick = false
     click on partialLinkText("Plugin Tools")
-    if (tools == Nil) {
-      val toolList = webDriver.findElements(By.xpath("//input[@type='checkbox']")).asScala
-      // see if it is already checked, if not then check it
-      toolList.foreach(e =>
-        if (!e.isSelected) {
-          e.click
-        }
-      )
-      extraClick = true
-    } else {
-      var tool = xpath("//*").webElement
-      tools.foreach {
-        e => tool = webDriver.findElement(By.xpath("//label[contains(text(), '"+e+"')]/../input"))
-          // see if it is already checked, if not then check it
-          if (!tool.isSelected) {
-            tool.click
-            e.toLowerCase match {
-              case "web content" | "email archive" | "ani virtual meeting" | "external tool" | "lesson builder" => extraClick = true
-              case _ => // continue
-            }
+    tools.foreach { tool =>
+      val e = webDriver.findElement(By.xpath("//label[contains(text(), '"+tool+"')]/../input"))
+      tool.toLowerCase match {
+        case "web content" | "email archive" | "external tool" | "lesson builder" | "lessons" | "lesson" =>
+          if (!isSelected(e, selectedTools)) {
+            e.click
+            extraClick = true
+          }
+        case _ =>
+          if (!e.isSelected) {
+            e.click
           }
       }
     }
     extraClick
+  }
+
+  // Used to determine if a specific tool is already selected, to avoid duplicates
+  def isSelected(tool: WebElement, selectedTools: java.util.List[WebElement]): Boolean = {
+    selectedTools.asScala.foreach {
+      e => if (tool.getAttribute("text").trim.equalsIgnoreCase(e.getAttribute("text").trim)) {
+        true
+      }
+    }
+    false
   }
 
   def getMaintainRole : String = {

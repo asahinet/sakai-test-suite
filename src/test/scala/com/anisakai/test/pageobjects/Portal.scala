@@ -187,12 +187,15 @@ class Portal extends Page with Eventually {
   def goToTool(toolName: String, reset: Boolean = false) {
     // reset will refresh the tool before using it to ensure clean tool
     switch to defaultContent
-    if (toolName.equals("Site Setup") || toolName.equals("Site Editor") && !Config.sakaiDistro.equalsIgnoreCase("ani")) {
+    if (toolName.equals("Site Setup") || toolName.equals("Site Editor")) {
 //      Different names for the same thing
       if (linkText("Worksite Setup").findElement(webDriver).isDefined) {
         click on linkText("Worksite Setup")
       } else if (linkText("Site Info").findElement(webDriver).isDefined) {
         click on linkText("Site Info")
+      }
+      if (reset) {
+        click on xpath("//a[contains(@title,'Reset')]")
       }
     } else {
       //      If we are on the correct tool reset it, otherwise go to the tool
