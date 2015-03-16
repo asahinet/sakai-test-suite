@@ -2,6 +2,7 @@ package com.anisakai.test.pageobjects
 
 import com.anisakai.test.Config
 import org.openqa.selenium.{WebElement, By}
+import org.scalatest.exceptions.TestFailedException
 import scala.collection.JavaConverters._
 import scala.collection.mutable.ListBuffer
 
@@ -164,9 +165,9 @@ class SiteManageTool extends Page {
   def createRandomSite(siteType: String, tools: List[String] = Nil): String = {
     siteType.toLowerCase match {
       case "course" => createCourseSite(faker.letterify("???"), faker.numerify("#"), faker.numerify("###"),
-        faker.sentence(2), faker.sentence(2), faker.name, faker.firstName + "." + faker.lastName, tools)
-      case _ => createProjectSite(siteType + " Test " + faker.numerify("###"), faker.sentence(2),
-        faker.sentence(2), faker.name)
+        faker.lorem.sentence(2), faker.lorem.sentence(2), faker.name.name, faker.name.firstName + "." + faker.name.lastName, tools)
+      case _ => createProjectSite(siteType + " Test " + faker.numerify("###"), faker.lorem.sentence(2),
+        faker.lorem.sentence(2), faker.name.name)
     }
   }
 
@@ -177,13 +178,16 @@ class SiteManageTool extends Page {
   * as email address or tool name needs to be added based on the tools that are in the list.
   */
 
-  def addTools(withSitesTool : Boolean = false, tools: List[String] = Nil, siteID: String = "") {
-    if (!siteID.equals("")) {
+  def addTools(withSitesTool : Boolean = false, tools: List[String] = Nil, siteTitle: String = "") {
+    if (!siteTitle.equals("")) {
       Portal.goToAdminWorkspace
       Portal.goToTool("Site Setup", true)
       Portal.xslFrameOne
-      xpath("//*[@id='search']").webElement.sendKeys(Config.defaultCourseSiteTitle)
+      xpath("//*[@id='search']").webElement.sendKeys(siteTitle)
       click on cssSelector("[value=Search]")
+      if (Config.client.equalsIgnoreCase("providence")) {
+        singleSel("termview").value = "-1"
+      }
       click on id("site1")
       click on cssSelector("[title=Edit]")
     }
@@ -207,7 +211,11 @@ class SiteManageTool extends Page {
         }
       }
     }
-    click on cssSelector("[value=Continue]")
+    try {
+      click on cssSelector("[value=Continue]")
+    } catch {
+      case fail: TestFailedException => println("Sometimes there is no continue button here, test can still pass")
+    }
 
     Config.skin match { // More can be added when necessary
       case "xsl" => click on name("review")
@@ -219,7 +227,7 @@ class SiteManageTool extends Page {
   def addExtraToolInfo(email: Boolean = false, url: Boolean = false){
     if (email) {
       if (id("emailId").findElement(webDriver).isDefined) {
-        textField("emailId").value = faker.lastName + faker.numerify("####")
+        textField("emailId").value = faker.name.lastName + faker.numerify("####")
       }
     }
     if (url) {
@@ -230,10 +238,16 @@ class SiteManageTool extends Page {
   }
   
   def getAllToolNames : List[String] = {
-    val elements = webDriver.findElements(By.xpath("//input[@type='checkbox']/../label"))
+    var elements = webDriver.findElements(By.xpath("//*"))
+    if (Config.sakaiVersion.startsWith("10.")) {
+      elements = webDriver.findElements(By.xpath("//input[@type='checkbox']/../label"))
+    } else {
+      elements = webDriver.findElements(By.xpath("//input[@type='checkbox']/../..//label"))
+    }
+
     val tools = new ListBuffer[String]
     elements.asScala.foreach (e =>
-      if (e.getText != "") {
+      if (e.getText != "" && e.getText != "All tools") {
         tools += e.getText
       }
     )
@@ -245,7 +259,13 @@ class SiteManageTool extends Page {
     val selectedTools = webDriver.findElements(By.xpath("//a[@class='removeTool ']/../../li[not(@style='display: none;')]"))
     var extraClick = false
     tools.foreach { tool =>
-      val e = webDriver.findElement(By.xpath("//label[normalize-space() = '"+tool+"']/../input"))
+      var e = webDriver.findElement(By.xpath("//*"))
+      if (Config.sakaiVersion.startsWith("10.")) {
+        e = webDriver.findElement(By.xpath("//label[normalize-space() = '"+tool+"']/../input"))
+      } else {
+        e = webDriver.findElement(By.xpath("//label[normalize-space() = '"+tool+"']/../..//input"))
+      }
+
       tool.toLowerCase match {
         case "web content" | "email archive" | "external tool" | "lesson builder" | "lessons" | "lesson" =>
           if (!isSelected(tool, selectedTools)) {

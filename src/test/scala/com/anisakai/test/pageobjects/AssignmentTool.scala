@@ -41,8 +41,9 @@ class AssignmentTool extends Page {
     val hourFormat = new SimpleDateFormat("hh")
     val minFormat = new SimpleDateFormat("mm")
     val ampmFormat = new SimpleDateFormat("a")
+    cal.add(Calendar.HOUR, -2)
     val today = cal.getTime
-    cal.add(Calendar.DAY_OF_YEAR, 1)
+    cal.add(Calendar.DAY_OF_YEAR, 3)
     val tomorrow = cal.getTime
 
     val assignmentTitle = faker.letterify("?????? ???????")

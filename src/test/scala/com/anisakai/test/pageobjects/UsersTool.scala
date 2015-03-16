@@ -58,12 +58,12 @@ class UsersTool extends Page {
   }
 
   def findOrCreateUser(eid: String) {
-    createUser(eid, faker.firstName, faker.lastName, eid + "@asdf.com", "registered", "password")
+    createUser(eid, faker.name.firstName, faker.name.lastName, eid + "@asdf.com", "registered", "password")
   }
 
   def randomUser: String = {
     val eid = faker.numerify("#########")
-    createUser(eid, faker.firstName, faker.lastName, Config.randomUserEmail, "registered", "password")
+    createUser(eid, faker.name.firstName, faker.name.lastName, Config.randomUserEmail, "registered", "password")
     eid
   }
 

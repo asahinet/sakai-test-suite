@@ -48,7 +48,7 @@ class LessonBuilder extends Page {
       click on cssSelector("[value=Save]")
       Config.targetServer
     } else {
-      webDriver.findElement(By.id("mm-file")).sendKeys(FileUtil.createTempFile(title, ".txt", faker.paragraph(2)))
+      webDriver.findElement(By.id("mm-file")).sendKeys(FileUtil.createTempFile(title, ".txt", faker.lorem.paragraph(2)))
       click on cssSelector("[value=Save]")
       title
     }
@@ -61,7 +61,7 @@ class LessonBuilder extends Page {
     click on cssSelector("[value=Create]")
     singleSel("assesssmentForm:parts:0:changeQType").value = "6"
     textField("itemForm:answerptr").value = "100"
-    textArea("itemForm:_id73_textinput").value = faker.paragraph
+    textArea("itemForm:_id73_textinput").value = faker.lorem.paragraph
     click on cssSelector("[value=Save]")
     click on linkText("Publish")
     click on cssSelector("[value=Publish]")
