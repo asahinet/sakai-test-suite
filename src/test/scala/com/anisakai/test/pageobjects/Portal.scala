@@ -1,7 +1,7 @@
 package com.anisakai.test.pageobjects
 
 import com.anisakai.test.Config
-import org.openqa.selenium.{UnhandledAlertException, By}
+import org.openqa.selenium.{UnhandledAlertException, By, NoSuchElementException}
 import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 import org.scalatest.concurrent.Eventually
 
@@ -89,14 +89,10 @@ class Portal extends Page with Eventually {
       if (partialLinkText(siteName).findElement(webDriver).isDefined) {
         true
       } else {
-        click on cssSelector("a[title='More Sites']")
+        click on xpath("//a[@title='More Sites']")
         if (Config.skin == "neo")
           textField("txtSearch").value = siteName
-        if (partialLinkText(siteName).findElement(webDriver).isDefined) {
-          true
-        } else {
-          false
-        }
+        partialLinkText(siteName).findElement(webDriver).isDefined
       }
     } else {
       true
@@ -271,7 +267,7 @@ class Portal extends Page with Eventually {
         click on linkText("Logout")
       }
     } catch {
-      case e: org.openqa.selenium.NoSuchElementException => {
+      case e: NoSuchElementException => {
         //e.printStackTrace()
       }
     }

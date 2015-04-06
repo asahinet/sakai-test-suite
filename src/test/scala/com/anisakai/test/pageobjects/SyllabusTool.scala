@@ -2,6 +2,7 @@ package com.anisakai.test.pageobjects
 
 import com.anisakai.test.Config
 import org.openqa.selenium.By
+import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 
 object SyllabusTool extends SyllabusTool
 
@@ -18,14 +19,16 @@ class SyllabusTool extends Page {
       click on partialLinkText("Add Item")
       textField("newTitle").value = syllabusName
       click on xpath("//button[.='Add']")
-      if (!xpath("//*[.='" + syllabusName + "']/../../..//*[.='Click to add body text']").webElement.isDisplayed) {
-        click on xpath("//*[contains(text(), '" + syllabusName + "')]/../../*[contains(@title, 'Click to expand')]")
+      eventually {
+        if (xpath("//*[.='" + syllabusName + "']/../../../div").webElement.getAttribute("aria-expanded").equals("false")) {
+          click on xpath("//*[contains(text(), '" + syllabusName + "')]/../../*[contains(@title, 'Click to expand')]")
+        }
+        click on xpath("//*[.='" + syllabusName + "']/../../..//div[.='Click to add body text']")
+        Portal.richTextEditor
+        Portal.xslFrameOne
+        click on xpath("//*[.='ok']")
+//        eventually(click on xpath("//*[contains(text(), '" + syllabusName + "')]/../../*[contains(@title, 'Click to publish')]"))
       }
-      click on xpath("//*[.='" + syllabusName + "']/../../..//div[.='Click to add body text']")
-      Portal.richTextEditor
-      Portal.xslFrameOne
-      click on xpath("//*[.='ok']")
-      click on xpath("//*[contains(text(), '" + syllabusName + "')]/../../*[contains(@title, 'Click to publish')]")
     }
     syllabusName
   }

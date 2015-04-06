@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import com.anisakai.test.Config
 
-import org.openqa.selenium.By
+import org.openqa.selenium.{TimeoutException, By}
 import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 
 import scala.util.Random
@@ -97,8 +97,11 @@ class AssignmentTool extends Page {
       singleSel("new_assignment_closeampm").value = amOrPm.toUpperCase
     } else { // Sakai 10
       click on id("opendate")
-      new WebDriverWait(webDriver, 10).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[.='Now']")))
-      click on xpath("//button[.='Now']")
+      try {
+        click on xpath("//button[.='Now']")
+      } catch {
+        case timeout: TimeoutException => println("Not to worry, accept the currently entered date and move along")
+      }
       click on xpath("//button[.='Done']")
       // accept default due and close dates
     }
@@ -213,7 +216,7 @@ class AssignmentTool extends Page {
 
   def deleteAssignment(assignmentTitle: String) {
     Portal.xslFrameOne
-    checkbox(xpath("//label[@class='skip' and contains(text(),'" + assignmentTitle + "')]/preceding-sibling::input[@type='checkbox']")).select
+    eventually(checkbox(xpath("//label[@class='skip' and contains(text(),'" + assignmentTitle + "')]/preceding-sibling::input[@type='checkbox']")).select)
     click on name("eventSubmit_doDelete_confirm_assignment")
     click on name("eventSubmit_doDelete_assignment")
   }
