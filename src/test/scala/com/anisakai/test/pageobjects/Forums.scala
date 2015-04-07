@@ -7,10 +7,10 @@ object Forums extends Forums
 class Forums extends Page {
 
   //Setting posting names
-  var forum = faker.sentence(2)
-  var topic = faker.sentence(2)
-  var conversation = faker.sentence(2)
-  var studConv = faker.sentence(2)
+  var forum = faker.lorem.sentence(2)
+  var topic = faker.lorem.sentence(2)
+  var conversation = faker.lorem.sentence(2)
+  var studConv = faker.lorem.sentence(2)
   var reply = ""
   var newReply = ""
 

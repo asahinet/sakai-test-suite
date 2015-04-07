@@ -17,15 +17,15 @@ import scala.collection.mutable.ListBuffer
 class SiteCreationTest extends ScalaDsl with EN with TearDown {
   var maintainRole : String = ""
   var newlyCreatedSite: Boolean = true
-  var siteIDs = new ListBuffer[String]
+  var siteTitles = new ListBuffer[String]
 
   Given( """^the following sites exist:$""") {
     (data: DataTable) =>
       val row = data.asMaps(classOf[String], classOf[String]).iterator
       while (row.hasNext) {
         val map = row.next
-        siteIDs += map.get("id") // we do this so we can add the appropriate tools to each site
         val siteId = map.get("id")
+        siteTitles += map.get("title") // we do this so we can add the appropriate tools to each site
         val title = map.get("title")
         val description = map.get("description")
         val contactname = map.get("contactname")
@@ -49,9 +49,9 @@ class SiteCreationTest extends ScalaDsl with EN with TearDown {
 
   And ("""^the sites have the following tools:$""") { (data:JList[String]) =>
     if (data.get(0) == "All") {
-      siteIDs.foreach(id => SiteManageTool.addTools(siteID = id))
+      siteTitles.foreach(title => SiteManageTool.addTools(siteTitle = title))
     } else {
-      siteIDs.foreach(id => SiteManageTool.addTools(tools = data.asScala.toList, siteID = id))
+      siteTitles.foreach(title => SiteManageTool.addTools(tools = data.asScala.toList, siteTitle = title))
     }
   }
 

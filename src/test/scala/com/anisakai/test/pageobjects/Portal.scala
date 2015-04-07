@@ -1,7 +1,7 @@
 package com.anisakai.test.pageobjects
 
 import com.anisakai.test.Config
-import org.openqa.selenium.{UnhandledAlertException, By}
+import org.openqa.selenium.{UnhandledAlertException, By, NoSuchElementException}
 import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 import org.scalatest.concurrent.Eventually
 
@@ -26,7 +26,7 @@ class Portal extends Page with Eventually {
   def xslFrameOne {
     try {
       if (Config.skin == "xsl") {
-        if (Config.client == "learnersedge" || Config.client == "sgu") {
+        if (Config.client == "learnersedge" || Config.client == "sgu" || Config.client == "ucsc-ext") {
           getToFrameZero
         } else {
           switch to defaultContent
@@ -89,14 +89,10 @@ class Portal extends Page with Eventually {
       if (partialLinkText(siteName).findElement(webDriver).isDefined) {
         true
       } else {
-        click on cssSelector("a[title='More Sites']")
+        click on xpath("//a[@title='More Sites']")
         if (Config.skin == "neo")
           textField("txtSearch").value = siteName
-        if (partialLinkText(siteName).findElement(webDriver).isDefined) {
-          true
-        } else {
-          false
-        }
+        partialLinkText(siteName).findElement(webDriver).isDefined
       }
     } else {
       true
@@ -189,17 +185,27 @@ class Portal extends Page with Eventually {
     switch to defaultContent
     if (toolName.equals("Site Setup") || toolName.equals("Site Editor")) {
 //      Different names for the same thing
-      if (linkText("Worksite Setup").findElement(webDriver).isDefined) {
-        click on linkText("Worksite Setup")
-      } else if (linkText("Site Info").findElement(webDriver).isDefined) {
-        click on linkText("Site Info")
-      }
-      if (reset) {
+//      var title: String = new String
+//      if (linkText("Worksite Setup").findElement(webDriver).isDefined) {
+//        title = "Worksite Setup"
+//      } else if (linkText("Site Info").findElement(webDriver).isDefined) {
+//        title = "Site Info"
+//      } else if (linkText("Site Editor").findElement(webDriver).isDefined) {
+//        title = "Site Editor"
+//      } else {
+//        title = "Site Setup"
+//      }
+      if (webDriver.findElement(By.className("title")).getText.contains(toolName)) {
         click on xpath("//a[contains(@title,'Reset')]")
+      } else {
+        click on xpath("//*[.='Site Setup'] | //*[.='Site Editor'] | //*[.='Site Info'] | //*[.='Worksite Setup']")
+        if (reset) {
+          click on xpath("//a[contains(@title,'Reset')]")
+        }
       }
+
     } else {
       //      If we are on the correct tool reset it, otherwise go to the tool
-      //      XSL Portal uses element id instead of className
 
       if (webDriver.findElement(By.className("title")).getText.contains(toolName)) {
         click on xpath("//a[contains(@title,'Reset')]")
@@ -238,7 +244,7 @@ class Portal extends Page with Eventually {
   def richTextEditor: String = {
 //    Used to insert text into any CKEditor
     def wait = new WebDriverWait(webDriver, 10)
-    val text = faker.paragraph(2)
+    val text = faker.lorem.paragraph(2)
     var frameName = ""
     if (Config.sakaiVersion.startsWith("10.")) {
       frameName = "'Rich Text Editor'"
@@ -261,7 +267,7 @@ class Portal extends Page with Eventually {
         click on linkText("Logout")
       }
     } catch {
-      case e: org.openqa.selenium.NoSuchElementException => {
+      case e: NoSuchElementException => {
         //e.printStackTrace()
       }
     }

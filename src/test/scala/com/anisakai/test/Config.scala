@@ -2,6 +2,7 @@ package com.anisakai.test
 
 import org.apache.commons.lang.StringUtils
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.chrome.{ChromeDriver, ChromeOptions}
 import org.scalatest.selenium._
 import org.openqa.selenium.remote.DesiredCapabilities
 import org.openqa.selenium.phantomjs.PhantomJSDriverService
@@ -58,7 +59,12 @@ class Config {
           if (StringUtils.isEmpty(systemProperties.getProperty("webdriver.chrome.driver"))) {
             systemProperties.setProperty("webdriver.chrome.driver", "chromedriver/chromedriver-2.6_mac")
           }
-          selectedDriver = Chrome.webDriver
+          val capabilities = new DesiredCapabilities
+          val options = new ChromeOptions
+          options.addArguments("test-type")
+          capabilities.setCapability("chrome.binary", "chromedriver/chromedriver-2.6_mac")
+          capabilities.setCapability(ChromeOptions.CAPABILITY, options)
+          selectedDriver = new ChromeDriver(capabilities)
         case "ie" | "internetexplorer" => selectedDriver = InternetExplorer.webDriver
         case "safari" => selectedDriver = Safari.webDriver
         case "htmlunit" => selectedDriver = HtmlUnit.webDriver
