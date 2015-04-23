@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.{ChromeDriver, ChromeOptions}
 import org.scalatest.selenium._
-import org.openqa.selenium.remote.DesiredCapabilities
+import org.openqa.selenium.remote.{CapabilityType, DesiredCapabilities}
 import org.openqa.selenium.phantomjs.PhantomJSDriverService
 import java.util.concurrent.TimeUnit
 import com.anisakai.PhantomJSDriverObject

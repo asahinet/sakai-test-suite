@@ -3,11 +3,8 @@ package com.anisakai.test.pageobjects
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import com.anisakai.test.Config
-
-import org.openqa.selenium.{TimeoutException, By}
-import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
-
-import scala.util.Random
+import org.openqa.selenium.{ElementNotVisibleException, By}
+import org.scalatest.exceptions.TestFailedDueToTimeoutException
 
 /**
  * Created with IntelliJ IDEA.
@@ -98,9 +95,10 @@ class AssignmentTool extends Page {
     } else { // Sakai 10
       click on id("opendate")
       try {
-        click on xpath("//button[.='Now']")
+        eventually(click on xpath("//button[.='Now']"))
       } catch {
-        case timeout: TimeoutException => println("Not to worry, accept the currently entered date and move along")
+        case visible: ElementNotVisibleException => println("Not to worry, accept the currently entered date and move along")
+        case timeout: TestFailedDueToTimeoutException => println("timeout")
       }
       click on xpath("//button[.='Done']")
       // accept default due and close dates

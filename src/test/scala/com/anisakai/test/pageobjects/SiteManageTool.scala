@@ -185,8 +185,9 @@ class SiteManageTool extends Page {
       Portal.xslFrameOne
       xpath("//*[@id='search']").webElement.sendKeys(siteTitle)
       click on cssSelector("[value=Search]")
-      if (Config.client.equalsIgnoreCase("providence")) {
-        singleSel("termview").value = "-1"
+      Config.client.toLowerCase match {
+        case "providence" | "rwu" => singleSel("termview").value = "-1"
+        case _ => //Do nothing
       }
       click on id("site1")
       click on cssSelector("[title=Edit]")

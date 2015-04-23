@@ -1,4 +1,4 @@
-@tools @suite
+#@tools @suite
 Feature: Verifying all tool links are working correctly
 
   Background:
