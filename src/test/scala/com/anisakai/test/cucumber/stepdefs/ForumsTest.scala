@@ -14,30 +14,22 @@ class ForumsTest extends ScalaDsl with EN with TearDown {
   var newReply: String = ""
 
   When( """^I create a new '(.+)' as an? '(.+)'$""") { (theType: String, role: String) =>
-    if (theType.equalsIgnoreCase("forum")) {
-      forum = Forums.createForum
-    }
-    else if (theType.equalsIgnoreCase("topic")) {
-      topic = Forums.createTopic
-    }
-    else if (theType.equalsIgnoreCase("conversation")) {
-      if (role.equalsIgnoreCase("student")) conversation = Forums.createConversation(true)
-      else conversation = Forums.createConversation
+    theType.toLowerCase match {
+      case "forum" => forum = Forums.createForum
+      case "topic" => topic = Forums.createTopic
+      case "conversation" => role.toLowerCase match {
+        case "student" => conversation = Forums.createConversation(true)
+        case _ => conversation = Forums.createConversation()
+      }
     }
   }
 
   Then( """^The '(.+)' is added to the list$""") { (theType: String) =>
-    if (theType.equalsIgnoreCase("forum")) {
-      assertTrue(Forums.isAdded(theType, forum))
-    }
-    else if (theType.equalsIgnoreCase("topic")) {
-      assertTrue(Forums.isAdded(theType, topic))
-    }
-    else if (theType.equalsIgnoreCase("conversation")) {
-      assertTrue(Forums.isAdded(theType, conversation))
-    }
-    else if (theType.equalsIgnoreCase("reply")) {
-      assertTrue(Forums.isAdded(theType, reply.substring(0, 10)))
+    theType.toLowerCase match {
+      case "forum" => assertTrue(Forums.isAdded(theType, forum))
+      case "topic" => assertTrue(Forums.isAdded(theType, topic))
+      case "conversation" => assertTrue(Forums.isAdded(theType, conversation))
+      case "reply" => assertTrue(Forums.isAdded(theType, reply.substring(0, 10)))
     }
   }
 
@@ -48,8 +40,7 @@ class ForumsTest extends ScalaDsl with EN with TearDown {
   When( """^I '(.+)' an existing message$""") { (editOrDel: String) =>
     if (editOrDel == "edit") {
       newReply = Forums.editMessage
-    }
-    else {
+    } else {
       Forums.delMessage
     }
   }

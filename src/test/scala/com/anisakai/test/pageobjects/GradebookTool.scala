@@ -30,7 +30,7 @@ class GradebookTool extends Page {
   def editEntry(itemName: String): String = {
     Portal.xslFrameOne
     click on xpath("//*[@class='skip' and .='" + itemName + "']/..")
-    val newItemName: String = faker.letterify("???? ???")
+    val newItemName: String = faker.lorem.words(2).toString
     textField("gbForm:title").value = newItemName
     textField("gbForm:points").value = "100"
     click on xpath("//*[@id='gbForm:saveButton']")

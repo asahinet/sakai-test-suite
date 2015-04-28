@@ -62,7 +62,6 @@ class UsersToolTest extends ScalaDsl with EN with TearDown {
         UsersTool.enterSearchText(eid)
         UsersTool.submitSearch
         assertTrue(UsersTool.foundUser(eid))
-
       }
   }
 

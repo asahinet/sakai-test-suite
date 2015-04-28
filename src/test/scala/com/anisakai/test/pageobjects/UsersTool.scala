@@ -89,8 +89,7 @@ class UsersTool extends Page {
     click on name("eventSubmit_doSave")
   }
 
-  def hasFirstNameChanged: Boolean = {
-    cssSelector("h4:contains('" + currentFirstName + "')") != null
-  }
+  def hasFirstNameChanged: Boolean = cssSelector("h4:contains('" + currentFirstName + "')") != null
+
 
 }

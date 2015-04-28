@@ -34,7 +34,7 @@ class SiteCreationTest extends ScalaDsl with EN with TearDown {
         Portal.goToTool("Sites")
         newlyCreatedSite = SiteManageTool.createSiteWithSitesTool(siteType, title, siteId)
         if (newlyCreatedSite) {
-          if (Config.sakaiVersion.startsWith("10.")) {
+          if (Config.isTen) {
             Portal.goToTool("Worksite Setup", true)
           } else {
             Portal.goToTool("Site Setup", true)

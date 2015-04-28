@@ -48,6 +48,7 @@ class SiteManageTool extends Page {
     } else {
       true
     }
+    !className("information").findElement(webDriver).isDefined || !className("information").webElement(webDriver).getText.contains("The following participants are already members of this site and cannot be re-added: '" + eid + "'")
   }
 
   def bulkAddUsers(eids: List[String], role: String) {

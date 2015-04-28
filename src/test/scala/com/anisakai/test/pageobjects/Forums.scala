@@ -30,7 +30,7 @@ class Forums extends Page {
     topic
   }
 
-  def createConversation(isStud: Boolean) = {
+  def createConversation(isStud: Boolean = false) = {
     var text = ""
     if (isStud) text = studConv
     else text = conversation
@@ -42,9 +42,6 @@ class Forums extends Page {
     click on xpath("//input[@value='Post']")
     text
   }
-
-  def createConversation: String = createConversation(false)
-
 
   def createReply: String = {
     reset

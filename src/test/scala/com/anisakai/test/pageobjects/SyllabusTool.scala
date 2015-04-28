@@ -27,12 +27,13 @@ class SyllabusTool extends Page {
         Portal.richTextEditor
         Portal.xslFrameOne
         click on xpath("//*[.='ok']")
-//        eventually(click on xpath("//*[contains(text(), '" + syllabusName + "')]/../../*[contains(@title, 'Click to publish')]"))
+        eventually(click on xpath("//*[contains(text(), '" + syllabusName + "')]/../../*[contains(@title, 'Click to publish')]"))
       }
     }
     syllabusName
   }
 
+  // Returns true if no syllabus exists
   def noneExist: Boolean = {
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
@@ -40,6 +41,7 @@ class SyllabusTool extends Page {
     xpath("//*[contains(text(), 'No Syllabus currently exists.')]").findElement(webDriver).isDefined
   }
 
+  // Returns true if a syllabus exists
   def syllabusExists(syllabusName: String): Boolean = {
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
@@ -47,6 +49,7 @@ class SyllabusTool extends Page {
     xpath("//*[.='" + syllabusName + "']").findElement(webDriver).isDefined
   }
 
+  // Returns true if a redirect exists
   def redirectExists(syllabusName: String): Boolean = {
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
@@ -70,6 +73,7 @@ class SyllabusTool extends Page {
     switch to defaultContent
     click on xpath("//a[contains(@title,'Reset')]")
     Portal.xslFrameOne
+    // Clears out the redirect source first
     if (xpath("//iframe[@src='" + Config.targetServer + "']").findElement(webDriver).isDefined) {
       click on partialLinkText("Redirect")
       textField("redirectForm:urlValue").clear

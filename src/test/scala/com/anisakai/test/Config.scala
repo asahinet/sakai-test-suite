@@ -35,6 +35,8 @@ class Config {
   val client: String = loadProperty("sakai.client", "nightly")
   val timeout: String = loadProperty("driver.timeout", "5")
 
+  val isTen: Boolean = sakaiVersion.startsWith("10.")
+
   def defaultCourseSiteId = "course-test-1"
   def defaultCourseSiteTitle = "Course Site Test 1"
   def defaultInstructorEid = "instructor1"

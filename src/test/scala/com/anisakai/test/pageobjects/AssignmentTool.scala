@@ -16,7 +16,6 @@ import org.scalatest.exceptions.TestFailedDueToTimeoutException
 object AssignmentTool extends AssignmentTool
 
 class AssignmentTool extends Page {
-  val isTen : Boolean = Config.sakaiVersion.startsWith("10.") //Sakai 10.x
   val cal = Calendar.getInstance
 
   def goToAdd {
@@ -24,7 +23,6 @@ class AssignmentTool extends Page {
     click on linkText("Add")
     Portal.getToFrameZero
   }
-
 
   // The turnItIn and correct booleans relate to turn it in assignments.
   // If you just want to create a regular assignment using the assignments
@@ -43,7 +41,7 @@ class AssignmentTool extends Page {
     cal.add(Calendar.DAY_OF_YEAR, 3)
     val tomorrow = cal.getTime
 
-    val assignmentTitle = faker.letterify("?????? ???????")
+    val assignmentTitle = faker.lorem.words(1).get(0)
     val openDate = dateFormat.format(today).toLowerCase
     val dueDate = dateFormat.format(tomorrow).toLowerCase
     val openDay = Integer.parseInt(dayFormat.format(today))
@@ -71,7 +69,7 @@ class AssignmentTool extends Page {
     textField("new_assignment_title").value = assignmentTitle
 
       // Set open date
-    if (!isTen) {
+    if (!Config.isTen) {
       singleSel("new_assignment_openmonth").value = openMonth.toString
       singleSel("new_assignment_openday").value = openDay.toString
       singleSel("new_assignment_openyear").value = openYear.toString
@@ -113,7 +111,7 @@ class AssignmentTool extends Page {
     singleSel("new_assignment_grade_type").value = "3"
     if (textField("new_assignment_grade_points").isEnabled) {
       textField("new_assignment_grade_points").value = "100"
-      if (!isTen) click on name("new_assignment_add_to_gradebook")
+      if (!Config.isTen) click on name("new_assignment_add_to_gradebook")
     }
 
     checkbox("new_assignment_check_add_due_date").select
@@ -163,7 +161,7 @@ class AssignmentTool extends Page {
     Portal.xslFrameOne
 
     val current = new Array[String](2)
-    if (!isTen) {
+    if (!Config.isTen) {
       current(0) = textField("new_assignment_title").value
       current(1) = singleSel("new_assignment_dueday").value
     } else {
@@ -182,7 +180,7 @@ class AssignmentTool extends Page {
     val dueDate = dateFormat.format(tomorrow).toLowerCase
     val dueDay = Integer.parseInt(dayFormat.format(tomorrow))
     textField("new_assignment_title").value = newTitle
-    if (!isTen) {
+    if (!Config.isTen) {
       singleSel("new_assignment_dueday").value = dueDay.toString
       singleSel("new_assignment_closeday").value = dueDay.toString
     } else {
@@ -200,12 +198,12 @@ class AssignmentTool extends Page {
   def verifyEdit(assignmentTitle: String, oldData: Array[String]): Boolean = {
     click on xpath("//a[.='Edit " + assignmentTitle + "']")
     Portal.xslFrameOne
-    if (!isTen
+    if (!Config.isTen
       && textField("new_assignment_title").value != oldData(0)
       && singleSel("new_assignment_dueday").value != oldData(1)
       && singleSel("new_assignment_closeday").value != oldData(1)) {
       true
-    } else if (isTen && textField("new_assignment_title").value != oldData(0)) {
+    } else if (Config.isTen && textField("new_assignment_title").value != oldData(0)) {
       true
     } else {
       false
