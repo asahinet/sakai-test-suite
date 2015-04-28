@@ -4,12 +4,10 @@ import org.apache.commons.lang.StringUtils
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.{ChromeDriver, ChromeOptions}
 import org.scalatest.selenium._
-import org.openqa.selenium.remote.DesiredCapabilities
+import org.openqa.selenium.remote.{DesiredCapabilities}
 import org.openqa.selenium.phantomjs.PhantomJSDriverService
 import java.util.concurrent.TimeUnit
 import com.anisakai.PhantomJSDriverObject
-import org.openqa.selenium.firefox.internal.ProfilesIni
-import org.openqa.selenium.firefox.{FirefoxDriver, FirefoxProfile}
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,6 +32,8 @@ class Config {
   val skin: String = loadProperty("sakai.skin", "neo")
   val client: String = loadProperty("sakai.client", "nightly")
   val timeout: String = loadProperty("driver.timeout", "5")
+
+  val isTen: Boolean = sakaiVersion.startsWith("10.")
 
   def defaultCourseSiteId = "course-test-1"
   def defaultCourseSiteTitle = "Course Site Test 1"

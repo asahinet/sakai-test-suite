@@ -1,6 +1,7 @@
 package com.anisakai.test.pageobjects
 
 import com.anisakai.test.Config
+import org.apache.commons.lang.WordUtils
 import org.openqa.selenium.{UnhandledAlertException, By, NoSuchElementException}
 import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 import org.scalatest.concurrent.Eventually
@@ -184,17 +185,6 @@ class Portal extends Page with Eventually {
     // reset will refresh the tool before using it to ensure clean tool
     switch to defaultContent
     if (toolName.equals("Site Setup") || toolName.equals("Site Editor")) {
-//      Different names for the same thing
-//      var title: String = new String
-//      if (linkText("Worksite Setup").findElement(webDriver).isDefined) {
-//        title = "Worksite Setup"
-//      } else if (linkText("Site Info").findElement(webDriver).isDefined) {
-//        title = "Site Info"
-//      } else if (linkText("Site Editor").findElement(webDriver).isDefined) {
-//        title = "Site Editor"
-//      } else {
-//        title = "Site Setup"
-//      }
       if (webDriver.findElement(By.className("title")).getText.contains(toolName)) {
         click on xpath("//a[contains(@title,'Reset')]")
       } else {
@@ -206,33 +196,15 @@ class Portal extends Page with Eventually {
 
     } else {
       //      If we are on the correct tool reset it, otherwise go to the tool
-
       if (webDriver.findElement(By.className("title")).getText.contains(toolName)) {
         click on xpath("//a[contains(@title,'Reset')]")
       } else {
         // Different names for the same thing
-        if (toolName.equalsIgnoreCase("Lessons Builder")) {
-          if (linkText("Lesson Builder").findElement(webDriver).isDefined) {
-            click on linkText("Lesson Builder")
-          } else if (linkText("Lessons").findElement(webDriver).isDefined) {
-            click on linkText("Lessons")
-          } else {
-            click on linkText(toolName)
-          }
-        } else if (toolName.equalsIgnoreCase("Forums")) {
-          if (linkText("Discussions").findElement(webDriver).isDefined) {
-            click on linkText("Discussions")
-          } else {
-            click on linkText(toolName)
-          }
-        } else if (toolName.equalsIgnoreCase("Messages")) {
-          if (linkText("Course Email").findElement(webDriver).isDefined) {
-            click on linkText("Course Email")
-          } else {
-            click on linkText(toolName)
-          }
-        } else {
-          click on linkText(toolName)
+        toolName.toLowerCase match {
+          case lessons if lessons == "lessons builder" || lessons == "lessons" || lessons == "lessonbuilder" => click on linkText(WordUtils.capitalizeFully(lessons))
+          case forums if forums == "forums" || forums == "discussions" => click on linkText(WordUtils.capitalizeFully(forums))
+          case messages if messages == "messages" || messages == "course email" => click on linkText(WordUtils.capitalizeFully(messages))
+          case _ => click on linkText(WordUtils.capitalizeFully(toolName))
         }
         if (reset) {
           click on xpath("//a[contains(@title,'Reset')]")

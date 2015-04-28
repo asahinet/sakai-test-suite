@@ -23,15 +23,16 @@ class TurnItInTest extends ScalaDsl with EN with TearDown {
     Portal.navigateToPage(Config.targetServer)
     Portal.logout
 
-    if (role.equalsIgnoreCase("admin")) {
-      eid = Config.defaultAdminEid
-      password = Config.defaultAdminPassword
-    } else if (role.equalsIgnoreCase("instructor")) {
-      eid = Config.defaultInstructorEid
-      password = Config.defaultInstructorPassword
-    } else if (role.equalsIgnoreCase("student")) {
-      eid = Config.defaultStudentEid
-      password = Config.defaultStudentPassword
+    role.toLowerCase match {
+      case "admin" =>
+        eid = Config.defaultAdminEid
+        password = Config.defaultAdminPassword
+      case "instructor" =>
+        eid = Config.defaultInstructorEid
+        password = Config.defaultInstructorPassword
+      case "student" =>
+        eid = Config.defaultStudentEid
+        password = Config.defaultStudentPassword
     }
     Portal.enterEid(eid)
     Portal.enterPassword(password)

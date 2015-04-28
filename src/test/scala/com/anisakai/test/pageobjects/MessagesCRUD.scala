@@ -29,7 +29,7 @@ class MessagesCRUD extends Page {
     Portal.richTextEditor
     Portal.xslFrameOne
     if (attachment) {
-      if (!Config.sakaiVersion.startsWith("10.")) {
+      if (!Config.isTen) {
         click on name("compose:_id72")
       } else {
         click on xpath("//*[@value = 'Add attachments']")
@@ -39,7 +39,7 @@ class MessagesCRUD extends Page {
       click on id("add_url")
       click on id("attachButton")
     }
-    if (!Config.sakaiVersion.startsWith("10.")) {
+    if (!Config.isTen) {
       click on name("compose:_id89")
     } else {
       click on xpath("//*[@value = 'Send ']")

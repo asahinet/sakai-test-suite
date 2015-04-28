@@ -44,7 +44,7 @@ class CalendarObj extends Page {
     singleSel("yearSelect").value = year.toString
     singleSel("startHour").value = hour.toString
     singleSel("startMinute").value = "0"
-    def ampm = new Select(webDriver.findElement(By.name("startAmpm")))
+    val ampm = new Select(webDriver.findElement(By.name("startAmpm")))
     ampm.selectByVisibleText(am_pm)
     singleSel("eventType").value = "Exam"
     textArea("location").value = "Online"

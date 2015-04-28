@@ -18,12 +18,11 @@ class AssignmentTest extends ScalaDsl with EN with TearDown {
   var oldData: Array[String] = null
 
   def login(role: String) {
-    if (role.equalsIgnoreCase("instructor")) {
-      Portal.login(Config.defaultInstructorEid, Config.defaultInstructorPassword)
-    } else if (role.equalsIgnoreCase("student")) {
-      Portal.login(Config.defaultStudentEid, Config.defaultStudentPassword)
+    role.toLowerCase match {
+      case "instructor" => Portal.login(Config.defaultInstructorEid, Config.defaultInstructorPassword)
+      case "student" => Portal.login(Config.defaultStudentEid, Config.defaultStudentPassword)
+      case _ => assertFalse(role + " is not a supported role yet", false)
     }
-    assertFalse(role + " is not a supported role yet", false)
   }
 
   Given( """^I'm logged in as an? '(.*)'$""") { (role: String) =>

@@ -17,9 +17,10 @@ import scala.collection.mutable.ListBuffer
 object VerifyTools extends VerifyTools
 
 class VerifyTools extends Page {
+
   def checkTools: Boolean = {
     var fails = new ListBuffer[String]
-    var groupName: String = ""
+    var groupName: String = null
 
     if (Config.skin == "neo") {
       groupName = "toolMenuLink"
@@ -49,20 +50,18 @@ class VerifyTools extends Page {
     } catch {
       case e: Exception =>
         e.printStackTrace
-        return hasFailed(fails.toList, true)
+        return isSuccess(fails.toList, true)
     }
-    hasFailed(fails.toList)
+    isSuccess(fails.toList)
   }
 
-  def hasFailed(fails: List[String], failure: Boolean = false): Boolean = {
-    if (fails.isEmpty || failure) {
-      true
-    } else {
+  // If no failures have been added to the list and no exception was caught we can pass the test
+  def isSuccess(fails: List[String], exception: Boolean = false): Boolean = {
+    if (fails.nonEmpty || exception) {
       println("Failed Tools:")
       fails.foreach(e => println(e))
-      if (fails.isEmpty) {
-        println("None\n")
-      }
+      true
+    } else {
       false
     }
   }
