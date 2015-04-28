@@ -31,24 +31,13 @@ class SiteManageTool extends Page {
     textField("type").value = siteType
     click on name("eventSubmit_doSave")
 
-    // if we get an error that the site exists, click cancel, that is ok
-    if (className("alertMessage").findElement(webDriver).isDefined &&
-      className("alertMessage").webElement(webDriver).getText.contains("The site id " + siteId + " is already in use")) {
-      click on name("eventSubmit_doCancel")
-      return false
-    }
-    true
+    // if we get an error that the site exists that is ok
+    !(className("alertMessage").findElement(webDriver).isDefined && className("alertMessage").webElement(webDriver).getText.contains("The site id " + siteId + " is already in use"))
   }
 
   def membershipDoesNotExist(eid: String): Boolean = {
-    // if we get an error that the site exists, click cancel, that is ok
-    if (className("information").findElement(webDriver).isDefined &&
-      className("information").webElement(webDriver).getText.contains("The following participants are already members of this site and cannot be re-added: '" + eid + "'")) {
-      false
-    } else {
-      true
-    }
-    !className("information").findElement(webDriver).isDefined || !className("information").webElement(webDriver).getText.contains("The following participants are already members of this site and cannot be re-added: '" + eid + "'")
+    // if we get an error that they already exist in the site that is ok
+    !(className("information").findElement(webDriver).isDefined && className("information").webElement(webDriver).getText.contains("The following participants are already members of this site and cannot be re-added: '" + eid + "'"))
   }
 
   def bulkAddUsers(eids: List[String], role: String) {
