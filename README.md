@@ -146,8 +146,8 @@ The following system properties are available.  These should be sent to the as J
 
 - webdriver.chrome.driver
 
-    If you are using chrome the chrome driver must be made available, see https://code.google.com/p/chromedriver/downloads/list to download the
-    version for your system.  For more info, https://code.google.com/p/chromedriver/wiki/GettingStarted.  If you are running
+    If you are using chrome the chrome driver must be made available, see http://chromedriver.storage.googleapis.com/index.html to download the
+    version for your system.  For more info, https://sites.google.com/a/chromium.org/chromedriver/.  If you are running
     on a Mac platform, and your working directory is set to this project's root, you don't have to include this, it will be
     found automatically.
 
